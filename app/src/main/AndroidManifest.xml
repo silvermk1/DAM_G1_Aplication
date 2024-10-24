@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="true"
@@ -11,30 +11,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DAM_G1_Aplication"
-        tools:targetApi="31" >
-
+        tools:targetApi="31">
+        <activity
+            android:name=".Mainclasses.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Mainclasses.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Mainclasses.ProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".Mainclasses.CategoryActivity"
             android:exported="false"
             android:label="@string/title_activity_category"
             android:theme="@style/Theme.DAM_G1_Aplication" />
-
         <activity
             android:name=".Mainclasses.HomeActivity"
             android:exported="true"
-            android:theme="@style/Theme.DAM_G1_Aplication" >
+            android:theme="@style/Theme.DAM_G1_Aplication">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.example.dam_g1_aplication.Mainclasses.AchivListActivity"
+            android:name=".Mainclasses.AchivListActivity"
             android:exported="false" />
-
     </application>
 
 </manifest>
-
-
