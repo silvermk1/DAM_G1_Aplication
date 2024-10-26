@@ -36,7 +36,7 @@ class CategoryActivity : AppCompatActivity() {
 
             if (!favorites.contains(category)) {
                 favorites.add(category)
-                println("$category añadido a favoritos")
+                println("$category add to favorites")
             }
         }
         recyclerView.adapter = adapter
