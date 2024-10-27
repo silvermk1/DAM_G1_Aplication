@@ -1,10 +1,9 @@
-package com.example.dam_g1_aplication.ConexionApi;
-
+package com.example.dam_g1_aplication.ApiConnection;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-//CLASSE PARA CONFIGURAR RETROFIT
+//CLASE PARA CONFIGURAR RETROFIT
 public class RetrofitClient {
     private static Retrofit retrofit = null;
 

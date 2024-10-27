@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="262dp"
+        android:layout_height="501dp"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.503" />
+
+    <Button
+        android:id="@+id/bVerLogros"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADD CATEGORIES"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.826" />
+
+    <!-- INICIO FOOTER -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="bottom|center"
+            android:orientation="horizontal"
+            android:background="@android:color/holo_blue_light">
+
+            <Button
+                android:id="@+id/profileButton"
+                android:layout_width="125dp"
+                android:layout_height="70dp"
+                android:layout_margin="6dp"
+                android:backgroundTint="#4040C0"
+                app:cornerRadius="8dp"
+                android:textColor="@android:color/white"
+                android:text="Perfil" />
+            <Button
+                android:id="@+id/homeButton"
+                android:layout_width="125dp"
+                android:layout_height="70dp"
+                android:layout_margin="6dp"
+                android:backgroundTint="#4040C0"
+                app:cornerRadius="8dp"
+                android:textColor="@android:color/white"
+                android:text="Home" />
+
+            <Button
+                android:id="@+id/supportButton"
+                android:layout_width="120dp"
+                android:layout_height="70dp"
+                android:layout_margin="6dp"
+                android:backgroundTint="#4040C0"
+                app:cornerRadius="8dp"
+                android:textColor="@android:color/white"
+                android:text="Soporte" />
+        </LinearLayout>
+    </LinearLayout>
+    <!-- FIN FOOTER -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

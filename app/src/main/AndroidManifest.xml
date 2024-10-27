@@ -12,33 +12,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DAM_G1_Aplication"
         tools:targetApi="31">
+
         <activity
-            android:name=".Mainclasses.LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Mainclasses.RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Mainclasses.ProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Mainclasses.CategoryActivity"
-            android:exported="false"
-            android:label="@string/title_activity_category"
-            android:theme="@style/Theme.DAM_G1_Aplication" />
-        <activity
-            android:name=".Mainclasses.HomeActivity"
-            android:exported="true"
-            android:theme="@style/Theme.DAM_G1_Aplication">
+            android:name=".activities.HomeActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Mainclasses.AchivListActivity"
-            android:exported="false" />
-    </application>
 
+        <activity
+            android:name=".activities.AchievementsListActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".activities.CategoryActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:exported="false"/>
+    </application>
 </manifest>

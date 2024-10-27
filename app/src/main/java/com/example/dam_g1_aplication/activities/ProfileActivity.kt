@@ -1,17 +1,15 @@
-package com.example.dam_g1_aplication.Mainclasses
+package com.example.dam_g1_aplication.activities
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.dam_g1_aplication.R
 
-class RegisterActivity : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_register)
+        setContentView(R.layout.profile_activity)
 
     }
 }

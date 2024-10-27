@@ -1,4 +1,4 @@
-package com.example.dam_g1_aplication.Mainclasses
+package com.example.dam_g1_aplication.activities
 
 import android.view.LayoutInflater
 import android.view.View
