@@ -8,10 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dam_g1_aplication.R
 
-class CategoryAdapter(
+class CategoryListAdapter(
     private val categories: List<String>,
     private val onFavoriteClick: (String) -> Unit
-) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+) : RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder>() {
 
     class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val categoryText: TextView = view.findViewById(R.id.tCategory)

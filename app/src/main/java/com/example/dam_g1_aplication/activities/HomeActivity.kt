@@ -15,7 +15,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
-        val listButton = findViewById<Button>(R.id.bVerLogros)
+        val listButton = findViewById<Button>(R.id.buttonToCategories)
 
         // INICIO DEL FOOTER
         val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)

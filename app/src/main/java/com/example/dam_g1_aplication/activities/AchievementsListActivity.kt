@@ -13,7 +13,7 @@ class AchievementsListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.achiv_list_activity)
-        val achivments = listOf("Achivment 1","Achivment 2","AQchivment 3")
+        val achivments = listOf("Achievement 1","Achievement 2","Achievement 3")
         val rvAchiv = findViewById<RecyclerView>(R.id.rvAchivList)
         rvAchiv.layoutManager = LinearLayoutManager(this)
 

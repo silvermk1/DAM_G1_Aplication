@@ -5,102 +5,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
+    <!-- Título -->
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layout_marginBottom="4dp"
         android:background="@android:color/holo_orange_light"
         android:padding="16dp"
+        android:text="Categorías"
         android:textAlignment="center"
-        android:textSize="34sp"
-        android:textStyle="bold"
         android:textColor="@android:color/white"
-        android:text="Categorías" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="0">
+        android:textSize="34sp"
+        android:textStyle="bold" />
+
+    <!-- Genera tantas categorías como haya en el servidor -->
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/categoryContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="128dp"
-                android:layout_height="180dp"
-                android:layout_margin="4dp"
-                android:backgroundTint="@android:color/holo_orange_light"
-                android:onClick="onButtonClick"
-                android:textColor="@android:color/white"
-                android:text="Categoría 1"
-                app:cornerRadius="32dp" />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="128dp"
-                android:layout_height="180dp"
-                android:layout_margin="4dp"
-                android:backgroundTint="@android:color/holo_orange_light"
-                android:onClick="onButtonClick"
-                android:textColor="@android:color/white"
-                android:text="Categoría 2"
-                app:cornerRadius="32dp" />
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="128dp"
-                android:layout_height="180dp"
-                android:layout_margin="4dp"
-                android:backgroundTint="@android:color/holo_orange_light"
-                android:onClick="onButtonClick"
-                android:textColor="@android:color/white"
-                android:text="Categoría 3"
-                app:cornerRadius="32dp" />
+            android:orientation="vertical">
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="128dp"
-                android:layout_height="180dp"
-                android:layout_margin="4dp"
-                android:backgroundTint="@android:color/holo_orange_light"
-                android:onClick="onButtonClick"
-                android:textColor="@android:color/white"
-                android:text="Categoría 4"
-                app:cornerRadius="32dp" />
-
-            <Button
-                android:id="@+id/button5"
-                android:layout_width="128dp"
-                android:layout_height="180dp"
-                android:layout_margin="4dp"
-                android:backgroundTint="@android:color/holo_orange_light"
-                android:onClick="onButtonClick"
-                android:textColor="@android:color/white"
-                android:text="Categoría 5"
-                app:cornerRadius="32dp" />
-
-            <Button
-                android:id="@+id/button6"
-                android:layout_width="128dp"
-                android:layout_height="180dp"
-                android:layout_margin="4dp"
-                android:backgroundTint="@android:color/holo_orange_light"
-                android:onClick="onButtonClick"
-                android:textColor="@android:color/white"
-                android:text="Categoría 6"
-                app:cornerRadius="32dp" />
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
     <!-- INICIO FOOTER -->
     <LinearLayout
@@ -122,18 +53,22 @@
                 android:layout_height="70dp"
                 android:layout_margin="6dp"
                 android:backgroundTint="#4040C0"
-                app:cornerRadius="8dp"
+                app:cornerRadius="4dp"
                 android:textColor="@android:color/white"
-                android:text="Perfil" />
+                android:text="Perfil"
+                android:textSize="16sp"
+                android:textStyle="bold" />
             <Button
                 android:id="@+id/homeButton"
                 android:layout_width="125dp"
                 android:layout_height="70dp"
                 android:layout_margin="6dp"
                 android:backgroundTint="#4040C0"
-                app:cornerRadius="8dp"
+                app:cornerRadius="4dp"
                 android:textColor="@android:color/white"
-                android:text="Home" />
+                android:text="Inicio"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/supportButton"
@@ -141,9 +76,11 @@
                 android:layout_height="70dp"
                 android:layout_margin="6dp"
                 android:backgroundTint="#4040C0"
-                app:cornerRadius="8dp"
+                app:cornerRadius="4dp"
                 android:textColor="@android:color/white"
-                android:text="Soporte" />
+                android:text="Soporte"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
     <!-- FIN FOOTER -->

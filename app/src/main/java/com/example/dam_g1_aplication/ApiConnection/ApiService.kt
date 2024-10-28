@@ -13,7 +13,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ApiService {
-    @GET("category")
+    @GET("categories")
     fun getCategories(): Call<List<Categories>>
 
     @GET("achievements")

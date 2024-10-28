@@ -7,25 +7,28 @@
 
     <VideoView
         android:id="@+id/videoView"
-        android:layout_width="262dp"
-        android:layout_height="501dp"
+        android:layout_width="260dp"
+        android:layout_height="500dp"
         android:layout_gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.503" />
+        app:layout_constraintVertical_bias="0.400" />
 
     <Button
-        android:id="@+id/bVerLogros"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ADD CATEGORIES"
+        android:id="@+id/buttonToCategories"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:text="Categorías"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.826" />
+        android:backgroundTint="#FF8000"
+        app:cornerRadius="4dp"
+        app:layout_constraintVertical_bias="0.850" />
 
     <!-- INICIO FOOTER -->
     <LinearLayout
@@ -47,18 +50,22 @@
                 android:layout_height="70dp"
                 android:layout_margin="6dp"
                 android:backgroundTint="#4040C0"
-                app:cornerRadius="8dp"
+                app:cornerRadius="4dp"
                 android:textColor="@android:color/white"
-                android:text="Perfil" />
+                android:text="Perfil"
+                android:textSize="16sp"
+                android:textStyle="bold" />
             <Button
                 android:id="@+id/homeButton"
                 android:layout_width="125dp"
                 android:layout_height="70dp"
                 android:layout_margin="6dp"
                 android:backgroundTint="#4040C0"
-                app:cornerRadius="8dp"
+                app:cornerRadius="4dp"
                 android:textColor="@android:color/white"
-                android:text="Home" />
+                android:text="Inicio"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/supportButton"
@@ -66,9 +73,11 @@
                 android:layout_height="70dp"
                 android:layout_margin="6dp"
                 android:backgroundTint="#4040C0"
-                app:cornerRadius="8dp"
+                app:cornerRadius="4dp"
                 android:textColor="@android:color/white"
-                android:text="Soporte" />
+                android:text="Soporte"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
     <!-- FIN FOOTER -->
