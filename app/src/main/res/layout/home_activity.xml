@@ -68,16 +68,18 @@
                 android:textStyle="bold"/>
 
             <Button
-                android:id="@+id/supportButton"
+                android:id="@+id/MisObjetivos"
                 android:layout_width="120dp"
                 android:layout_height="70dp"
                 android:layout_margin="6dp"
                 android:backgroundTint="#4040C0"
                 app:cornerRadius="4dp"
                 android:textColor="@android:color/white"
-                android:text="Soporte"
+                android:text="MisObjetivos"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+
         </LinearLayout>
     </LinearLayout>
     <!-- FIN FOOTER -->

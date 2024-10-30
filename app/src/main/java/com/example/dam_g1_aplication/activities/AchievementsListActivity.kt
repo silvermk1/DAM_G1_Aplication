@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import androidx.lifecycle.lifecycleScope
-
+import com.example.dam_g1_aplication.ApiConnection.RetrofitClient
 
 
 class AchievementsListActivity : AppCompatActivity() {
@@ -29,15 +29,14 @@ class AchievementsListActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.achievementsRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val categoryId = intent.getStringExtra("CATEGORY_ID") ?: return
-        fetchAchievements(categoryId, recyclerView)
+       // val categoryId = intent.getStringExtra("CATEGORY_ID") ?: return
+       // fetchAchievements(categoryId, recyclerView)
     }
-
+/*
     private fun fetchAchievements(categoryId: String, recyclerView: RecyclerView) {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.5.227:8080/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        // Preparar conexión de Retrofit
+        val retrofit = RetrofitClient.getClient()
+
 
         val apiService = retrofit.create(ApiService::class.java)
 
@@ -57,4 +56,6 @@ class AchievementsListActivity : AppCompatActivity() {
             }
         }
     }
+    */
+
 }

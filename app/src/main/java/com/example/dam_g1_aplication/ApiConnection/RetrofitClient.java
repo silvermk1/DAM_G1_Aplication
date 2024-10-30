@@ -7,7 +7,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
     private static Retrofit retrofit = null;
 
-    public static Retrofit getClient(String baseUrl) {
+    //ingresar la ip de el framework y api "puerto"
+    private static String baseUrl = "http://192.168.1.42:8080/";
+
+    public static Retrofit getClient() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
@@ -16,4 +19,6 @@ public class RetrofitClient {
         }
         return retrofit;
     }
+
+
 }

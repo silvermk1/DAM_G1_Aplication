@@ -23,11 +23,14 @@ class HomeActivity : AppCompatActivity() {
         // Si tiene la cuenta iniciada, será true
         val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
         val profileButton: Button = findViewById(R.id.profileButton)
-        val supportButton: Button = findViewById(R.id.supportButton)
+        val misobjetivosbutton: Button = findViewById(R.id.MisObjetivos)
         val homeButton: Button = findViewById(R.id.homeButton)
 
         // Al pulsar el botón de Perfil, si tiene cuenta lo manda a su perfil. Sino, lo manda a iniciar sesión
         profileButton.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            /* condicional de saver si se ha iniciado o no:
             if (isLoggedIn) {
                 val intent = Intent(this, ProfileActivity::class.java)
                 startActivity(intent)
@@ -35,6 +38,14 @@ class HomeActivity : AppCompatActivity() {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
+            */
+
+        }
+
+        //Al pulsar mis objetivos
+        misobjetivosbutton.setOnClickListener{
+
+
         }
 
         homeButton.setOnClickListener {

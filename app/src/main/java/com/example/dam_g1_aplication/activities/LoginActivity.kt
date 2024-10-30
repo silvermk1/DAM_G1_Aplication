@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dam_g1_aplication.dataClasses.Users
 import com.example.dam_g1_aplication.ApiConnection.ApiService
+import com.example.dam_g1_aplication.ApiConnection.RetrofitClient
 import com.example.dam_g1_aplication.R
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,10 +38,7 @@ class LoginActivity : AppCompatActivity() {
 
         sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.5.227:8080/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        val retrofit = RetrofitClient.getClient()
 
         apiService = retrofit.create(ApiService::class.java)
 
@@ -96,4 +94,6 @@ class LoginActivity : AppCompatActivity() {
             }
         })
     }
+
+
 }

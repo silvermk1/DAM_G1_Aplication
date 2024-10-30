@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dam_g1_aplication.ApiConnection.ApiService
+import com.example.dam_g1_aplication.ApiConnection.RetrofitClient
 import com.example.dam_g1_aplication.R
 import com.example.dam_g1_aplication.dataClasses.Categories
 import retrofit2.Call
@@ -26,10 +27,7 @@ class CategoryActivity : AppCompatActivity() {
         val categoryContainer = findViewById<LinearLayout>(R.id.categoryContainer)
 
         // Preparar conexión de Retrofit
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.5.227:8080/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        val retrofit = RetrofitClient.getClient()
 
         val apiService = retrofit.create(ApiService::class.java)
 
@@ -62,6 +60,10 @@ class CategoryActivity : AppCompatActivity() {
                             text = "❤︎︎"
                             setBackgroundColor(resources.getColor(android.R.color.holo_red_light))
                             setOnClickListener {
+
+                                //comprovar si se ha iniciado sesion =
+                                // si se inicia agregar si no esta iniciado iniciar:
+
                                 // Acción para el botón de favoritos
                                 Toast.makeText(
                                     this@CategoryActivity,
