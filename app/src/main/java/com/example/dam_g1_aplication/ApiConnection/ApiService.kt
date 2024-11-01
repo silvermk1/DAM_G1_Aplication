@@ -19,6 +19,12 @@ interface ApiService {
     @GET("achievements")
     fun getAchievements(): Call<List<Achievements>>
 
+
+    @GET("achievements/category/{categoryId}")
+    fun getAchievementsByCategoryId(@Path("categoryId") categoryId: Long): Call<List<Achievements>>
+
+
+
     @GET("users")
     fun getUsers(): Call<List<Users>>
 
