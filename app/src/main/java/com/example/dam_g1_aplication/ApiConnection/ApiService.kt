@@ -12,6 +12,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
+//METODOS PARA LA CONEXINO API SERVICE
 interface ApiService {
     @GET("categories")
     fun getCategories(): Call<List<Categories>>
@@ -22,8 +23,6 @@ interface ApiService {
 
     @GET("achievements/category/{categoryId}")
     fun getAchievementsByCategoryId(@Path("categoryId") categoryId: Long): Call<List<Achievements>>
-
-
 
     @GET("users")
     fun getUsers(): Call<List<Users>>

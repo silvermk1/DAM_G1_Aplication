@@ -31,6 +31,7 @@ class CategoryActivity : AppCompatActivity() {
 
         val apiService = retrofit.create(ApiService::class.java)
 
+        //retornar todas las categorias
         val callCategories = apiService.getCategories()
         callCategories.enqueue(object : Callback<List<Categories>> {
             override fun onResponse(
@@ -72,7 +73,7 @@ class CategoryActivity : AppCompatActivity() {
                                 ).show()
                             }
                         }
-
+                        //boton de cada categoria = mandar a los objetivos de esta
                         val categoryButton = Button(this@CategoryActivity).apply {
                             layoutParams = LinearLayout.LayoutParams(
                                 0,
@@ -83,7 +84,7 @@ class CategoryActivity : AppCompatActivity() {
                             setBackgroundColor(resources.getColor(android.R.color.holo_orange_dark))
                             setTextColor(resources.getColor(android.R.color.white))
                             setOnClickListener {
-                                navigateToAchievements(category.id)
+                                navigateToAchievements(category.id) //metodo para mandar a los objetivos
                             }
                         }
 

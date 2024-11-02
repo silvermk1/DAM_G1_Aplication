@@ -24,7 +24,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var añoregistro: EditText
     private lateinit var textosalida: TextView
     private lateinit var apiService: ApiService
-
+    //iniciar registreractivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -51,7 +51,7 @@ class RegisterActivity : AppCompatActivity() {
         val retrofit = RetrofitClient.getClient()
         apiService = retrofit.create(ApiService::class.java)
     }
-
+    //metodo para registrarse,
     private fun registrarse() {
         // Recibir datos
         val email = emailregistro.text.toString()
@@ -75,7 +75,7 @@ class RegisterActivity : AppCompatActivity() {
                 mail = email
             )
 
-            // Enviar usuario
+            // Enviar usuario a la api
             val callRegister = apiService.createUser(nuevoUsuario)
             callRegister.enqueue(object : Callback<Users> {
                 override fun onResponse(call: Call<Users>, response: Response<Users>) {

@@ -27,10 +27,12 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var apiService: ApiService
 
+    //inciar login activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
 
+        //recibir objetos graficos
         usernameEditText = findViewById(R.id.usernameEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
         loginButton = findViewById(R.id.loginButton)
@@ -38,10 +40,12 @@ class LoginActivity : AppCompatActivity() {
 
         sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
 
+        //iniciar servicio api
         val retrofit = RetrofitClient.getClient()
 
         apiService = retrofit.create(ApiService::class.java)
 
+        //comprovar ingreso de datos "vacios..."
         loginButton.setOnClickListener {
             val username = usernameEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
@@ -50,23 +54,29 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this,
                     "Rellene todos los campos", Toast.LENGTH_SHORT).show()
             } else {
+                //checkcredentials = comprovar inicio de sesion
                 checkCredentials(username, password)
             }
         }
+
+        //mandar al activity de registro
         registerButton.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
     }
 
+    //metodo para comprovar inicio de sesion
     private fun checkCredentials(username: String, password: String) {
+        //retornar usuarios
         val call = apiService.getUsers()
         call.enqueue(object : Callback<List<Users>> {
             override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
                 if (response.isSuccessful && response.body() != null) {
                     val users = response.body()!!
+                    //comrovar inicio sesion
                     val user = users.find { it.username == username && it.password == password }
-                    if (user != null) {
+                    if (user != null) { //inicio correcto, mandar al activity adecuado
                         with(sharedPreferences.edit()) {
                             putBoolean("isLoggedIn", true)
                             putString("username", username)
@@ -79,7 +89,7 @@ class LoginActivity : AppCompatActivity() {
                         val intent = Intent(this@LoginActivity, ProfileActivity::class.java)
                         startActivity(intent)
                         finish()
-                    } else {
+                    } else { //inicio incorrecto, lanzar mensaje
                         Toast.makeText(this@LoginActivity,
                             "Usuario o contraseña incorrecto", Toast.LENGTH_SHORT).show()
                     }

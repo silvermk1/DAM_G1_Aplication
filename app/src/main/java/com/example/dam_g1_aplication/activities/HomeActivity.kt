@@ -11,7 +11,7 @@ import com.example.dam_g1_aplication.R
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var videoView: VideoView
-    
+    //INICIAR HOME
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
@@ -48,8 +48,15 @@ class HomeActivity : AppCompatActivity() {
 
         }
 
+        //te manda a inicio "home, esta misma"
         homeButton.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+
+        //te manda a ver las categorias
+        listButton.setOnClickListener {
+            val intent = Intent(this, CategoryActivity::class.java)
             startActivity(intent)
         }
         // FIN DEL FOOTER
@@ -67,9 +74,5 @@ class HomeActivity : AppCompatActivity() {
             videoView.start() // Iniciar la reproducción
         }
 
-        listButton.setOnClickListener {
-            val intent = Intent(this, CategoryActivity::class.java)
-            startActivity(intent)
-        }
     }
 }
