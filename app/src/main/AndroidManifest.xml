@@ -25,10 +25,10 @@
         </activity>
 
         <activity
-            android:name=".activities.AchievementsListActivity"
+            android:name=".activities.AchievementsActivity"
             android:exported="false"/>
         <activity
-            android:name=".activities.CategoryActivity"
+            android:name=".activities.CategoriesActivity"
             android:exported="false"/>
         <activity
             android:name=".activities.LoginActivity"
@@ -38,6 +38,9 @@
             android:exported="false"/>
         <activity
             android:name=".activities.RegisterActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".activities.AchievementDetailActivity"
             android:exported="false"/>
     </application>
 </manifest>

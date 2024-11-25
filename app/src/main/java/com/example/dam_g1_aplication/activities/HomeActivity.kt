@@ -56,7 +56,7 @@ class HomeActivity : AppCompatActivity() {
 
         //te manda a ver las categorias
         listButton.setOnClickListener {
-            val intent = Intent(this, CategoryActivity::class.java)
+            val intent = Intent(this, CategoriesActivity::class.java)
             startActivity(intent)
         }
         // FIN DEL FOOTER

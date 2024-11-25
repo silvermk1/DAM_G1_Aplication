@@ -8,7 +8,7 @@ public class RetrofitClient {
     private static Retrofit retrofit = null;
 
     //ingresar la ip de el framework y api "puerto"
-    private static String baseUrl = "http://192.168.1.42:8080/";
+    private static final String baseUrl = "http://192.168.1.21:8080/";
 
     public static Retrofit getClient() {
         if (retrofit == null) {
@@ -19,6 +19,4 @@ public class RetrofitClient {
         }
         return retrofit;
     }
-
-
 }
