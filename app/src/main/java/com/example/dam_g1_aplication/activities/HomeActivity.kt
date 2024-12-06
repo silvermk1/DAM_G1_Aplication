@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dam_g1_aplication.R
+import java.io.File
 
 class HomeActivity : AppCompatActivity() {
 
@@ -17,11 +18,28 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.home_activity)
         val listButton = findViewById<Button>(R.id.buttonToCategories)
 
-        // INICIO DEL FOOTER
-        val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        // INICIO DEL FOOTER ---demomento lo cambio por un xml...
+        //val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
 
         // Si tiene la cuenta iniciada, será true
-        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+        //val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+        //crear xml para guardar configuraciones, en ella el usuario iniciado!:
+        val file = File(filesDir, "usuario.xml") //obtener ruta configuracion
+
+        if (!file.exists()) {
+            val defaultContent = """
+                    <?xml version="1.0" encoding="utf-8"?>
+                    <resources>
+                        <user>
+                            <isLoggedIn>false</isLoggedIn>
+                            <username>false</username>
+                        </user>
+                    </resources>
+                """.trimIndent()
+            file.writeText(defaultContent)    //crear archivo si no existe
+        }
+
+
         val profileButton: Button = findViewById(R.id.profileButton)
         val misobjetivosbutton: Button = findViewById(R.id.MisObjetivos)
         val homeButton: Button = findViewById(R.id.homeButton)
@@ -61,7 +79,7 @@ class HomeActivity : AppCompatActivity() {
         }
         // FIN DEL FOOTER
 
-//HE PUESTO UN VIDEO DE FONDO AL HOME
+//HE PUESTO UN VIDEO DE FONDO AL HOME-----
         videoView = findViewById(R.id.videoView)
         // Configura la URI del video
         val videoUri: Uri =

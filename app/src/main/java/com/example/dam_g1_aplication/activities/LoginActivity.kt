@@ -18,6 +18,9 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+import java.io.File
+import java.util.regex.Pattern
+
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var usernameEditText: EditText
@@ -86,7 +89,26 @@ class LoginActivity : AppCompatActivity() {
                         }
                         Toast.makeText(this@LoginActivity,
                             "Bienvenido", Toast.LENGTH_SHORT).show()
+                        //iniciar intent del activity con el usuario iniciado:
                         val intent = Intent(this@LoginActivity, ProfileActivity::class.java)
+                        //pasar valores al activity: "nombre usuario"
+                        intent.putExtra("usuarionombre", username)
+
+                        //en el xml usuario.xml se mostrara como iniciado sesion para todas las classes...
+                        val file = File(filesDir, "usuario.xml") //obtener ruta configuracion
+                        val defaultContent = """
+                            <?xml version="1.0" encoding="utf-8"?>
+                            <resources>
+                                <user>
+                                    <isLoggedIn>true</isLoggedIn>
+                                    <username>$username</username>
+                                </user>
+                            </resources>
+                        """.trimIndent()
+                            file.writeText(defaultContent)    //crear archivo, sobreescribir
+
+
+                        //lanzar activity con el intent...
                         startActivity(intent)
                         finish()
                     } else { //inicio incorrecto, lanzar mensaje
@@ -103,6 +125,34 @@ class LoginActivity : AppCompatActivity() {
                     "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    //METODO PARA RETORNAR SI HAY UN USUARIO CONECTADO O NO "array[0]"
+    //METODO PARA RETORNAR EL NOMBRE DE USUARIO CONECTADO "array[1]"
+    fun retornarusuarioiniciado(context: Context): Array<String> {
+        val array = arrayOf("false", "false")
+        val file = File(context.filesDir, "usuario.xml")
+
+        if (file.exists()) {
+            val contenido = file.readText()
+            println("Contenido del archivo:\n$contenido") // Para depurar el contenido
+
+            val isLoggedInStart = contenido.indexOf("<isLoggedIn>") + "<isLoggedIn>".length
+            val isLoggedInEnd = contenido.indexOf("</isLoggedIn>")
+            val usernameStart = contenido.indexOf("<username>") + "<username>".length
+            val usernameEnd = contenido.indexOf("</username>")
+
+            if (isLoggedInStart > 0 && isLoggedInEnd > isLoggedInStart &&
+                usernameStart > 0 && usernameEnd > usernameStart) {
+                array[0] = contenido.substring(isLoggedInStart, isLoggedInEnd).trim()
+                array[1] = contenido.substring(usernameStart, usernameEnd).trim()
+            } else {
+                println("No se encontraron las etiquetas necesarias.")
+            }
+        } else {
+            println("El archivo no existe.")
+        }
+        return array
     }
 
 

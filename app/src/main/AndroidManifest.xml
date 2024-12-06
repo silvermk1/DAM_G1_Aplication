@@ -42,5 +42,8 @@
         <activity
             android:name=".activities.AchievementDetailActivity"
             android:exported="false"/>
+        <activity
+            android:name=".activities.ProfileActivityFriend"
+            android:exported="false"/>
     </application>
 </manifest>
