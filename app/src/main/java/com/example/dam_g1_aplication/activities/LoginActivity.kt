@@ -91,8 +91,6 @@ class LoginActivity : AppCompatActivity() {
                             "Bienvenido", Toast.LENGTH_SHORT).show()
                         //iniciar intent del activity con el usuario iniciado:
                         val intent = Intent(this@LoginActivity, ProfileActivity::class.java)
-                        //pasar valores al activity: "nombre usuario"
-                        intent.putExtra("usuarionombre", username)
 
                         //en el xml usuario.xml se mostrara como iniciado sesion para todas las classes...
                         val file = File(filesDir, "usuario.xml") //obtener ruta configuracion
@@ -135,7 +133,6 @@ class LoginActivity : AppCompatActivity() {
 
         if (file.exists()) {
             val contenido = file.readText()
-            println("Contenido del archivo:\n$contenido") // Para depurar el contenido
 
             val isLoggedInStart = contenido.indexOf("<isLoggedIn>") + "<isLoggedIn>".length
             val isLoggedInEnd = contenido.indexOf("</isLoggedIn>")
@@ -147,7 +144,7 @@ class LoginActivity : AppCompatActivity() {
                 array[0] = contenido.substring(isLoggedInStart, isLoggedInEnd).trim()
                 array[1] = contenido.substring(usernameStart, usernameEnd).trim()
             } else {
-                println("No se encontraron las etiquetas necesarias.")
+                println("No se encontraron las etiquetas.")
             }
         } else {
             println("El archivo no existe.")

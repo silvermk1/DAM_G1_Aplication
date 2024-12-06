@@ -45,4 +45,8 @@ interface ApiService {
         @Path("achievementId") achievementId: Long,
         @Path("userId") userId: Long
     ): Call<Void>
+
+    @GET("users")
+    fun getAllUsers(): Call<List<Users>>
+
 }

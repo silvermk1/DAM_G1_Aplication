@@ -102,7 +102,7 @@
             app:layout_constraintVertical_bias="0.037" />
 
         <Button
-            android:id="@+id/ajustes"
+            android:id="@+id/mensaje"
             android:layout_width="42dp"
             android:layout_height="47dp"
             android:background="@android:color/black"
@@ -115,6 +115,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.039" />
+
+        <ListView
+            android:id="@+id/otrosPerfiles"
+
+            android:layout_width="395dp"
+            android:layout_height="538dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.529"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.917" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -131,17 +143,5 @@
         app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/otrosPerfiles"
-        android:layout_width="394dp"
-        android:layout_height="565dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.957"
-
-        app:shapeAppearanceOverlay="@style/radius" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
