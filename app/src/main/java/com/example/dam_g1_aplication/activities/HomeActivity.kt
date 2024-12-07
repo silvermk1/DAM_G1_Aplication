@@ -33,6 +33,7 @@ class HomeActivity : AppCompatActivity() {
                         <user>
                             <isLoggedIn>false</isLoggedIn>
                             <username>false</username>
+                            <iduser>false</iduser>
                         </user>
                     </resources>
                 """.trimIndent()
@@ -44,19 +45,27 @@ class HomeActivity : AppCompatActivity() {
         val misobjetivosbutton: Button = findViewById(R.id.MisObjetivos)
         val homeButton: Button = findViewById(R.id.homeButton)
 
+//-----------!!!MENSAJE PARA LOS PROGRAMADORES - IMPORTANTE!!!
+        //!!!MENSAJE IMPORTANTE PARA MOSTRAR EL INICIO DE SESION!!!--------------------
+        //SI QUEREIS QUE OS MANDE AL INICIO DE SESION PONER FALSE DONDE HAY TRUE:!!
         // Al pulsar el botón de Perfil, si tiene cuenta lo manda a su perfil. Sino, lo manda a iniciar sesión
         profileButton.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            /* condicional de saver si se ha iniciado o no:
-            if (isLoggedIn) {
-                val intent = Intent(this, ProfileActivity::class.java)
-                startActivity(intent)
-            } else {
+            //crear objeto loginactivity para retornar el estado del login
+            var login = LoginActivity()
+            var array = login.retornarusuarioiniciado(this)
+
+            //usuario no iniciado - mandar al login
+            if (array[0] == "false"){
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
-            */
+            //usuario iniciado - mandar a perfil directamente
+            if (array[0] == "true"){
+                val intent = Intent(this, ProfileActivity::class.java)
+                startActivity(intent)
+            }
+
+
 
         }
 

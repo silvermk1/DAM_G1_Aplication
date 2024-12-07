@@ -28,6 +28,9 @@ class ProfileActivity : AppCompatActivity() {
     var usuariobuscadotexto = "false"
     lateinit var listausuarios : ListView
 
+    private lateinit var adapter: ArrayAdapter<String>
+    private val userslist = mutableListOf<String>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +49,9 @@ class ProfileActivity : AppCompatActivity() {
         buscarpersona = findViewById(R.id.buscarusuario)
         usuariobuscadotexto = "false"
         listausuarios = findViewById(R.id.otrosPerfiles)
+
+        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, userslist)
+        listausuarios.adapter = adapter
 
 //AGREGAR LOS DATOS A TODOS LOS ELEMENTOS GRAFICOS
         //1.agregar el nombre de usuario al textview
@@ -79,12 +85,13 @@ class ProfileActivity : AppCompatActivity() {
 
         // Crear cuadro emergente para agregar valor al edittext anterior
         val dialog = AlertDialog.Builder(this)
-            .setTitle("USUARIO")
             .setMessage("¿A quien buscas?:")
             .setView(usuariobuscado) // Añadir el campo de texto al diálogo
-            .setPositiveButton("Aceptar") { dialog, _ ->
+            .setPositiveButton("Buscar") { dialog, _ ->
                 val enteredText = usuariobuscado.text.toString()
                 usuariobuscadotexto = usuariobuscado.text.toString()
+                solicitarusuarioBuscado(usuariobuscadotexto)
+
                 Toast.makeText(this, "Texto ingresado: $enteredText", Toast.LENGTH_SHORT).show()
                 dialog.dismiss() // Cerrar el diálogo
             }
@@ -94,13 +101,49 @@ class ProfileActivity : AppCompatActivity() {
             .create()
 
         dialog.show()
+        //si el usuario buscado texto es null
+        if(usuariobuscadotexto == null){
+            solicitarusuariosAgregarlista()
+        }
+        //si el usuario buscado texto no es null
+        if (usuariobuscadotexto != null){
+            solicitarusuarioBuscado(usuariobuscadotexto)
+        }
     }
 
+//LLENAR EL LISTVIEW CON SOLO EL USUARIO BUSCADO
+    private fun solicitarusuarioBuscado(usuariobuscado: String) {
+        userslist.clear()
+
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
+
+        apiService.getAllUsers().enqueue(object : Callback<List<Users>> {
+            override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
+                if (response.isSuccessful && response.body() != null) {
+                    val users = response.body()!!
+                    val filteredUsers = users.filter { it.username == usuariobuscado }
+
+                    if (filteredUsers.isNotEmpty()) {
+                        userslist.addAll(filteredUsers.map { it.username })
+                    } else {
+                        Toast.makeText(this@ProfileActivity, "No se encontró el usuario", Toast.LENGTH_SHORT).show()
+                    }
+                    adapter.notifyDataSetChanged()
+                } else {
+                    println("Error en la respuesta")
+                }
+            }
+
+            override fun onFailure(call: Call<List<Users>>, t: Throwable) {
+                println("Error en la conexión: ${t.message}")
+            }
+        })
+    }
+
+//LLENAR LISTVIEW CON TODOS LOS USUARIOS
     private fun solicitarusuariosAgregarlista() {
-    //CREAR LISTA PARA AGREGAR LOS NOMBRES DE USUARIOS
-        val userslist = mutableListOf<String>()
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, userslist)
-        listausuarios.adapter = adapter
+        userslist.clear()
 
         //RETORNAR TODOS LOS USUARIOS CON RETROFIT
         // Preparar conexión de Retrofit
@@ -119,7 +162,6 @@ class ProfileActivity : AppCompatActivity() {
                     }
     //ACTUALIZAR DATOS ADAPTADOR Y AGREGAR EL ADAPTER AL LISTVIEW
                     adapter.notifyDataSetChanged()
-                    listausuarios.adapter = adapter
 
                 } else {
                     println("Error en la respuesta")
