@@ -49,13 +49,7 @@ interface ApiService {
     @GET("users")
     fun getAllUsers(): Call<List<Users>>
 
-    //metodo para obtener todos los objetivos de un usuario
-    //@GET("userAchievements/user/{userId}")
-    //fun findByUserId(@Path("userId") userId: Long): Call<List<UserAchievements>>
+    @GET("/userachievements/user/{userId}")
+    fun findUserAchievementsByUserId(@Path("userId") userId: Long): Call<List<UserAchievements>>
 
-    @GET("userAchievements/user/{userId}/achievement/{achievementId}")
-    fun findByUserIdAndAchievementId(
-        @Path("userId") userId: Long,
-        @Path("achievementId") achievementId: Long
-    ): Call<List<UserAchievements>>
 }

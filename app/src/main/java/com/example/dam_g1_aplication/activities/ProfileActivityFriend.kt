@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.dam_g1_aplication.ApiConnection.ApiService
 import com.example.dam_g1_aplication.ApiConnection.RetrofitClient
 import com.example.dam_g1_aplication.R
+import com.example.dam_g1_aplication.dataClasses.Achievements
 import com.example.dam_g1_aplication.dataClasses.UserAchievements
 import retrofit2.Call
 import retrofit2.Callback
@@ -45,10 +46,73 @@ class ProfileActivityFriend : AppCompatActivity() {
             val instanciaDeClaseA = LoginActivity()
             var array = instanciaDeClaseA.retornarusuarioiniciado(this)
             //retornarobjetivosusuarioid(array[2].toLong())
+            prueva2(1)
         }
     }
+    fun prueva2(userId : Long){
+        //preparar conexion retrofit
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
 
+        //retornar los logros segun el usuarioid
+        val callUserAchievementsByUserId = apiService.findUserAchievementsByUserId(userId)
+        callUserAchievementsByUserId.enqueue(object : Callback<List<UserAchievements>> {
+            override fun onResponse(
+                call: Call<List<UserAchievements>>,
+                response: Response<List<UserAchievements>>
+            ) {
+                if (response.isSuccessful) {
+                    val userachievements = response.body()!!
+                    println("AQUI SE MEUSTRAN!!!!(:")
+                    for (achievement in userachievements) {
+                        println("id:" + achievement.id.toString())
+                        println("id:" + achievement.achievementid)
+                    }
+                } else {
+                    println("Error de respuesta: " + response.code())
+                    response.errorBody()?.let { errorBody ->
+                        println("Cuerpo del error: " + errorBody.string())
+                    }
+                    Toast.makeText(this@ProfileActivityFriend, "Error en la respuesta", Toast.LENGTH_SHORT).show()
+                }
+            }
 
+            override fun onFailure(call: Call<List<UserAchievements>>, t: Throwable) {
+                Toast.makeText(this@ProfileActivityFriend, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                println("error2")
+            }
+        })
+
+    }
+    /*
+    fun prueva(userId: Long) {
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
+
+        // Llamar al método para obtener logros por userId
+        val call = apiService.getUserAchievementsByUserId(userId)
+        println("MOSTRAR!------------------")
+        // Ejecutar la llamada de forma asíncrona
+        call.enqueue(object : Callback<List<UserAchievements>> {
+            override fun onResponse(
+                call: Call<List<UserAchievements>>,
+                response: Response<List<UserAchievements>>
+            ) {
+                if (response.isSuccessful) {
+                    val logros = response.body()
+                    println("Logros obtenidos para el usuario $userId: $logros")
+                } else {
+                    // Detallar el error con el código de estado y el cuerpo de error
+                    println("Error al obtener logros: ${response.code()} - ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<List<UserAchievements>>, t: Throwable) {
+                println("Error de red o servidor: ${t.message}")
+            }
+        })
+    }
+*/
 /*
 //METODO PARA BUSCAR TODOS LOS ID DE LOS OBJETIVOS DEL USUARIO
     //ESTE METODO TODAVIA NO FUNCIONA !!!!!! ----NO RETORNA BIEN LOS OBJETIVOS!!!!
