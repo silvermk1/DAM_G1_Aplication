@@ -17,7 +17,7 @@
         app:layout_constraintVertical_bias="0.400" />
 
     <Button
-        android:id="@+id/buttonToCategories"
+        android:id="@+id/categoriesButton"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:text="Categorías"
@@ -38,14 +38,17 @@
         android:layout_weight="0">
 
         <LinearLayout
+            style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_gravity="bottom|center"
             android:orientation="horizontal"
-            android:background="@android:color/holo_blue_light">
+            android:background="@android:color/holo_blue_light"
+            tools:ignore="UselessParent">
 
             <Button
                 android:id="@+id/profileButton"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="125dp"
                 android:layout_height="70dp"
                 android:layout_margin="6dp"
@@ -55,8 +58,10 @@
                 android:text="Perfil"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
             <Button
                 android:id="@+id/homeButton"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="125dp"
                 android:layout_height="70dp"
                 android:layout_margin="6dp"
@@ -65,17 +70,18 @@
                 android:textColor="@android:color/white"
                 android:text="Inicio"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
-                android:id="@+id/MisObjetivos"
+                android:id="@+id/supportButton"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="120dp"
                 android:layout_height="70dp"
                 android:layout_margin="6dp"
                 android:backgroundTint="#4040C0"
                 app:cornerRadius="4dp"
                 android:textColor="@android:color/white"
-                android:text="MisObjetivos"
+                android:text="Soporte"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

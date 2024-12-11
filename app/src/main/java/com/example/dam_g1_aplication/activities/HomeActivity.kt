@@ -15,22 +15,33 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
-        val listButton = findViewById<Button>(R.id.buttonToCategories)
+        val categoriesButton: Button = findViewById(R.id.categoriesButton)
 
-        // INICIO DEL FOOTER
+        categoriesButton.setOnClickListener {
+            val intent = Intent(this, CategoriesActivity::class.java)
+            startActivity(intent)
+        }
+
+        // FOOTER
         val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
 
-        // Si tiene la cuenta iniciada, será true
-        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
         val profileButton: Button = findViewById(R.id.profileButton)
-        val misobjetivosbutton: Button = findViewById(R.id.MisObjetivos)
+        val supportButton: Button = findViewById(R.id.supportButton)
         val homeButton: Button = findViewById(R.id.homeButton)
 
-        // Al pulsar el botón de Perfil, si tiene cuenta lo manda a su perfil. Sino, lo manda a iniciar sesión
-        profileButton.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
+        homeButton.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
-            /* condicional de saver si se ha iniciado o no:
+        }
+
+        supportButton.setOnClickListener {
+            val intent = Intent(this, SupportActivity::class.java)
+            startActivity(intent)
+        }
+
+        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+
+        profileButton.setOnClickListener {
             if (isLoggedIn) {
                 val intent = Intent(this, ProfileActivity::class.java)
                 startActivity(intent)
@@ -38,28 +49,7 @@ class HomeActivity : AppCompatActivity() {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
-            */
-
         }
-
-        //Al pulsar mis objetivos
-        misobjetivosbutton.setOnClickListener{
-
-
-        }
-
-        //te manda a inicio "home, esta misma"
-        homeButton.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-
-        //te manda a ver las categorias
-        listButton.setOnClickListener {
-            val intent = Intent(this, CategoriesActivity::class.java)
-            startActivity(intent)
-        }
-        // FIN DEL FOOTER
 
 //HE PUESTO UN VIDEO DE FONDO AL HOME
         videoView = findViewById(R.id.videoView)

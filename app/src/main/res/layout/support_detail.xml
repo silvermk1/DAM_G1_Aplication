@@ -2,54 +2,68 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="80dp"
         android:background="@android:color/holo_orange_light"
         android:padding="16dp"
-        android:text="Logro"
         android:textAlignment="center"
+        android:textSize="34sp"
+        android:textStyle="bold"
         android:textColor="@android:color/white"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:text="Soporte" />
 
-    <ImageView
-        android:id="@+id/imageView"
+    <TextView
+        android:id="@+id/supportMainTextView"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:layout_margin="8dp"
-        />
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:padding="8dp"
+        android:text="Si tienes algún problema con nuestra aplicación puede contactar con nuestro equipo de soporte o puede contactar con los desarrolladores directamente a nuestros correos personales."
+        android:textAlignment="viewStart"
+        android:textSize="18sp" />
 
     <LinearLayout
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="4dp"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/completeButton"
+            android:id="@+id/queEsButton"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="200dp"
+            android:layout_width="185dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:cornerRadius="12dp"
-            android:backgroundTint="@android:color/holo_red_light"
-            android:text="No Completado"
+            android:backgroundTint="@android:color/holo_blue_light"
+            android:text="¿Que es esta app?"
             android:textColor="@android:color/white" />
 
+        <Button
+            android:id="@+id/contactButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="185dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="@android:color/holo_blue_light"
+            android:text="Contáctanos"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/descriptionTextView"
+        android:id="@+id/supportTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
         android:layout_margin="8dp"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:text=""
+        android:textAlignment="viewStart"
+        android:textSize="18sp" />
 
     <!-- FOOTER -->
     <LinearLayout
