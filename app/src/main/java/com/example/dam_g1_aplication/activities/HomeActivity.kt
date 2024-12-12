@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dam_g1_aplication.R
+import java.io.File
 
 class HomeActivity : AppCompatActivity() {
 
@@ -17,6 +18,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.home_activity)
         val categoriesButton: Button = findViewById(R.id.categoriesButton)
 
+
         categoriesButton.setOnClickListener {
             val intent = Intent(this, CategoriesActivity::class.java)
             startActivity(intent)
@@ -24,7 +26,6 @@ class HomeActivity : AppCompatActivity() {
 
         // FOOTER
         val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
-
         val profileButton: Button = findViewById(R.id.profileButton)
         val supportButton: Button = findViewById(R.id.supportButton)
         val homeButton: Button = findViewById(R.id.homeButton)
@@ -51,7 +52,7 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-//HE PUESTO UN VIDEO DE FONDO AL HOME
+//HE PUESTO UN VIDEO DE FONDO AL HOME-----
         videoView = findViewById(R.id.videoView)
         // Configura la URI del video
         val videoUri: Uri =

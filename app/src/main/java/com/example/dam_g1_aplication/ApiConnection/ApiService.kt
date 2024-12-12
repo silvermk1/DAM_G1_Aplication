@@ -45,4 +45,11 @@ interface ApiService {
         @Path("achievementId") achievementId: Long,
         @Path("userId") userId: Long
     ): Call<Void>
+
+    @GET("users")
+    fun getAllUsers(): Call<List<Users>>
+
+    @GET("/userachievements/user/{userId}")
+    fun findUserAchievementsByUserId(@Path("userId") userId: Long): Call<List<UserAchievements>>
+
 }
