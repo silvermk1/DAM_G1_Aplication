@@ -37,13 +37,14 @@ class AchievementDetailActivity : AppCompatActivity() {
 
         // FOOTER
         val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
-        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
 
         val profileButton: Button = findViewById(R.id.profileButton)
         val supportButton: Button = findViewById(R.id.supportButton)
         val homeButton: Button = findViewById(R.id.homeButton)
         supportButton.setOnClickListener {
         }
+
+        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
 
         profileButton.setOnClickListener {
             if (isLoggedIn) {
@@ -64,7 +65,7 @@ class AchievementDetailActivity : AppCompatActivity() {
         userId = sharedPreferences.getString("user_id", null)
 
         if (userId == null) {
-            Toast.makeText(this, "Error al cargar el logro", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Debes iniciar sesión", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -100,11 +101,13 @@ class AchievementDetailActivity : AppCompatActivity() {
                 }
             })
         } else {
-            // Crear el logro
-            val callCreate = apiService.createUserAchievement(achievementId, userId).enqueue(object : Callback<Void> {
+            apiService.createUserAchievement(achievementId, userId).enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
                         Toast.makeText(this@AchievementDetailActivity, "Logro creado correctamente", Toast.LENGTH_SHORT).show()
+                        isCompleted = true
+                        completeButton.text = "Completado"
+                        completeButton.setBackgroundColor(getColor(android.R.color.holo_green_light))
                     } else {
                         Toast.makeText(this@AchievementDetailActivity, "Error al crear el logro", Toast.LENGTH_SHORT).show()
                     }

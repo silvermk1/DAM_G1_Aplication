@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.dam_g1_aplication"
-    compileSdk = 34
+    compileSdk = 35
 
 
 
@@ -54,11 +54,11 @@ android {
 
 dependencies {
     //retrofit para conectar con la api
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 
     //material components para estilos
-    implementation ("com.google.android.material:material:1.6.0")
+    implementation (libs.material)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

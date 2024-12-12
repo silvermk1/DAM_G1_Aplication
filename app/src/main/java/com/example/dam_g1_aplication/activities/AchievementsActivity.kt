@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dam_g1_aplication.ApiConnection.ApiService
@@ -16,6 +17,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class AchievementsActivity : AppCompatActivity() {
+
+    private lateinit var titleTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +33,10 @@ class AchievementsActivity : AppCompatActivity() {
 
         //Obtiene el category id que se ha pulsado para llegar aquí
         val categoryId = intent.getStringExtra("CATEGORY_ID")?.toInt() ?: return
+        val title = intent.getStringExtra("TITLE")
+
+        titleTextView = findViewById(R.id.titleTextView)
+        titleTextView.text = title
 
         //retornar los logros segun el achievement
         val callAchievementsByCategoryId = apiService.getAchievementsByCategoryId(categoryId)
@@ -84,7 +91,7 @@ class AchievementsActivity : AppCompatActivity() {
                             setBackgroundColor(resources.getColor(android.R.color.holo_orange_dark))
                             setTextColor(resources.getColor(android.R.color.white))
                             setOnClickListener {
-                                navigateToAchievements(achievement.id) //metodo para mandar a los objetivos
+                                navigateToAchievements(achievement) //metodo para mandar a los objetivos
                             }
                         }
 
@@ -107,9 +114,12 @@ class AchievementsActivity : AppCompatActivity() {
         })
     }
 
-    private fun navigateToAchievements(achievementId: String) {
-        val intent = Intent(this, AchievementDetailActivity::class.java)
-        intent.putExtra("ACHIEVEMENT_ID", achievementId)
+    private fun navigateToAchievements(achievement: Achievements) {
+        val intent = Intent(this, AchievementDetailActivity::class.java).apply {
+            putExtra("ACHIEVEMENT_ID", achievement.id)
+            putExtra("TITLE", achievement.title)
+            putExtra("DESCRIPTION", achievement.description)
+        }
         startActivity(intent)
     }
 

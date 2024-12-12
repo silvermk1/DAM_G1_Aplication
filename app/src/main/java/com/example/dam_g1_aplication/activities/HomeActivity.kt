@@ -16,77 +16,41 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
-        val listButton = findViewById<Button>(R.id.buttonToCategories)
+        val categoriesButton: Button = findViewById(R.id.categoriesButton)
 
-        // INICIO DEL FOOTER ---demomento lo cambio por un xml...
-        //val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
 
-        // Si tiene la cuenta iniciada, será true
-        //val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
-        //crear xml para guardar configuraciones, en ella el usuario iniciado!:
-        val file = File(filesDir, "usuario.xml") //obtener ruta configuracion
-
-        if (!file.exists()) {
-            val defaultContent = """
-                    <?xml version="1.0" encoding="utf-8"?>
-                    <resources>
-                        <user>
-                            <isLoggedIn>false</isLoggedIn>
-                            <username>false</username>
-                            <iduser>false</iduser>
-                        </user>
-                    </resources>
-                """.trimIndent()
-            file.writeText(defaultContent)    //crear archivo si no existe
+        categoriesButton.setOnClickListener {
+            val intent = Intent(this, CategoriesActivity::class.java)
+            startActivity(intent)
         }
 
-
+        // FOOTER
+        val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
         val profileButton: Button = findViewById(R.id.profileButton)
-        val misobjetivosbutton: Button = findViewById(R.id.MisObjetivos)
+        val supportButton: Button = findViewById(R.id.supportButton)
         val homeButton: Button = findViewById(R.id.homeButton)
 
-//-----------!!!MENSAJE PARA LOS PROGRAMADORES - IMPORTANTE!!!
-        //!!!MENSAJE IMPORTANTE PARA MOSTRAR EL INICIO DE SESION!!!--------------------
-        //SI QUEREIS QUE OS MANDE AL INICIO DE SESION PONER FALSE DONDE HAY TRUE:!!
-        // Al pulsar el botón de Perfil, si tiene cuenta lo manda a su perfil. Sino, lo manda a iniciar sesión
-        profileButton.setOnClickListener {
-            //crear objeto loginactivity para retornar el estado del login
-            var login = LoginActivity()
-            var array = login.retornarusuarioiniciado(this)
-
-            //usuario no iniciado - mandar al login
-            if (array[0] == "false"){
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-            }
-            //usuario iniciado - mandar a perfil directamente
-            if (array[0] == "true"){
-                val intent = Intent(this, ProfileActivity::class.java)
-                startActivity(intent)
-            }
-
-
-
-        }
-
-        //Al pulsar mis objetivos
-        misobjetivosbutton.setOnClickListener{
-
-
-        }
-
-        //te manda a inicio "home, esta misma"
         homeButton.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
 
-        //te manda a ver las categorias
-        listButton.setOnClickListener {
-            val intent = Intent(this, CategoriesActivity::class.java)
+        supportButton.setOnClickListener {
+            val intent = Intent(this, SupportActivity::class.java)
             startActivity(intent)
         }
-        // FIN DEL FOOTER
+
+        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+
+        profileButton.setOnClickListener {
+            if (isLoggedIn) {
+                val intent = Intent(this, ProfileActivity::class.java)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        }
 
 //HE PUESTO UN VIDEO DE FONDO AL HOME-----
         videoView = findViewById(R.id.videoView)

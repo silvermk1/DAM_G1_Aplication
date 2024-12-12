@@ -1,15 +1,12 @@
 package com.example.dam_g1_aplication.activities
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AlertDialog
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dam_g1_aplication.ApiConnection.ApiService
@@ -23,58 +20,57 @@ import retrofit2.Response
 
 class ProfileActivity : AppCompatActivity() {
 
-    lateinit var textousuario: TextView
-    lateinit var buscarpersona : Button
-    var usuariobuscadotexto = "false"
-    lateinit var listausuarios : ListView
-
-    private lateinit var adapter: ArrayAdapter<String>
-    private val userslist = mutableListOf<String>()
-
+    private lateinit var usernameTextView: TextView
+    private lateinit var mailTextView: TextView
+    private lateinit var biographyTextMultiLine: EditText
+    private lateinit var saveButton: Button
+    private lateinit var username: String
+    private lateinit var mail: String
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.profile_activity)
 
-//RECIBIR LOS PARAMETROS DEL USUARIO INICIADO QUE CONTIENE EL XML DE CONFIGURACIONES---
-        //recibir el nombre de usuario
-        val login = LoginActivity()
-        val array = login.retornarusuarioiniciado(this)
-        val usuarionombre = array[1]
+        sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        sharedPreferences.getString("userId", null)
 
-//INSTANCIAR LOS ATRIBUTOS GRAFICOS Y TEXTUALES---
-        //instanciar el textview con el nombre usuario
-        textousuario = findViewById(R.id.usuario)
-        buscarpersona = findViewById(R.id.buscarusuario)
-        usuariobuscadotexto = "false"
-        listausuarios = findViewById(R.id.otrosPerfiles)
+        username = sharedPreferences.getString("username", null).toString()
+        mail = sharedPreferences.getString("mail", null).toString()
 
-        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, userslist)
-        listausuarios.adapter = adapter
+        usernameTextView = findViewById(R.id.usernameTextView)
+        mailTextView = findViewById(R.id.mailTextView)
+        biographyTextMultiLine = findViewById(R.id.biographyTextMultiLine)
+        saveButton = findViewById(R.id.saveButton)
 
-//AGREGAR LOS DATOS A TODOS LOS ELEMENTOS GRAFICOS
-        //1.agregar el nombre de usuario al textview
-        textousuario.setText(usuarionombre)
+        usernameTextView.text = username
+        mailTextView.text = mail
 
-        //2.agregar usuarios al listview
-        solicitarusuariosAgregarlista()
-
-//CLICKS LISTENERS --
-        //ingresar persona que buscas al clickear boton
-        buscarpersona.setOnClickListener {
-            busqueda()
-        }
-
-        //clicklistener para mostrar perfil de un usuario ajeno:
-        //crear intent que te dirija acitivityFriend
-        listausuarios.setOnItemClickListener { parent, view, position, id ->
-            val posicionclickeada = parent.getItemAtPosition(position) as String
-            val intent = Intent(this, ProfileActivityFriend::class.java)
-            intent.putExtra("nombreusuario", posicionclickeada)
+        // FOOTER
+        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+        val profileButton: Button = findViewById(R.id.profileButton)
+        val supportButton: Button = findViewById(R.id.supportButton)
+        val homeButton: Button = findViewById(R.id.homeButton)
+        supportButton.setOnClickListener {
+            val intent = Intent(this, SupportActivity::class.java)
             startActivity(intent)
         }
 
+        profileButton.setOnClickListener {
+            if (isLoggedIn) {
+                val intent = Intent(this, ProfileActivity::class.java)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+        homeButton.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+        // FOOTER
     }
 
 //METODO PARA INGRESAR EL NOMBRE DE USUARIO QUE BUSCAS, SE ABRE UNA VENTANA EMERGENTE--

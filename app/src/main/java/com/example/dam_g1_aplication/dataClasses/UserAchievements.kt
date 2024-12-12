@@ -4,12 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 //OBJETIVOS DE USUARIO
 data class UserAchievements(
-    @SerializedName("id") val id: Long,
-    @SerializedName("achievementid") val achievementid: Long,
-    @SerializedName("userid") val userid: Long,
-    @SerializedName("likes") val likes: Int,
-    @SerializedName("dislikes") val dislikes: Int,
-    @SerializedName("compliment") val compliment: Char
-//he sacado la columna completationdate, ya que no esta en la tabla!!!!
-
+    @SerializedName("id") val id: String,
+    @SerializedName("achievementid") val achievementid: String,
+    @SerializedName("userid") val userid: String,
+    @SerializedName("likes") val likes: String,
+    @SerializedName("dislikes") val dislikes: String,
 )

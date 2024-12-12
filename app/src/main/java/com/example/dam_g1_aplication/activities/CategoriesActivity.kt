@@ -70,7 +70,7 @@ class CategoriesActivity : AppCompatActivity() {
                                 ).show()
                             }
                         }
-                        //boton de cada categoria = mandar a los objetivos de esta
+                        //boton de cada categoria = mandar a los logros de esta
                         val categoryButton = Button(this@CategoriesActivity).apply {
                             layoutParams = LinearLayout.LayoutParams(
                                 0,
@@ -81,7 +81,7 @@ class CategoriesActivity : AppCompatActivity() {
                             setBackgroundColor(resources.getColor(android.R.color.holo_orange_dark))
                             setTextColor(resources.getColor(android.R.color.white))
                             setOnClickListener {
-                                navigateToAchievements(category.id) //metodo para mandar a los objetivos
+                                navigateToAchievements(category) //metodo para mandar a los objetivos
                             }
                         }
 
@@ -104,9 +104,11 @@ class CategoriesActivity : AppCompatActivity() {
         })
     }
 
-    private fun navigateToAchievements(categoryId: String) {
-        val intent = Intent(this, AchievementsActivity::class.java)
-        intent.putExtra("CATEGORY_ID", categoryId)
+    private fun navigateToAchievements(category: Categories) {
+        val intent = Intent(this, AchievementsActivity::class.java).apply {
+            putExtra("CATEGORY_ID", category.id)
+            putExtra("TITLE", category.name)
+        }
         startActivity(intent)
     }
 

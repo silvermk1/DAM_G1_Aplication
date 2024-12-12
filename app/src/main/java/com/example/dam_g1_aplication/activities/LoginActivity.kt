@@ -15,8 +15,6 @@ import com.example.dam_g1_aplication.R
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 import java.io.File
 import java.util.regex.Pattern
@@ -76,9 +74,9 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
                 if (response.isSuccessful && response.body() != null) {
                     val users = response.body()!!
-                    //comrovar inicio sesion
+                    //comprovar inicio sesion
                     val user = users.find { it.username == username && it.password == password }
-                    if (user != null) { //inicio correcto, mandar al activity adecuado
+                    if (user != null) { //inicio correcto
                         with(sharedPreferences.edit()) {
                             putBoolean("isLoggedIn", true)
                             putString("username", username)

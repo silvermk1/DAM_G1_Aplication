@@ -1,14 +1,34 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@android:color/holo_orange_light"
+        android:padding="16dp"
+        android:textAlignment="center"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:text="¡Bienvenido!" />
+
+    <LinearLayout style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:orientation="horizontal"
+        xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    </LinearLayout>
 
     <VideoView
         android:id="@+id/videoView"
-        android:layout_width="260dp"
-        android:layout_height="500dp"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
         android:layout_gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,36 +36,43 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.400" />
 
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:orientation="horizontal" >
+
     <Button
-        android:id="@+id/buttonToCategories"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:text="Categorías"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/categoriesButton"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:backgroundTint="#FF8000"
-        app:cornerRadius="4dp"
-        app:layout_constraintVertical_bias="0.850" />
+        android:text="Categorías"
+        app:cornerRadius="12dp"
+        android:textColor="@android:color/white" />
+    </LinearLayout>
 
     <!-- INICIO FOOTER -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_weight="0">
+        android:layout_weight="0" >
 
         <LinearLayout
+            style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_gravity="bottom|center"
             android:orientation="horizontal"
-            android:background="@android:color/holo_blue_light">
+            android:background="@android:color/holo_blue_light" >
 
             <Button
                 android:id="@+id/profileButton"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="125dp"
                 android:layout_height="70dp"
                 android:layout_margin="6dp"
@@ -55,8 +82,10 @@
                 android:text="Perfil"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
             <Button
                 android:id="@+id/homeButton"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="125dp"
                 android:layout_height="70dp"
                 android:layout_margin="6dp"
@@ -65,23 +94,23 @@
                 android:textColor="@android:color/white"
                 android:text="Inicio"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
-                android:id="@+id/MisObjetivos"
+                android:id="@+id/supportButton"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="120dp"
                 android:layout_height="70dp"
                 android:layout_margin="6dp"
                 android:backgroundTint="#4040C0"
                 app:cornerRadius="4dp"
                 android:textColor="@android:color/white"
-                android:text="MisObjetivos"
+                android:text="Soporte"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
-
         </LinearLayout>
+
     </LinearLayout>
     <!-- FIN FOOTER -->
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
