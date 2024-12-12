@@ -59,7 +59,7 @@ class SupportActivity : AppCompatActivity() {
             if (contactPressed) {
                 toggleContactStatus()
             }
-            supportTextView.text = "Esta aplicación contiene un sinfín de logros de todo tipo para completar en la vida real, desde logros más cotidianos y generales a otros más específicos y concretos. ¡Es entretenimiento en estado puro, sobretodo para entretenerse en tiempos muertos!"
+            supportTextView.text = " Roc Rovira \n roviraroc@gmail.com \n\n Marc Ramírez \n marcramirezmoya@gmail.com \n\n Miguel Velasco \n perezvelasco.miguel@gmail.com"
             queEsButton.setBackgroundColor(getColor(android.R.color.holo_green_light))
         } else {
             supportTextView.text = ""

@@ -43,16 +43,16 @@
         android:layout_margin="4dp"
         android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/categoriesButton"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:backgroundTint="#FF8000"
-        android:text="Categorías"
-        app:cornerRadius="12dp"
-        android:textColor="@android:color/white" />
+        <Button
+            android:id="@+id/categoriesButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="#FF8000"
+            android:text="Categorías"
+            app:cornerRadius="12dp"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
     <!-- INICIO FOOTER -->
