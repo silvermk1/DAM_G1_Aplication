@@ -101,7 +101,6 @@ class AchievementDetailActivity : AppCompatActivity() {
                 }
             })
         } else {
-            // Crear el logro
             apiService.createUserAchievement(achievementId, userId).enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {

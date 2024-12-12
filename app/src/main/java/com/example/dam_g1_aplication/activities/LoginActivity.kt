@@ -74,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
                     val users = response.body()!!
                     //comprovar inicio sesion
                     val user = users.find { it.username == username && it.password == password }
-                    if (user != null) { //inicio correcto, mandar al activity adecuado
+                    if (user != null) { //inicio correcto
                         with(sharedPreferences.edit()) {
                             putBoolean("isLoggedIn", true)
                             putString("username", username)

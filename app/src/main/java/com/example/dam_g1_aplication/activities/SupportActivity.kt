@@ -73,7 +73,7 @@ class SupportActivity : AppCompatActivity() {
             if (queEsPressed) {
                 toggleQueEsStatus()
             }
-            supportTextView.text = " Roc Rovira \n roviraroc@gmail.com \n\n Marc Ramírez \n(marcramirezmoya@gmail.com) \n\nMiguel Velasco \n(perezvelasco.miguel@gmail.com)"
+            supportTextView.text = " Roc Rovira \n roviraroc@gmail.com \n\n Marc Ramírez \n marcramirezmoya@gmail.com \n\n Miguel Velasco \n perezvelasco.miguel@gmail.com"
             contactButton.setBackgroundColor(getColor(android.R.color.holo_green_light))
         } else {
             supportTextView.text = ""
