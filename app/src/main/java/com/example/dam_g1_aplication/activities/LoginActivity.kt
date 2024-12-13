@@ -78,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
                     val user = users.find { it.username == username && it.password == password }
                     if (user != null) { //inicio correcto
                         with(sharedPreferences.edit()) {
-                            putBoolean("isLoggedIn", true)
+                            putBoolean("isLoggedIn", true)  //!RECORDAD = HACER BOTON PARA CERRAR SESION
                             putString("username", username)
                             putString("user_id", user.id)
                             putString("mail", user.mail)
@@ -89,21 +89,6 @@ class LoginActivity : AppCompatActivity() {
                             "Bienvenido", Toast.LENGTH_SHORT).show()
                         //iniciar intent del activity con el usuario iniciado:
                         val intent = Intent(this@LoginActivity, ProfileActivity::class.java)
-
-                        //en el xml usuario.xml se mostrara como iniciado sesion para todas las classes...
-                        val file = File(filesDir, "usuario.xml") //obtener ruta configuracion
-                        val defaultContent = """
-                            <?xml version="1.0" encoding="utf-8"?>
-                            <resources>
-                                <user>
-                                    <isLoggedIn>true</isLoggedIn>
-                                    <username>$username</username>
-                                    <iduser>$iduser</iduser>
-                                </user>
-                            </resources>
-                        """.trimIndent()
-                            file.writeText(defaultContent)    //crear archivo, sobreescribir
-
 
                         //lanzar activity con el intent...
                         startActivity(intent)
@@ -126,6 +111,8 @@ class LoginActivity : AppCompatActivity() {
 
     //METODO PARA RETORNAR SI HAY UN USUARIO CONECTADO O NO "array[0]"
     //METODO PARA RETORNAR EL NOMBRE DE USUARIO CONECTADO "array[1]"
+    //"EMOS CAMBIADO ESTO POR EL SHARD PREFERENCES"
+    /*
     fun retornarusuarioiniciado(context: Context): Array<String> {
         val array = arrayOf("false", "false", "false")
         val file = File(context.filesDir, "usuario.xml")
@@ -154,6 +141,6 @@ class LoginActivity : AppCompatActivity() {
         }
         return array
     }
-
+    */
 
 }

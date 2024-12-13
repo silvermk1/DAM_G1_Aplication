@@ -17,6 +17,8 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var username: String
     private lateinit var mail: String
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var bottoncerrarsesion : Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile_activity)
@@ -28,14 +30,20 @@ class ProfileActivity : AppCompatActivity() {
         usernameTextView = findViewById(R.id.usernameTextView)
         mailTextView = findViewById(R.id.mailTextView)
         biographyTextMultiLine = findViewById(R.id.biographyTextMultiLine)
+        bottoncerrarsesion = findViewById(R.id.cerrarsesion)
         saveButton = findViewById(R.id.saveButton)
         usernameTextView.text = username
         mailTextView.text = mail
+
+
+
         // FOOTER
         val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
         val profileButton: Button = findViewById(R.id.profileButton)
         val supportButton: Button = findViewById(R.id.supportButton)
         val homeButton: Button = findViewById(R.id.homeButton)
+
+
         supportButton.setOnClickListener {
             val intent = Intent(this, SupportActivity::class.java)
             startActivity(intent)
@@ -52,6 +60,19 @@ class ProfileActivity : AppCompatActivity() {
         homeButton.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
+        }
+        bottoncerrarsesion.setOnClickListener{
+            with(sharedPreferences.edit()) {
+                putBoolean("isLoggedIn", false)
+                remove("username")
+                remove("user_id")
+                remove("mail")
+                apply()
+
+            }
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+
         }
         // FOOTER
     }

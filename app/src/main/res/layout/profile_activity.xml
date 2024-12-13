@@ -89,6 +89,7 @@
             android:text="Enviar Solicitud"
             android:textColor="@android:color/white" />
 
+
     </LinearLayout>
 
     <LinearLayout
@@ -106,7 +107,7 @@
             android:layout_margin="8dp"
             app:cornerRadius="8dp"
             android:backgroundTint="#FF8000"
-            android:text="Lista de Amigos"
+            android:text="Amigos"
             android:textColor="@android:color/white" />
 
         <Button
@@ -119,6 +120,15 @@
             android:text="Guardar cambios"
             android:textColor="@android:color/white" />
 
+        <Button
+            android:id="@+id/cerrarsesion"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="8dp"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:text="Cerrar sesión"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center" />
 
     </LinearLayout>
 

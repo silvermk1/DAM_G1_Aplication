@@ -25,13 +25,29 @@ class ProfileActivityFriend : AppCompatActivity() {
     private lateinit var textousuario: TextView
     private lateinit var compartir : Button
 
+    /*
+         with(sharedPreferences.edit()) {
+            putBoolean("isLoggedIn", true)  //!RECORDAD = HACER BOTON PARA CERRAR SESION
+            putString("username", username)
+            putString("user_id", user.id)
+            putString("mail", user.mail)
+            apply()
+        }
+
+            sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        sharedPreferences.getString("userId", null)
+        username = sharedPreferences.getString("username", null).toString()
+        mail = sharedPreferences.getString("mail", null).toString()
+     */
+
+//Atributos-datos--
+    //nombre usuario
+    private lateinit var usuario : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.profile_activity_friend)
-
-//recoger el nombre de usuario con getString
-        val usuario = intent.getStringExtra("nombreusuario")
 
 //Declarar atributos con sus respectivos objetos
         textousuario = findViewById(R.id.usuario)
@@ -44,7 +60,7 @@ class ProfileActivityFriend : AppCompatActivity() {
 //EN ESTE CUADRO EMERJENTE SALDRAN TODOS TUS OBJETIVOS, TENDRAS QUE SELECCIONAR UNO PARA COMPARTIR
         compartir.setOnClickListener(){
             val instanciaDeClaseA = LoginActivity()
-            var array = instanciaDeClaseA.retornarusuarioiniciado(this)
+            //var array = instanciaDeClaseA.retornarusuarioiniciado(this)
             //retornarobjetivosusuarioid(array[2].toLong())
             prueva2(1)
         }
