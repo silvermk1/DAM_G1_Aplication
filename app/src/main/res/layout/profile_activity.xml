@@ -155,6 +155,7 @@
                 app:cornerRadius="8dp"
                 android:textColor="@android:color/white"
                 android:text="Perfil" />
+
             <Button
                 android:id="@+id/homeButton"
                 android:layout_width="125dp"

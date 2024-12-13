@@ -64,6 +64,5 @@ class HomeActivity : AppCompatActivity() {
             mp.isLooping = true // Hacer que el video se repita
             videoView.start() // Iniciar la reproducción
         }
-
     }
 }

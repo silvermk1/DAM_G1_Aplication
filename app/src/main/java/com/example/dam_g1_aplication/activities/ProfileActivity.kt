@@ -18,6 +18,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var mail: String
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var bottoncerrarsesion : Button
+    private lateinit var botonamigos : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,7 @@ class ProfileActivity : AppCompatActivity() {
         biographyTextMultiLine = findViewById(R.id.biographyTextMultiLine)
         bottoncerrarsesion = findViewById(R.id.cerrarsesion)
         saveButton = findViewById(R.id.saveButton)
+        botonamigos = findViewById(R.id.friendListButton)
         usernameTextView.text = username
         mailTextView.text = mail
 
@@ -61,6 +63,7 @@ class ProfileActivity : AppCompatActivity() {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
+        //CERRAR SESION AL PRESIONAR EL BOTON
         bottoncerrarsesion.setOnClickListener{
             with(sharedPreferences.edit()) {
                 putBoolean("isLoggedIn", false)
@@ -74,6 +77,12 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(intent)
 
         }
+        //MANDAR AL ACTIVITY FRIENDS
+        botonamigos.setOnClickListener{
+            val intent = Intent(this, FriendsActivity::class.java)
+            startActivity(intent)
+        }
+
         // FOOTER
     }
 }

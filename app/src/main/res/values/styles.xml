@@ -17,5 +17,86 @@
 
 
 
+        <!-- Estilos de los elementos de la lista (para amigos y solicitudes) -->
+        <style name="FriendCardStyle">
+            <item name="android:layout_width">match_parent</item>
+            <item name="android:layout_height">wrap_content</item>
+            <item name="android:layout_marginBottom">16dp</item>
 
-</resources>
+            <item name="android:backgroundTint">#FFFFFF</item>
+        </style>
+
+        <style name="FriendItemStyle">
+            <item name="android:orientation">horizontal</item>
+            <item name="android:layout_width">match_parent</item>
+            <item name="android:layout_height">wrap_content</item>
+            <item name="android:padding">16dp</item>
+            <item name="android:gravity">center_vertical</item>
+        </style>
+
+        <style name="FriendImageStyle">
+            <item name="android:layout_width">60dp</item>
+            <item name="android:layout_height">60dp</item>
+            <item name="android:layout_marginEnd">16dp</item>
+            <item name="android:backgroundTint">#6200EE</item>
+            <item name="android:contentDescription">Perfil de amigo</item>
+            <item name="android:scaleType">centerCrop</item>
+        </style>
+
+        <style name="FriendNameStyle">
+            <item name="android:layout_width">0dp</item>
+            <item name="android:layout_height">wrap_content</item>
+            <item name="android:layout_weight">1</item>
+            <item name="android:textSize">16sp</item>
+            <item name="android:textColor">#000000</item>
+            <item name="android:textStyle">bold</item>
+        </style>
+
+        <style name="ActionButtonStyle">
+            <item name="android:textColor">#FFFFFF</item>
+            <item name="android:backgroundTint">#6200EE</item>
+        </style>
+
+        <style name="RequestCardStyle">
+            <item name="android:layout_width">match_parent</item>
+            <item name="android:layout_height">wrap_content</item>
+            <item name="android:layout_marginBottom">16dp</item>
+
+            <item name="android:backgroundTint">#FFFFFF</item>
+        </style>
+
+        <style name="RequestItemStyle">
+            <item name="android:orientation">horizontal</item>
+            <item name="android:layout_width">match_parent</item>
+            <item name="android:layout_height">wrap_content</item>
+            <item name="android:padding">16dp</item>
+            <item name="android:gravity">center_vertical</item>
+        </style>
+
+        <style name="RequestImageStyle">
+            <item name="android:layout_width">60dp</item>
+            <item name="android:layout_height">60dp</item>
+            <item name="android:layout_marginEnd">16dp</item>
+            <item name="android:backgroundTint">#6200EE</item>
+            <item name="android:contentDescription">Perfil de solicitud pendiente</item>
+            <item name="android:scaleType">centerCrop</item>
+        </style>
+
+        <style name="RequestNameStyle">
+            <item name="android:layout_width">0dp</item>
+            <item name="android:layout_height">wrap_content</item>
+            <item name="android:layout_weight">1</item>
+            <item name="android:textSize">16sp</item>
+            <item name="android:textColor">#000000</item>
+            <item name="android:textStyle">bold</item>
+        </style>
+
+        <style name="ActionButtonRequestStyle">
+            <item name="android:textColor">#FFFFFF</item>
+            <item name="android:backgroundTint">#6200EE</item>
+        </style>
+
+    </resources>
+
+
+

@@ -2,6 +2,8 @@ package com.example.dam_g1_aplication.ApiConnection
 
 import com.example.dam_g1_aplication.dataClasses.Achievements
 import com.example.dam_g1_aplication.dataClasses.Categories
+import com.example.dam_g1_aplication.dataClasses.FriendRequests
+import com.example.dam_g1_aplication.dataClasses.Friendships
 import com.example.dam_g1_aplication.dataClasses.Users
 import com.example.dam_g1_aplication.dataClasses.UserAchievements
 import retrofit2.Call
@@ -51,5 +53,11 @@ interface ApiService {
 
     @GET("/userachievements/user/{userId}")
     fun findUserAchievementsByUserId(@Path("userId") userId: Long): Call<List<UserAchievements>>
+
+    @GET("friendships")
+    fun getFriendships(): Call<List<Friendships>>
+
+    @GET("friendrequests")
+    fun getFriendRequests(): Call<List<FriendRequests>>
 
 }

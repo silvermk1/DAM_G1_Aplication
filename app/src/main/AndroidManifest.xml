@@ -48,5 +48,8 @@
         <activity
             android:name=".activities.ProfileActivityFriend"
             android:exported="false"/>
+        <activity
+            android:name=".activities.FriendsActivity"
+            android:exported="false"/>
     </application>
 </manifest>
