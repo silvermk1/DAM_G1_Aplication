@@ -25,7 +25,9 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.profile_activity)
 
         sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
-        sharedPreferences.getString("userId", null)
+        sharedPreferences.getString("user_id", null)
+        println("idpreferences debug" +         sharedPreferences.getString("user_id", null)
+        )
         username = sharedPreferences.getString("username", null).toString()
         mail = sharedPreferences.getString("mail", null).toString()
         usernameTextView = findViewById(R.id.usernameTextView)

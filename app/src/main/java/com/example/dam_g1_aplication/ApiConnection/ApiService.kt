@@ -51,13 +51,20 @@ interface ApiService {
     @GET("users")
     fun getAllUsers(): Call<List<Users>>
 
-    @GET("/userachievements/user/{userId}")
+    @GET("/userachievement/{userId}")   //FUNCIONA?
     fun findUserAchievementsByUserId(@Path("userId") userId: Long): Call<List<UserAchievements>>
 
     @GET("friendships")
     fun getFriendships(): Call<List<Friendships>>
 
-    @GET("friendrequests")
+    @GET("/friendrequests")     //NO FUNCIONA
     fun getFriendRequests(): Call<List<FriendRequests>>
+
+    @GET("/Achievements")
+    fun getAchievements(): Call<List<Achievements>>
+
+    @GET("users/{id}")       //FUNCIONA?
+    fun getUserById(@Path("id") id: Long): Call<Users>
+
 
 }

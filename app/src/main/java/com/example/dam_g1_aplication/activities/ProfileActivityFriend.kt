@@ -14,6 +14,7 @@ import com.example.dam_g1_aplication.ApiConnection.ApiService
 import com.example.dam_g1_aplication.ApiConnection.RetrofitClient
 import com.example.dam_g1_aplication.R
 import com.example.dam_g1_aplication.dataClasses.Achievements
+import com.example.dam_g1_aplication.dataClasses.Friendships
 import com.example.dam_g1_aplication.dataClasses.UserAchievements
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,21 +25,7 @@ class ProfileActivityFriend : AppCompatActivity() {
 
     private lateinit var textousuario: TextView
     private lateinit var compartir : Button
-
-    /*
-         with(sharedPreferences.edit()) {
-            putBoolean("isLoggedIn", true)  //!RECORDAD = HACER BOTON PARA CERRAR SESION
-            putString("username", username)
-            putString("user_id", user.id)
-            putString("mail", user.mail)
-            apply()
-        }
-
-            sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
-        sharedPreferences.getString("userId", null)
-        username = sharedPreferences.getString("username", null).toString()
-        mail = sharedPreferences.getString("mail", null).toString()
-     */
+    private lateinit var listaobjetivos : ListView
 
 //Atributos-datos--
     //nombre usuario
@@ -53,36 +40,56 @@ class ProfileActivityFriend : AppCompatActivity() {
         textousuario = findViewById(R.id.usuario)
         compartir = findViewById(R.id.compartirlogro)
 
-        //agregar nombreusuario al list view
+        //agregar nombreusuario al text view
+        var usuario = intent.getStringExtra("nombreusuario")
         textousuario.setText(usuario)
+
+        //instanciar list view
+        listaobjetivos = findViewById(R.id.listaobjetivos)
+        val objetivosadapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ArrayList())
+        listaobjetivos.adapter = objetivosadapter
+
 
 //CREAR CLICKLISTENER PARA QUE AL PRESIONAR COMPARTIR OBJETIVOS SALGA UN CUADRO EMERJENTE,
 //EN ESTE CUADRO EMERJENTE SALDRAN TODOS TUS OBJETIVOS, TENDRAS QUE SELECCIONAR UNO PARA COMPARTIR
+//ESTA FUNCION AUN NO ESTA DISPONIBLE
         compartir.setOnClickListener(){
             val instanciaDeClaseA = LoginActivity()
             //var array = instanciaDeClaseA.retornarusuarioiniciado(this)
             //retornarobjetivosusuarioid(array[2].toLong())
-            prueva2(1)
         }
+
+        retornarobjetivosusuarioid(1)
+
     }
-    fun prueva2(userId : Long){
+//METODO PARA BUSCAR LOS OBJETIVOS DE UN DETERMINADO USUARIOID
+    fun retornarobjetivosusuarioid(userId : Long){
         //preparar conexion retrofit
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
 
-        //retornar los logros segun el usuarioid
-        val callUserAchievementsByUserId = apiService.findUserAchievementsByUserId(userId)
-        callUserAchievementsByUserId.enqueue(object : Callback<List<UserAchievements>> {
+        //lista para guardar los id de lo objetivos del usuario
+        val ids: MutableList<Long> = mutableListOf()
+
+    //retornar los logros segun el usuarioid
+        val calluser = apiService.findUserAchievementsByUserId(1)
+        calluser.enqueue(object : Callback<List<UserAchievements>> {
             override fun onResponse(
                 call: Call<List<UserAchievements>>,
                 response: Response<List<UserAchievements>>
             ) {
                 if (response.isSuccessful) {
                     val userachievements = response.body()!!
-                    println("AQUI SE MEUSTRAN!!!!(:")
+                    println("AQUI SE MEUSTRAN!!!!(_:")
                     for (achievement in userachievements) {
-                        println("id:" + achievement.id.toString())
-                        println("id:" + achievement.achievementid)
+                        //println("id:" + achievement.id.toString())
+                        //println("id:" + achievement.achievementid.toString())
+
+                        //guardar el id en la lista ids
+                        ids.add(achievement.achievementid)
+
+                        //enviar la lista al metodo que transforma los ids a nombre objetivos
+                        transformobjetivosidanombre(ids)
                     }
                 } else {
                     println("Error de respuesta: " + response.code())
@@ -100,84 +107,50 @@ class ProfileActivityFriend : AppCompatActivity() {
         })
 
     }
-    /*
-    fun prueva(userId: Long) {
-        val retrofit = RetrofitClient.getClient()
-        val apiService = retrofit.create(ApiService::class.java)
 
-        // Llamar al método para obtener logros por userId
-        val call = apiService.getUserAchievementsByUserId(userId)
-        println("MOSTRAR!------------------")
-        // Ejecutar la llamada de forma asíncrona
-        call.enqueue(object : Callback<List<UserAchievements>> {
-            override fun onResponse(
-                call: Call<List<UserAchievements>>,
-                response: Response<List<UserAchievements>>
-            ) {
-                if (response.isSuccessful) {
-                    val logros = response.body()
-                    println("Logros obtenidos para el usuario $userId: $logros")
-                } else {
-                    // Detallar el error con el código de estado y el cuerpo de error
-                    println("Error al obtener logros: ${response.code()} - ${response.errorBody()?.string()}")
-                }
-            }
-
-            override fun onFailure(call: Call<List<UserAchievements>>, t: Throwable) {
-                println("Error de red o servidor: ${t.message}")
-            }
-        })
-    }
-*/
-/*
-//METODO PARA BUSCAR TODOS LOS ID DE LOS OBJETIVOS DEL USUARIO
-    //ESTE METODO TODAVIA NO FUNCIONA !!!!!! ----NO RETORNA BIEN LOS OBJETIVOS!!!!
-private fun retornarobjetivosusuarioid(userid: Long) {
-    println("userid:!!!-.----")
-    println(userid)
-    val idlogros: MutableList<String> = mutableListOf()
-
-    // Iniciar servicio API
+//METODO PARA TRANSFORMAR LISTA OBJETIVOSID A LISTA NOMBREOBJETIVOS //NO FUNCIONA!!!
+    fun transformobjetivosidanombre(objetivosid : List<Long>){
+    //conectar retrofit
     val retrofit = RetrofitClient.getClient()
     val apiService = retrofit.create(ApiService::class.java)
 
-    // Realizar la llamada asíncrona a la API
-    apiService.findByUserId(userid).enqueue(object : Callback<List<UserAchievements>> {
-        override fun onResponse(
-            call: Call<List<UserAchievements>>,
-            response: Response<List<UserAchievements>>
-        ) {
-            if (response.isSuccessful && response.body() != null) {
-                val userAchievements = response.body()!!
-                println("imprimir lista:!----")
-                println(userAchievements)
-                // Agregar los id a la lista
-                if (userAchievements.isNotEmpty()) {
-                    for (achievement in userAchievements) {
-                        idlogros.add(achievement.achievementid.toString())
+    val nombres: MutableList<String> = mutableListOf()
+
+    //hazer llamada = retornar ids de los amgios
+    val callFriendships = apiService.getAchievements()
+    callFriendships.enqueue(object : Callback<List<Achievements>> {
+        override fun onResponse(call: Call<List<Achievements>>, response: Response<List<Achievements>>) {
+            if (response.isSuccessful) {
+                val objetivos = response.body()!!
+                // Obtener IDs de los amigos
+                for (objetivo in objetivos) {
+                    for (objetivoId in objetivosid) {
+                        if (objetivo.id.equals(objetivoId)){
+                            nombres.add(objetivo.title)
+                        }
                     }
-                } else {
-                    println("no se encontraron logros de usuario en la bd")
                 }
+                //AGREGAR AL LIST VIEW TODOS LOS VALORES
+                actualizarListView(nombres)
             } else {
-
+                Toast.makeText(this@ProfileActivityFriend, "Error al obtener nombres", Toast.LENGTH_SHORT).show()
             }
-
-            if (idlogros.isEmpty()) {
-                idlogros.add("no tienes logros")
-            }
-            println("imprimir lista2:!----")
-            println(idlogros)
-            compartirobjetivo(idlogros)
         }
-        override fun onFailure(call: Call<List<UserAchievements>>, t: Throwable) {
-            // En caso de error de red u otro fallo
-            println("Error en la conexión")
+        override fun onFailure(call: Call<List<Achievements>>, t: Throwable) {
+            Toast.makeText(this@ProfileActivityFriend, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
         }
     })
 }
-*/
 
+
+//METODO PARA ACTUALIZAR LIST VIEW OBJETIVOS
+    fun actualizarListView(nombres: List<String>) {
+        // Crear un ArrayAdapter con la lista de nombres
+        val objetivosAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, nombres)
+
+        // Actualizar el ListView
+        listaobjetivos.adapter = objetivosAdapter
+    }
 
 //METODO PARA ABRIR UN CUADRO EMERJENTE CON TODOS TUS OBJETIVOS
     private fun compartirobjetivo(objetivos : List<String>){
