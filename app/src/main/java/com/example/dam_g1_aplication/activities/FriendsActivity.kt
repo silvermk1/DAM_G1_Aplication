@@ -73,7 +73,8 @@ class FriendsActivity : AppCompatActivity() {
 // Obtener datos para los ListViews
         getAllFriendships()
         getAllFriendRequests()
-
+        println("ahora:")
+        //getUserById2(2)
 
 //CLICKLISTENER
         //mandar al perfil del amigo clickeado
@@ -89,7 +90,7 @@ class FriendsActivity : AppCompatActivity() {
     }
 
 
-//metodo para mover la linea del medio y agrandar o menguar las listas
+//metodo para mover la linea del medio y agrandar o menguar las listas-------
 //con alluda del chatgpt
     private fun adjustDivider(rawY: Float, guideline: Guideline) {
         val parentHeight = findViewById<ConstraintLayout>(R.id.mainLayout).height
@@ -107,98 +108,47 @@ class FriendsActivity : AppCompatActivity() {
         }
     }
 
-
-//metodo para actualizar list view de nombres de amigos
-    fun updateListView(userName: String) {
-        // Este es el método donde agregarías el nombre al ListView
-        // Por ejemplo, puedes usar un ArrayAdapter o algún otro adaptador
-        // Asegúrate de actualizar el ListView en el hilo principal
-
-        runOnUiThread {
-            val adapter = friendsList.adapter as ArrayAdapter<String>
-            adapter.add(userName)
-        }
-    }
-
-//METOD PARA RETORNAR UN USUARIO POR SU ID
-    fun getUserById(userId: Long, callback: (String) -> Unit) {
-        val retrofit = RetrofitClient.getClient()
-        val apiService = retrofit.create(ApiService::class.java)
-
-        // Realizar la llamada para obtener el usuario por su ID
-        val callUser = apiService.getUserById(userId)
-        callUser.enqueue(object : Callback<Users> {
-            override fun onResponse(call: Call<Users>, response: Response<Users>) {
-                if (response.isSuccessful) {
-                    val user = response.body()
-                    if (user != null) {
-                        callback(user.username) // Devuelves el nombre del usuario a través del callback
-                    }
-                } else {
-                    println("Error en la respuesta: " + response.code())
-                }
-            }
-
-            override fun onFailure(call: Call<Users>, t: Throwable) {
-                println("Error al obtener el usuario: " + t.message)
-            }
-        })
-    }
-
-//METODO PARA OBTENER TODOS LOS AMIGOS
+//METODOS PARA AGREGAR AMIGOS AL LISTVIEW------------------------------------
+//METODO PARA OBTENER TODOS LOS IDS DE LOS AMIGOS
     fun getAllFriendships() {
-        //conectar retrofit
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
-        val datos = mutableListOf<String>()
+        val friendIds = mutableListOf<String>()
 
-        //hazer llamada = retornar ids de los amgios
         val callFriendships = apiService.getFriendships()
         callFriendships.enqueue(object : Callback<List<Friendships>> {
             override fun onResponse(call: Call<List<Friendships>>, response: Response<List<Friendships>>) {
-                if (response.isSuccessful) {
-                    val friendships = response.body()!!
+                val friendships = response.body()!!
+                val idpropio = sharedPreferences.getString("user_id", null)
 
-                    val idpropio = sharedPreferences.getString("user_id", null)
-                    // Obtener IDs de los amigos
-                    for (friendship in friendships) {
-                        //filtrar los amigos que corresponden al usuario iniciado
-                        if (friendship.friendA.toString() == idpropio || friendship.friendB.toString() == idpropio) {
-                            // filtrar los id de los amigos y apartar el del usuario iniciado
-                            if (friendship.friendA.toString() != idpropio) {
-                                datos.add(friendship.friendA.toString())
-                            }
-                            // filtrar los id de los amigos y apartar el del usuario iniciado
-                            if (friendship.friendB.toString() != idpropio) {
-                                datos.add(friendship.friendB.toString())
-
-                            }
+                // Filtrar los IDs de los amigos que corresponden al usuario actual
+                for (friendship in friendships) {
+                    if (friendship.friendA.toString() == idpropio || friendship.friendB.toString() == idpropio) {
+                        if (friendship.friendA.toString() != idpropio) {
+                            friendIds.add(friendship.friendA.toString())
+                        }
+                        if (friendship.friendB.toString() != idpropio) {
+                            friendIds.add(friendship.friendB.toString())
                         }
                     }
-                //TRADUCIR ID A NOMBRE
-                    // Usar una lista para recolectar los nombres
-                    val friendNames = mutableListOf<String>()
-                    val pendingRequests = datos.size
-                    //recorrer la lista de ids creada anteriormente
-                    for (userId in datos) {
-                        //con el metodo getUserById convertir id a username y agregarlo a la lista
-                        getUserById(userId.toLong()) { userName ->
-                            synchronized(friendNames) {
-                                friendNames.add(userName)
-                                if (friendNames.size == pendingRequests) {
-                                    // Actualizar el ListView con todos los nombres al final
-                                    runOnUiThread {
-                                        val adapter = friendsList.adapter as ArrayAdapter<String>
-                                        adapter.clear()
-                                        adapter.addAll(friendNames)
-                                        adapter.notifyDataSetChanged()
-                                    }
-                                }
-                            }
+                }
+
+                // Usamos un contador para saber cuándo hemos terminado de obtener todos los nombres
+                val totalFriends = friendIds.size
+                val friendNames = mutableListOf<String>()
+                var counter = 0
+
+                // Obtener los nombres de todos los amigos
+                for (userId in friendIds) {
+                    getUserById2(userId.toLong()) { userName ->
+                        friendNames.add(userName)
+                        counter++
+
+                        // Si hemos obtenido los nombres de todos los amigos, actualizar el ListView
+                        if (counter == totalFriends) {
+                            updateListViewWithFriends(friendNames)
                         }
                     }
-                } else {
-                    Toast.makeText(this@FriendsActivity, "Error al obtener amistades", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -207,8 +157,142 @@ class FriendsActivity : AppCompatActivity() {
             }
         })
     }
+//METODO PARA TRADUCIR IDS AMIGOS A NOMBRES AMIGOS
+    fun getUserById2(userId: Long, callback: (String) -> Unit) {
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
+
+        val callUser = apiService.getUserById(userId)
+        callUser.enqueue(object : Callback<Users> {
+            override fun onResponse(call: Call<Users>, response: Response<Users>) {
+                val user = response.body()
+                if (user != null) {
+                    // Llamamos al callback con el nombre del usuario
+                    callback(user.username)
+                }
+            }
+
+            override fun onFailure(call: Call<Users>, t: Throwable) {
+                println("Error al obtener el usuario: ${t.message}")
+            }
+        })
+    }
+//METODO PARA INSERTAR LOS NOMBRES DE LOS AMIGOS EN EL LISTVIEW
+    fun updateListViewWithFriends(friendNames: List<String>) {
+        // Este método actualizará el ListView con los nombres de todos los amigos
+        runOnUiThread {
+            val adapter = friendsList.adapter as ArrayAdapter<String>
+            adapter.clear()
+            adapter.addAll(friendNames)
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+//METODOS PARA AGREGAR SOLICITUDES AL LISTVIEW------------------------------------
+//METODO PARA OBTENER TODOS LOS IDS DE LAS SOLICITUDES
+    fun getAllFriendRequests() {
+        //conectar retrofit
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
+        val datos = mutableListOf<String>()
+
+        //hazer llamada = retornar ids de los amgios
+        val callfriendre = apiService.getFriendRequests()
+        callfriendre.enqueue(object : Callback<List<FriendRequests>> {
+            override fun onResponse(
+                call: Call<List<FriendRequests>>,
+                response: Response<List<FriendRequests>>
+            ) {
+                val idpropio = sharedPreferences.getString("user_id", null)
+
+                val friendrequests = response.body()
+                println(friendrequests)
+                //val idpropio = sharedPreferences.getString("user_id", null)
+                // Obtener IDs de los amigos
+                println("MOSTRAR:-------------->(:----")
+                if (friendrequests != null) {
+                    for (friendrequest in friendrequests) {
+                        if (friendrequest.userReciever.toString() == idpropio) {
+                            datos.add(friendrequest.userSender.toString())
+                        }
+                    }
+                }
+                //agregar al listview:
+                val totalFriends = datos.size
+                val friendNames = mutableListOf<String>()
+                var counter = 0
+
+                for (userId in datos) {
+                    getUserById2(userId.toLong()) { userName ->
+                        friendNames.add(userName)
+                        counter++
+
+                        // Si hemos obtenido los nombres de todos los amigos, actualizar el ListView
+                        if (counter == totalFriends) {
+                            updateListViewWithFriendsRequests(friendNames)
+                        }
+                    }
+                }
+            }
+
+
+        override fun onFailure(call: Call<List<FriendRequests>>, t: Throwable) {
+            Toast.makeText(this@FriendsActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+        }
+    })
+    }
+
+//METODO PARA INSERTAR LOS NOMBRES DE LOS AMIGOS EN EL LISTVIEW
+    fun updateListViewWithFriendsRequests(friendNames: List<String>) {
+        // Este método actualizará el ListView con los nombres de todos los amigos
+        runOnUiThread {
+            val adapter = friendRequestsList.adapter as ArrayAdapter<String>
+            adapter.clear()
+            adapter.addAll(friendNames)
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+//BORRADOS!
+    fun getUserById(userId: Long, callback: (String) -> Unit) {
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
+
+        // Realizar la llamada para obtener el usuario por su ID
+        val callUser = apiService.getUserById(userId)
+        callUser.enqueue(object : Callback<Users> {
+            override fun onResponse(call: Call<Users>, response: Response<Users>) {
+                //if (response.isSuccessful) {
+                val user = response.body()
+                if (user != null) {
+                    callback(user.username) // Devuelves el nombre del usuario a través del callback
+
+                }
+                //} else {
+                //  println("Error en la respuesta: " + response.code())
+                //}
+            }
+
+            override fun onFailure(call: Call<Users>, t: Throwable) {
+                println("Error al obtener el usuario: " + t.message)
+            }
+        })
+    } //SUBSTITUIDO!
+
+//metodo para actualizar list view de nombres de amigos
+    /*fun updateListView(userName: String) {
+        // Este es el método donde agregarías el nombre al ListView
+        // Por ejemplo, puedes usar un ArrayAdapter o algún otro adaptador
+        // Asegúrate de actualizar el ListView en el hilo principal
+
+        runOnUiThread {
+            val adapter = friendsList.adapter as ArrayAdapter<String>
+            adapter.add(userName)
+        }
+    }*/
 
 //METODO PARA OBTENER TODAS LAS SOLICITUDES //NOSE PORQUE NO FUNCIONA!!!!
+    /*
     fun getAllFriendRequests() {
         //conectar retrofit
         val retrofit = RetrofitClient.getClient()
@@ -245,4 +329,6 @@ class FriendsActivity : AppCompatActivity() {
             }
         })
     }
+    */
+
 }

@@ -54,7 +54,7 @@ interface ApiService {
     @GET("/userachievement/{userId}")   //FUNCIONA?
     fun findUserAchievementsByUserId(@Path("userId") userId: Long): Call<List<UserAchievements>>
 
-    @GET("friendships")
+    @GET("/friendships")
     fun getFriendships(): Call<List<Friendships>>
 
     @GET("/friendrequests")     //NO FUNCIONA
@@ -65,6 +65,5 @@ interface ApiService {
 
     @GET("users/{id}")       //FUNCIONA?
     fun getUserById(@Path("id") id: Long): Call<Users>
-
 
 }
