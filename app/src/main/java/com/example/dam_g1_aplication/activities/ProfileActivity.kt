@@ -6,8 +6,16 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.dam_g1_aplication.ApiConnection.ApiService
+import com.example.dam_g1_aplication.ApiConnection.RetrofitClient
 import com.example.dam_g1_aplication.R
+import com.example.dam_g1_aplication.dataClasses.Friendships
+import com.example.dam_g1_aplication.dataClasses.Users
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var usernameTextView: TextView
@@ -19,6 +27,8 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var bottoncerrarsesion : Button
     private lateinit var botonamigos : Button
+    private lateinit var friendSearcher: EditText
+    private lateinit var friendsSearchButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +46,8 @@ class ProfileActivity : AppCompatActivity() {
         bottoncerrarsesion = findViewById(R.id.cerrarsesion)
         saveButton = findViewById(R.id.saveButton)
         botonamigos = findViewById(R.id.friendListButton)
+        friendSearcher = findViewById(R.id.FriendSearcher)
+        friendsSearchButton = findViewById(R.id.friendsSearch)
         usernameTextView.text = username
         mailTextView.text = mail
 
@@ -79,6 +91,17 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(intent)
 
         }
+        //Mandar al perfil buscado
+        friendsSearchButton.setOnClickListener {
+            // Obtener el texto ingresado en el EditText
+            val nombreAmigo = friendSearcher.text.toString().trim()
+
+            // Verificar que el campo no este vacio
+            if (nombreAmigo.isNotEmpty()) {
+                getUseridByUsername3(nombreAmigo)
+            }
+
+        }
         //MANDAR AL ACTIVITY FRIENDS
         botonamigos.setOnClickListener{
             val intent = Intent(this, FriendsActivity::class.java)
@@ -87,4 +110,87 @@ class ProfileActivity : AppCompatActivity() {
 
         // FOOTER
     }
+
+//METODO PARA COMPROVAR QUE EL USUARIO EXISTE
+    fun getUseridByUsername3(username: String) {
+        // Preparar la conexión con Retrofit
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
+
+        // Hacer la llamada al servicio para obtener todos los usuarios
+        val callUsers = apiService.getUsers()
+        callUsers.enqueue(object : Callback<List<Users>> {
+            override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
+                val users = response.body()
+                println("usuarios:")
+                println(users)
+                if (users != null) {
+                    println("nulo?")
+                    println("Usuarios obtenidos: ${users.size}")
+                    for (user in users) {
+                        println("Username: ${user.username}, ID: ${user.id}")
+                        if (user.username == username){//el usuario existe
+                            comprovarAmistad(user.id.toLong(), username)
+                        }
+                    }
+                } else {
+                    println("No se encontraron usuarios.")
+                }
+
+            }
+
+            override fun onFailure(call: Call<List<Users>>, t: Throwable) {
+                println("Error al realizar la solicitud: ${t.message}")
+            }
+        })
+    }
+//METODO PARA COMPROVAR LA AMISTAD Y MANDAR AL ACTIVITY DEL PERFIL
+    fun comprovarAmistad(idamigo : Long, username: String){
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
+        val friendIds = mutableListOf<String>()
+        var numero = 0
+        val callFriendships = apiService.getFriendships()
+        callFriendships.enqueue(object : Callback<List<Friendships>> {
+            override fun onResponse(call: Call<List<Friendships>>, response: Response<List<Friendships>>) {
+                val friendships = response.body()!!
+                val idpropio = sharedPreferences.getString("user_id", null)
+
+                // Filtrar los IDs de los amigos que corresponden al usuario actual
+                for (friendship in friendships) {
+                    //comprovar que no es tu amigo
+                        if (friendship.friendA.toString() == idpropio) {
+                            if (friendship.friendB.toString() == idamigo.toString()){
+                                numero = 1
+                                Toast.makeText(this@ProfileActivity, "ya es tu amigo", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        if (friendship.friendB.toString() == idpropio) {
+                            if (friendship.friendA.toString() == idamigo.toString()){
+                                numero = 1
+                                Toast.makeText(this@ProfileActivity, "ya es tu amigo", Toast.LENGTH_SHORT).show()
+
+                            }
+                        }
+                    }
+                //no esa tu amigo, mandar al activity...
+                if (numero == 0){
+                    val intent = Intent(this@ProfileActivity, ProfileActivityFriend::class.java)
+                    intent.putExtra("tipodesolicitud", "noagregado")
+                    intent.putExtra("nombreusuario", username)
+                    startActivity(intent)
+                }
+                }
+
+            override fun onFailure(call: Call<List<Friendships>>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+
+
+
+
+        })
+
+}
 }

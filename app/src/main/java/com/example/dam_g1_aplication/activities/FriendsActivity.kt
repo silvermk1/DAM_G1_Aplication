@@ -89,9 +89,9 @@ class FriendsActivity : AppCompatActivity() {
 
         }
         //mandar al perfil de la solicitud clickeada
-        friendsList.setOnItemClickListener { parent, view, position, id ->
+        friendRequestsList.setOnItemClickListener { parent, view, position, id ->
             // Obtener el nombre del amigo que se ha clicado
-            val nombreusuario = friendsList.getItemAtPosition(position) as String
+            val nombreusuario = friendRequestsList.getItemAtPosition(position) as String
             //mandar al intent del amigo clickeado
             val intent = Intent(this, ProfileActivityFriend::class.java)
             intent.putExtra("tipodesolicitud", "solicitado")

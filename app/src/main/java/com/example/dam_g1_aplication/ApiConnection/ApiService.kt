@@ -57,14 +57,24 @@ interface ApiService {
     @GET("/friendships")
     fun getFriendships(): Call<List<Friendships>>
 
-    @GET("/friendrequests")     //NO FUNCIONA
+    @GET("/friendrequests")
     fun getFriendRequests(): Call<List<FriendRequests>>
 
     @GET("/Achievements")
     fun getAchievements(): Call<List<Achievements>>
 
-    @GET("users/{id}")       //FUNCIONA?
+    @GET("users/{id}")
     fun getUserById(@Path("id") id: Long): Call<Users>
 
+    @POST("/friendships")
+    fun createFriendship(@Body friendship: Friendships): Call<Friendships>
 
+    @POST("/friendrequests")
+    fun createFriendRequest(@Body friendrequest: FriendRequests): Call<FriendRequests>
+
+    @DELETE("friendrequests/{friendrequestId}")
+    fun deleteFriendRequest(@Path("friendrequestId") friendrequestId: Long): Call<Void>
+
+    @DELETE("/friendships/{friendshipId}")
+    fun deleteFriendShip(@Path("friendshipId") friendshipId: Long): Call<Void>
 }

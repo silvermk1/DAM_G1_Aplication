@@ -86,7 +86,7 @@
             android:layout_margin="8dp"
             app:cornerRadius="8dp"
             android:backgroundTint="@android:color/holo_blue_light"
-            android:text="Enviar Solicitud"
+            android:text="Agregar Amigo"
             android:textColor="@android:color/white" />
 
 
