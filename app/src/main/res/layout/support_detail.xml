@@ -15,7 +15,8 @@
         android:textSize="34sp"
         android:textStyle="bold"
         android:textColor="@android:color/white"
-        android:text="Soporte" />
+        android:text="Soporte"
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/supportMainTextView"
@@ -24,7 +25,6 @@
         android:layout_margin="4dp"
         android:padding="8dp"
         android:text="Si tienes algún problema con nuestra aplicación puede contactar con nuestro equipo de soporte o puede contactar con los desarrolladores directamente a nuestros correos personales."
-        android:textAlignment="viewStart"
         android:textSize="18sp" />
 
     <LinearLayout
@@ -32,13 +32,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center">
 
         <Button
             android:id="@+id/queEsButton"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="185dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_margin="8dp"
             android:backgroundTint="@android:color/holo_blue_light"
             android:text="¿Que es esta app?"
@@ -49,7 +50,7 @@
             android:id="@+id/contactButton"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="185dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_margin="8dp"
             android:backgroundTint="@android:color/holo_blue_light"
             android:text="Contáctanos"
@@ -71,50 +72,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_weight="0">
+        android:orientation="vertical">
 
-        <LinearLayout
-            style="?android:attr/buttonBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_gravity="bottom|center"
-            android:orientation="horizontal"
-            android:background="@android:color/holo_blue_light">
-
-            <Button
-                android:id="@+id/profileButton"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="125dp"
-                android:layout_height="70dp"
-                android:layout_margin="6dp"
-                android:backgroundTint="#4040C0"
-                app:cornerRadius="8dp"
-                android:textColor="@android:color/white"
-                android:text="Perfil" />
-
-            <Button
-                android:id="@+id/homeButton"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="125dp"
-                android:layout_height="70dp"
-                android:layout_margin="6dp"
-                android:backgroundTint="#4040C0"
-                app:cornerRadius="8dp"
-                android:textColor="@android:color/white"
-                android:text="Home" />
-
-            <Button
-                android:id="@+id/supportButton"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="120dp"
-                android:layout_height="70dp"
-                android:layout_margin="6dp"
-                android:backgroundTint="#4040C0"
-                app:cornerRadius="8dp"
-                android:textColor="@android:color/white"
-                android:text="Soporte" />
-        </LinearLayout>
+        <include
+            layout="@layout/footer_buttons" />
     </LinearLayout>
     <!-- FOOTER -->
 </LinearLayout>

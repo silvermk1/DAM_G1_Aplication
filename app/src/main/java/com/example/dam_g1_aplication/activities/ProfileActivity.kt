@@ -36,8 +36,7 @@ class ProfileActivity : AppCompatActivity() {
 
         sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
         sharedPreferences.getString("user_id", null)
-        println("idpreferences debug" +         sharedPreferences.getString("user_id", null)
-        )
+        println("idpreferences debug" + sharedPreferences.getString("user_id", null))
         username = sharedPreferences.getString("username", null).toString()
         mail = sharedPreferences.getString("mail", null).toString()
         usernameTextView = findViewById(R.id.usernameTextView)
@@ -51,14 +50,11 @@ class ProfileActivity : AppCompatActivity() {
         usernameTextView.text = username
         mailTextView.text = mail
 
-
-
         // FOOTER
         val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
         val profileButton: Button = findViewById(R.id.profileButton)
         val supportButton: Button = findViewById(R.id.supportButton)
         val homeButton: Button = findViewById(R.id.homeButton)
-
 
         supportButton.setOnClickListener {
             val intent = Intent(this, SupportActivity::class.java)
@@ -148,7 +144,6 @@ class ProfileActivity : AppCompatActivity() {
     fun comprovarAmistad(idamigo : Long, username: String){
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
-        val friendIds = mutableListOf<String>()
         var numero = 0
         val callFriendships = apiService.getFriendships()
         callFriendships.enqueue(object : Callback<List<Friendships>> {
@@ -180,17 +175,11 @@ class ProfileActivity : AppCompatActivity() {
                     intent.putExtra("nombreusuario", username)
                     startActivity(intent)
                 }
-                }
+            }
 
             override fun onFailure(call: Call<List<Friendships>>, t: Throwable) {
                 TODO("Not yet implemented")
             }
-
-
-
-
-
         })
-
-}
+    }
 }

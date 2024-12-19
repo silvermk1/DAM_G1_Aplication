@@ -1,6 +1,7 @@
 package com.example.dam_g1_aplication.activities
 
 import android.content.Intent
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.Button
@@ -54,15 +55,19 @@ class CategoriesActivity : AppCompatActivity() {
                             layoutParams = LinearLayout.LayoutParams(
                                 75.dpToPx(), // tamaño fijo para el botón de favoritos
                                 ViewGroup.LayoutParams.WRAP_CONTENT
-                            )
+                            ).apply {
+                                setMargins(8, 8, 8, 8)
+                            }
+
                             text = "❤︎︎"
-                            setBackgroundColor(resources.getColor(android.R.color.holo_red_light))
+
+                            // Fondo con esquinas redondeadas
+                            background = GradientDrawable().apply {
+                                cornerRadius = 8 * resources.displayMetrics.density // Convertir dp a píxeles
+                                setColor(resources.getColor(android.R.color.holo_red_light))
+                            }
+
                             setOnClickListener {
-
-                                //comprovar si se ha iniciado sesion =
-                                // si se inicia agregar si no esta iniciado iniciar:
-
-                                // Acción para el botón de favoritos
                                 Toast.makeText(
                                     this@CategoriesActivity,
                                     "Favorito seleccionado: ${category.name}",
@@ -70,26 +75,32 @@ class CategoriesActivity : AppCompatActivity() {
                                 ).show()
                             }
                         }
-                        //boton de cada categoria = mandar a los logros de esta
+
                         val categoryButton = Button(this@CategoriesActivity).apply {
                             layoutParams = LinearLayout.LayoutParams(
                                 0,
                                 ViewGroup.LayoutParams.WRAP_CONTENT,
                                 1f
-                            )
+                            ).apply {
+                                setMargins(16, 8, 16, 8)
+                            }
+
                             text = category.name
-                            setBackgroundColor(resources.getColor(android.R.color.holo_orange_dark))
+
+                            // Fondo con esquinas redondeadas
+                            background = GradientDrawable().apply {
+                                cornerRadius = 8 * resources.displayMetrics.density
+                                setColor(resources.getColor(android.R.color.holo_orange_dark))
+                            }
+
                             setTextColor(resources.getColor(android.R.color.white))
                             setOnClickListener {
-                                navigateToAchievements(category) //metodo para mandar a los objetivos
+                                navigateToAchievements(category)
                             }
                         }
 
-                        // Añadir los botones al layout de cada categoría
                         categoryLayout.addView(favoriteButton)
                         categoryLayout.addView(categoryButton)
-
-                        // Añadir el layout de la categoría al contenedor principal
                         categoryContainer.addView(categoryLayout)
                     }
 

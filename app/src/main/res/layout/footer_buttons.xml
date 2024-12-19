@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="bottom|center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@android:color/holo_blue_light"
+        tools:ignore="UselessParent">
+
+        <Button
+            android:id="@+id/profileButton"
+            android:layout_width="125dp"
+            android:layout_height="70dp"
+            android:layout_margin="6dp"
+            android:backgroundTint="#4040C0"
+            app:cornerRadius="8dp"
+            android:textColor="@android:color/white"
+            android:text="Perfil" />
+
+        <Button
+            android:id="@+id/homeButton"
+            android:layout_width="125dp"
+            android:layout_height="70dp"
+            android:layout_margin="6dp"
+            android:backgroundTint="#4040C0"
+            app:cornerRadius="8dp"
+            android:textColor="@android:color/white"
+            android:text="Home" />
+
+        <Button
+            android:id="@+id/supportButton"
+            android:layout_width="120dp"
+            android:layout_height="70dp"
+            android:layout_margin="6dp"
+            android:backgroundTint="#4040C0"
+            app:cornerRadius="8dp"
+            android:textColor="@android:color/white"
+            android:text="Soporte" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,6 +1,7 @@
 package com.example.dam_g1_aplication.activities
 
 import android.content.Intent
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.Button
@@ -64,15 +65,19 @@ class AchievementsActivity : AppCompatActivity() {
                             layoutParams = LinearLayout.LayoutParams(
                                 75.dpToPx(), // tamaño fijo para el botón de favoritos
                                 ViewGroup.LayoutParams.WRAP_CONTENT
-                            )
+                            ).apply {
+                                setMargins(8, 8, 8, 8)
+                            }
+
                             text = "❤︎︎"
-                            setBackgroundColor(resources.getColor(android.R.color.holo_red_light))
+
+                            // Fondo con esquinas redondeadas
+                            background = GradientDrawable().apply {
+                                cornerRadius = 8 * resources.displayMetrics.density // Convertir dp a píxeles
+                                setColor(resources.getColor(android.R.color.holo_red_light))
+                            }
+
                             setOnClickListener {
-
-                                //comprovar si se ha iniciado sesion =
-                                // si se inicia agregar si no esta iniciado iniciar:
-
-                                // Acción para el botón de favoritos
                                 Toast.makeText(
                                     this@AchievementsActivity,
                                     "Favorito seleccionado: ${achievement.title}",
@@ -80,28 +85,35 @@ class AchievementsActivity : AppCompatActivity() {
                                 ).show()
                             }
                         }
-                        //boton de cada logro = mandar a los objetivos de esta
+
                         val achievementButton = Button(this@AchievementsActivity).apply {
                             layoutParams = LinearLayout.LayoutParams(
                                 0,
                                 ViewGroup.LayoutParams.WRAP_CONTENT,
                                 1f
-                            )
+                            ).apply {
+                                setMargins(16, 8, 16, 8)
+                            }
+
                             text = achievement.title
-                            setBackgroundColor(resources.getColor(android.R.color.holo_orange_dark))
+
+                            // Fondo con esquinas redondeadas
+                            background = GradientDrawable().apply {
+                                cornerRadius = 8 * resources.displayMetrics.density
+                                setColor(resources.getColor(android.R.color.holo_orange_dark))
+                            }
+
                             setTextColor(resources.getColor(android.R.color.white))
                             setOnClickListener {
-                                navigateToAchievements(achievement) //metodo para mandar a los objetivos
+                                navigateToAchievements(achievement)
                             }
                         }
 
-                        // Añadir los botones al layout de cada logro
                         achievementLayout.addView(favoriteButton)
                         achievementLayout.addView(achievementButton)
-
-                        // Añadir el layout de la logro al contenedor principal
                         achievementContainer.addView(achievementLayout)
                     }
+
 
                 } else {
                     Toast.makeText(this@AchievementsActivity, "Error en la respuesta", Toast.LENGTH_SHORT).show()

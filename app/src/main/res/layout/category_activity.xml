@@ -1,8 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <!-- Título -->
@@ -33,55 +31,14 @@
 
     </ScrollView>
 
-    <!-- INICIO FOOTER -->
+    <!-- FOOTER -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_weight="0">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_gravity="bottom|center"
-            android:orientation="horizontal"
-            android:background="@android:color/holo_blue_light">
-
-            <Button
-                android:id="@+id/profileButton"
-                android:layout_width="125dp"
-                android:layout_height="70dp"
-                android:layout_margin="6dp"
-                android:backgroundTint="#4040C0"
-                app:cornerRadius="4dp"
-                android:textColor="@android:color/white"
-                android:text="Perfil"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-            <Button
-                android:id="@+id/homeButton"
-                android:layout_width="125dp"
-                android:layout_height="70dp"
-                android:layout_margin="6dp"
-                android:backgroundTint="#4040C0"
-                app:cornerRadius="4dp"
-                android:textColor="@android:color/white"
-                android:text="Inicio"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
-
-            <Button
-                android:id="@+id/supportButton"
-                android:layout_width="120dp"
-                android:layout_height="70dp"
-                android:layout_margin="6dp"
-                android:backgroundTint="#4040C0"
-                app:cornerRadius="4dp"
-                android:textColor="@android:color/white"
-                android:text="Soporte"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+        <include
+            layout="@layout/footer_buttons" />
     </LinearLayout>
-    <!-- FIN FOOTER -->
+    <!-- FOOTER -->
 </LinearLayout>
