@@ -2,7 +2,9 @@ package com.example.dam_g1_aplication.activities
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -21,6 +23,7 @@ import com.example.dam_g1_aplication.dataClasses.FriendRequests
 import com.example.dam_g1_aplication.dataClasses.Friendships
 import com.example.dam_g1_aplication.dataClasses.UserAchievements
 import com.example.dam_g1_aplication.dataClasses.Users
+import com.google.android.material.imageview.ShapeableImageView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +36,7 @@ class ProfileActivityFriend : AppCompatActivity() {
     private lateinit var listaobjetivos : ListView
     private lateinit var botonsolicitud : Button
     private lateinit var sharedPreferences: SharedPreferences
-
+    private lateinit var imagenusuarioamigo: ShapeableImageView
 
 //Atributos-datos--
     //nombre usuario
@@ -59,6 +62,10 @@ class ProfileActivityFriend : AppCompatActivity() {
         listaobjetivos = findViewById(R.id.listaobjetivos)
         val objetivosadapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ArrayList())
         listaobjetivos.adapter = objetivosadapter
+
+        //declarar imagen
+        imagenusuarioamigo = findViewById(R.id.imagenusuario)
+        getUseridByUsername8(usuario.toString())
 
 //AGREGAR TIPO DE BOTON SOLICITUD DEPENDE DE DONDE PROVENGA EL ACTIVITY:
 
@@ -398,7 +405,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-    //COMPROVAR SI HAY OTRA SOLICITUD DE AMISTAD
+//COMPROVAR SI HAY OTRA SOLICITUD DE AMISTAD
     fun getAllFriendRequests2(sender: Long, reciever: Long) {
         //conectar retrofit
         val retrofit = RetrofitClient.getClient()
@@ -444,7 +451,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-    //AGREGAR SOLICITUD DE AMISTAD
+//AGREGAR SOLICITUD DE AMISTAD
     fun addFriendRequest(sender: Long, reciever: Long) {
         // Crear el objeto friendrequest
         val friendrequest = FriendRequests(userSender = sender, userReciever = reciever)
@@ -503,7 +510,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-    //FILTRAR EL USUARIO ID PARA SACAR EL ID DEL FRIENDREQUEST Y MANDAR AL METODO DELETEFRIENDREQUEST
+//FILTRAR EL USUARIO ID PARA SACAR EL ID DEL FRIENDREQUEST Y MANDAR AL METODO DELETEFRIENDREQUEST
     fun getAllFriendShips(friendA: Long, friendB: String) {
         //conectar retrofit
         val retrofit = RetrofitClient.getClient()
@@ -548,7 +555,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-    //ELIMINAR AMISTAD
+//ELIMINAR AMISTAD
     fun removeFriend(id: Long){
         // Preparar la conexión con Retrofit
         val retrofit = RetrofitClient.getClient()
@@ -601,7 +608,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-    //FILTRAR EL USUARIO ID PARA SACAR EL ID DEL FRIENDREQUEST Y MANDAR AL METODO DELETEFRIENDREQUEST
+//FILTRAR EL USUARIO ID PARA SACAR EL ID DEL FRIENDREQUEST Y MANDAR AL METODO DELETEFRIENDREQUEST
     fun getAllFriendRequests(sender: Long, reciever: String) {
         //conectar retrofit
         val retrofit = RetrofitClient.getClient()
@@ -644,7 +651,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-    //METODO PARA BORRAR SOLICITUD DE AMISTAD
+//METODO PARA BORRAR SOLICITUD DE AMISTAD
     fun deleteFriendRequestFromApi(friendrequestId: Long) {
         // Preparar la conexión con Retrofit
         val retrofit = RetrofitClient.getClient()
@@ -698,7 +705,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-    //AGREGAR AMIGO
+//AGREGAR AMIGO
     fun addFriendship(friendAId: Long, friendBId: Long) {
         // Crear el objeto Friendship
         val friendship = Friendships(friendA = friendAId, friendB = friendBId)
@@ -721,6 +728,75 @@ class ProfileActivityFriend : AppCompatActivity() {
 
             override fun onFailure(call: Call<Friendships>, t: Throwable) {
                 Toast.makeText(this@ProfileActivityFriend, "Error en la solicitud: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+//METODOS PARA DESCARGAR IMAGEN PERFIL DEL USUARIO--------------------------------------------
+//OBTENER EL ID DEL USERNAME
+    fun getUseridByUsername8(username: String) {
+        // Preparar la conexión con Retrofit
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
+
+        // Hacer la llamada al servicio para obtener todos los usuarios
+        val callUsers = apiService.getUsers()
+        callUsers.enqueue(object : Callback<List<Users>> {
+            override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
+                val users = response.body()
+                println("usuarios:")
+                println(users)
+                if (users != null) {
+                    println("nulo?")
+                    println("Usuarios obtenidos: ${users.size}")
+                    for (user in users) {
+                        println("Username: ${user.username}, ID: ${user.id}")
+                        if (user.username == username){
+                            descargarimagenperfilbd(user.id.toLong())
+                        }
+                    }
+                } else {
+                    println("No se encontraron usuarios.")
+                }
+
+            }
+
+            override fun onFailure(call: Call<List<Users>>, t: Throwable) {
+                println("Error al realizar la solicitud: ${t.message}")
+            }
+        })
+    }
+//DESCARGAR IMAGEN DEL USUARIO
+    fun descargarimagenperfilbd(userId: Long){
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
+
+        val callUser = apiService.getUserById(userId)
+        callUser.enqueue(object : Callback<Users> {
+            override fun onResponse(call: Call<Users>, response: Response<Users>) {
+                val user = response.body()
+                if (user != null) {
+                    // Aquí obtienes la URL o datos de la imagen de perfil del usuario
+
+                    val profilePhotoBase64 = user.profilephoto.toString()
+                    try {
+                        // Decodificar la imagen Base64 a Bitmap
+                        val decodedBytes = Base64.decode(profilePhotoBase64, Base64.DEFAULT)
+                        val profileBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+
+                        // Establecer la imagen en el ImageButton
+                        imagenusuarioamigo.setImageBitmap(profileBitmap)
+                    } catch (e: IllegalArgumentException) {
+                        e.printStackTrace()
+                        println("Error al decodificar la imagen de perfil.")
+                    }
+
+                } else {
+                    println("El usuario no tiene imagen de perfil.")
+                }
+            }
+            override fun onFailure(call: Call<Users>, t: Throwable) {
+                println("Error al obtener la imagen de perfil: ${t.message}")
             }
         })
     }

@@ -111,38 +111,4 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    //METODO PARA RETORNAR SI HAY UN USUARIO CONECTADO O NO "array[0]"
-    //METODO PARA RETORNAR EL NOMBRE DE USUARIO CONECTADO "array[1]"
-    //"EMOS CAMBIADO ESTO POR EL SHARD PREFERENCES"
-    /*
-    fun retornarusuarioiniciado(context: Context): Array<String> {
-        val array = arrayOf("false", "false", "false")
-        val file = File(context.filesDir, "usuario.xml")
-
-        if (file.exists()) {
-            val contenido = file.readText()
-
-            val isLoggedInStart = contenido.indexOf("<isLoggedIn>") + "<isLoggedIn>".length
-            val isLoggedInEnd = contenido.indexOf("</isLoggedIn>")
-            val usernameStart = contenido.indexOf("<username>") + "<username>".length
-            val usernameEnd = contenido.indexOf("</username>")
-            val idUserStart = contenido.indexOf("<iduser>") + "<iduser>".length
-            val idUserEnd = contenido.indexOf("</iduser>")
-
-            if (isLoggedInStart > 0 && isLoggedInEnd > isLoggedInStart &&
-                usernameStart > 0 && usernameEnd > usernameStart &&
-                idUserStart > 0 && idUserEnd > idUserStart) {
-                array[0] = contenido.substring(isLoggedInStart, isLoggedInEnd).trim()
-                array[1] = contenido.substring(usernameStart, usernameEnd).trim()
-                array[2] = contenido.substring(idUserStart, idUserEnd).trim()
-            } else {
-                println("No se encontraron las etiquetas.")
-            }
-        } else {
-            println("El archivo no existe.")
-        }
-        return array
-    }
-    */
-
 }

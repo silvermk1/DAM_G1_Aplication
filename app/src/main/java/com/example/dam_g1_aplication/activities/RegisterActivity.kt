@@ -1,13 +1,17 @@
 package com.example.dam_g1_aplication.activities
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.util.Base64
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import com.example.dam_g1_aplication.ApiConnection.ApiService
 import com.example.dam_g1_aplication.ApiConnection.RetrofitClient
 import com.example.dam_g1_aplication.R
@@ -15,6 +19,7 @@ import com.example.dam_g1_aplication.dataClasses.Users
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -64,6 +69,15 @@ class RegisterActivity : AppCompatActivity() {
             textosalida.text = "Por favor, complete todos los datos!"
             return
         } else { //todos los datos introduzidos, empezar registro:
+            //IMAGEN POR DEFECTO
+            val drawable = ResourcesCompat.getDrawable(resources, R.drawable.iconomas, null)
+
+            val bitmap = (drawable as BitmapDrawable).bitmap
+            val compressedBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            compressedBitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream) // Reducir calidad
+            val byteArray = byteArrayOutputStream.toByteArray()
+            val base64String = Base64.encodeToString(byteArray, Base64.DEFAULT)
 
             // Crear nuevo usuario nuevo
             val nuevoUsuario = Users(
@@ -72,10 +86,11 @@ class RegisterActivity : AppCompatActivity() {
                 password = contraseña,
                 birthday = año,
                 biography = "",
+                profilephoto = base64String,
                 mail = email
             )
 
-            // Enviar usuario a la api
+            // guardar usuario a la bd api
             val callRegister = apiService.createUser(nuevoUsuario)
             callRegister.enqueue(object : Callback<Users> {
                 override fun onResponse(call: Call<Users>, response: Response<Users>) {
@@ -102,6 +117,9 @@ class RegisterActivity : AppCompatActivity() {
                         .show()
                 }
             })
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+
         }
     }
 }

@@ -182,7 +182,7 @@ class FriendsActivity : AppCompatActivity() {
         })
     }
 
-    //METODO PARA TRADUCIR IDS AMIGOS A NOMBRES AMIGOS
+//METODO PARA TRADUCIR IDS AMIGOS A NOMBRES AMIGOS
     fun getUserById2(userId: Long, callback: (String) -> Unit) {
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
@@ -193,7 +193,7 @@ class FriendsActivity : AppCompatActivity() {
                 val user = response.body()
                 if (user != null) {
                     // Llamamos al callback con el nombre del usuario
-                    callback(user.username)
+                    callback(user.username.toString())
                 }
             }
 

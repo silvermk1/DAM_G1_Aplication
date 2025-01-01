@@ -17,28 +17,27 @@
         android:textSize="34sp"
         android:textStyle="bold" />
 
-    <!-- Genera tantas categorías como haya en el servidor -->
+    <!-- Contenedor de categorías en cuadrícula -->
     <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <LinearLayout
+        <GridLayout
             android:id="@+id/categoryContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-        </LinearLayout>
-
+            android:columnCount="2"
+            android:padding="8dp" />
     </ScrollView>
 
     <!-- FOOTER -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <include
             layout="@layout/footer_buttons" />
     </LinearLayout>
-    <!-- FOOTER -->
 </LinearLayout>

@@ -1,13 +1,18 @@
 package com.example.dam_g1_aplication.activities
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.dam_g1_aplication.ApiConnection.ApiService
 import com.example.dam_g1_aplication.ApiConnection.RetrofitClient
 import com.example.dam_g1_aplication.R
@@ -22,14 +27,11 @@ class CategoriesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.category_activity)
 
-        // Inicializar el contenedor donde se añadirán los botones
-        val categoryContainer = findViewById<LinearLayout>(R.id.categoryContainer)
+        val categoryContainer = findViewById<GridLayout>(R.id.categoryContainer)
 
-        // Preparar conexión de Retrofit
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
 
-        //retornar todas las categorias
         val callCategories = apiService.getCategories()
         callCategories.enqueue(object : Callback<List<Categories>> {
             override fun onResponse(
@@ -39,71 +41,46 @@ class CategoriesActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null) {
                     val categories = response.body()!!
 
-                    // Crea dinámicamente un botón para cada categoría
                     for (category in categories) {
-                        val categoryLayout = LinearLayout(this@CategoriesActivity).apply {
-                            layoutParams = LinearLayout.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT
-                            ).apply {
-                                setMargins(0, 8, 0, 8)
-                            }
-                            orientation = LinearLayout.HORIZONTAL
-                        }
-
-                        val favoriteButton = Button(this@CategoriesActivity).apply {
-                            layoutParams = LinearLayout.LayoutParams(
-                                75.dpToPx(), // tamaño fijo para el botón de favoritos
-                                ViewGroup.LayoutParams.WRAP_CONTENT
-                            ).apply {
-                                setMargins(8, 8, 8, 8)
-                            }
-
-                            text = "❤︎︎"
-
-                            // Fondo con esquinas redondeadas
-                            background = GradientDrawable().apply {
-                                cornerRadius = 8 * resources.displayMetrics.density // Convertir dp a píxeles
-                                setColor(resources.getColor(android.R.color.holo_red_light))
-                            }
-
-                            setOnClickListener {
-                                Toast.makeText(
-                                    this@CategoriesActivity,
-                                    "Favorito seleccionado: ${category.name}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-
+                        // Crear el botón de categoría
                         val categoryButton = Button(this@CategoriesActivity).apply {
-                            layoutParams = LinearLayout.LayoutParams(
-                                0,
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                1f
-                            ).apply {
-                                setMargins(16, 8, 16, 8)
+                            layoutParams = GridLayout.LayoutParams().apply {
+                                width = resources.displayMetrics.widthPixels / 2 // Ancho para que ocupe la mitad de la pantalla
+                                height = width // Alto igual al ancho para que sea cuadrado
+                                marginEnd = 8.dpToPx()
+                                bottomMargin = 8.dpToPx()
                             }
 
+                            //estilos
                             text = category.name
+                            textSize = 20f
+                            setTextColor(Color.parseColor("#FFD700"))
+                            setShadowLayer(8f, 4f, 4f, Color.BLACK)
+                            paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
+                            typeface = Typeface.DEFAULT_BOLD
 
-                            // Fondo con esquinas redondeadas
-                            background = GradientDrawable().apply {
-                                cornerRadius = 8 * resources.displayMetrics.density
-                                setColor(resources.getColor(android.R.color.holo_orange_dark))
+                            // Construir el nombre de la imagen del fondo
+                            val normalizedCategoryName = "cat_" + category.name.lowercase().replace(" ", "_")
+                            val drawableId = resources.getIdentifier(normalizedCategoryName, "drawable", packageName)
+
+                            if (drawableId != 0) {
+                                background = ContextCompat.getDrawable(this@CategoriesActivity, drawableId)
+                            } else {
+                                // Fondo predeterminado si no se encuentra la imagen
+                                background = GradientDrawable().apply {
+                                    cornerRadius = 16.dpToPx().toFloat()
+                                    setColor(resources.getColor(android.R.color.holo_orange_dark))
+                                }
                             }
 
-                            setTextColor(resources.getColor(android.R.color.white))
                             setOnClickListener {
                                 navigateToAchievements(category)
                             }
                         }
 
-                        categoryLayout.addView(favoriteButton)
-                        categoryLayout.addView(categoryButton)
-                        categoryContainer.addView(categoryLayout)
+                        // Agregar el botón directamente al `GridLayout`
+                        categoryContainer.addView(categoryButton)
                     }
-
                 } else {
                     Toast.makeText(this@CategoriesActivity, "Error en la respuesta", Toast.LENGTH_SHORT).show()
                 }
@@ -123,6 +100,5 @@ class CategoriesActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    // Función de extensión para convertir dp a px
     private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
 }
