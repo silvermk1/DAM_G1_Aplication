@@ -45,4 +45,31 @@
         app:cornerRadius="8dp"
         android:text="Registrarse" />
 
+    <!-- Este LinearLayout ahora usa un peso de 1, ocupando el espacio restante -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <!-- FOOTER -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_light"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/homeButton"
+            android:layout_width="125dp"
+            android:layout_height="70dp"
+            android:layout_margin="6dp"
+            android:backgroundTint="#4040C0"
+            android:text="Home"
+            android:textColor="@android:color/white"
+            app:cornerRadius="8dp" />
+
+    </LinearLayout>
+    <!-- FOOTER -->
+
 </LinearLayout>

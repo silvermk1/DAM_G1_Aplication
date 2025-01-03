@@ -1,5 +1,6 @@
 package com.example.dam_g1_aplication.activities
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -13,10 +14,10 @@ import com.example.dam_g1_aplication.ApiConnection.ApiService
 import com.example.dam_g1_aplication.ApiConnection.RetrofitClient
 import com.example.dam_g1_aplication.R
 import com.example.dam_g1_aplication.dataClasses.Achievements
+import com.example.dam_g1_aplication.dataClasses.AchievementsFavorites
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 class AchievementsActivity : AppCompatActivity() {
 
     private lateinit var titleTextView: TextView
@@ -51,6 +52,9 @@ class AchievementsActivity : AppCompatActivity() {
 
                     // Crea dinámicamente un botón para cada logro
                     for (achievement in achievements) {
+                        val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+                        val userId = sharedPreferences.getString("user_id", null)?.toLongOrNull()
                         val achievementLayout = LinearLayout(this@AchievementsActivity).apply {
                             layoutParams = LinearLayout.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -61,30 +65,47 @@ class AchievementsActivity : AppCompatActivity() {
                             orientation = LinearLayout.HORIZONTAL
                         }
 
+                        //LÓGICA BOTÓN FAVORITOS
                         val favoriteButton = Button(this@AchievementsActivity).apply {
                             layoutParams = LinearLayout.LayoutParams(
-                                75.dpToPx(), // tamaño fijo para el botón de favoritos
+                                75.dpToPx(),
                                 ViewGroup.LayoutParams.WRAP_CONTENT
-                            ).apply {
-                                setMargins(8, 8, 8, 8)
+                            )
+                            // Texto y color predeterminado
+                            text = "+"
+                            setBackgroundColor(resources.getColor(android.R.color.holo_red_light))
+
+                            if (isLoggedIn && userId != null) {
+                                //Si estas logeado revisa tus favoritos y actualzia su estado
+                                fillListViewLogged(userId, achievement)
                             }
 
-                            text = "❤︎︎"
-
-                            // Fondo con esquinas redondeadas
-                            background = GradientDrawable().apply {
-                                cornerRadius = 8 * resources.displayMetrics.density // Convertir dp a píxeles
-                                setColor(resources.getColor(android.R.color.holo_red_light))
-                            }
-
+                            // Alternar favoritos al hacer clic
                             setOnClickListener {
-                                Toast.makeText(
-                                    this@AchievementsActivity,
-                                    "Favorito seleccionado: ${achievement.title}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                if (!isLoggedIn) {
+                                    //Si no estas logado te muestra un mensaje informandoq ue te tienes que logear para utilziar la función
+                                    Toast.makeText(
+                                        this@AchievementsActivity,
+                                        "Inicia sesión para usar favoritos",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    return@setOnClickListener
+                                }
+
+                                if (text == "+") {
+                                    text = "❤︎︎"
+                                    setBackgroundColor(resources.getColor(android.R.color.holo_green_light))
+                                    //Función que hace llamada a la api para guardar el favorito
+                                    saveNewFavorite(userId!!, achievement.id.toLong())
+                                } else {
+                                    text = "+"
+                                    setBackgroundColor(resources.getColor(android.R.color.holo_red_light))
+                                    //Función que hace llamada a la api para eliminar el favorito
+                                    deleteFavorite(userId!!, achievement.id.toLong())
+                                }
                             }
                         }
+
 
                         val achievementButton = Button(this@AchievementsActivity).apply {
                             layoutParams = LinearLayout.LayoutParams(
@@ -126,6 +147,36 @@ class AchievementsActivity : AppCompatActivity() {
         })
     }
 
+    private fun Button.fillListViewLogged(
+        userId: Long,
+        achievement: Achievements
+    ) {
+        val apiService = RetrofitClient.getClient().create(ApiService::class.java)
+        val favoriteCheckCall =
+            apiService.findUserFavoriteAchievementsByUserId(userId, achievement.id.toLong())
+
+        favoriteCheckCall.enqueue(object : Callback<AchievementsFavorites> {
+            override fun onResponse(
+                call: Call<AchievementsFavorites>,
+                response: Response<AchievementsFavorites>
+            ) {
+                if (response.isSuccessful && response.body() != null) {
+                    // Si el logro es favorito, actualiza el estado inicial
+                    text = "❤︎︎"
+                    setBackgroundColor(resources.getColor(android.R.color.holo_green_light))
+                }
+            }
+
+            override fun onFailure(call: Call<AchievementsFavorites>, t: Throwable) {
+                Toast.makeText(
+                    this@AchievementsActivity,
+                    "Error al verificar favoritos",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+    }
+
     private fun navigateToAchievements(achievement: Achievements) {
         val intent = Intent(this, AchievementDetailActivity::class.java).apply {
             putExtra("ACHIEVEMENT_ID", achievement.id)
@@ -137,4 +188,65 @@ class AchievementsActivity : AppCompatActivity() {
 
     // Función de extensión para convertir dp a px
     private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
+
+    //AGREGAR NUEVO FAVORITO
+    fun saveNewFavorite(userId: Long, achievementId: Long) {
+        // Crear el objeto friendrequest
+        val achievementsFavorites = AchievementsFavorites(userId =userId, achievementId = achievementId)
+
+        // Realizar la llamada a la API
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
+        val call = apiService.createAchievementFavorite(achievementsFavorites)
+
+        call.enqueue(object : Callback<AchievementsFavorites> {
+            override fun onResponse(call: Call<AchievementsFavorites>, response: Response<AchievementsFavorites>) {
+                if (response.isSuccessful) {
+                    val createAchievementFavorite = response.body()
+                    Toast.makeText(this@AchievementsActivity, "Logro añadido a favoritos", Toast.LENGTH_SHORT).show()
+                    println("Logro añadido a favorito: $createAchievementFavorite")
+                } else {
+                    Toast.makeText(this@AchievementsActivity, "Error: ${response.message()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<AchievementsFavorites>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+    // ELIMINAR FAVORITO
+    fun deleteFavorite(userId: Long, achievementId: Long) {
+        // Realizar la llamada a la API
+
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
+        val call = apiService.deleteFavorite(userId, achievementId)
+        call.enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(
+                        this@AchievementsActivity,
+                        "Logro eliminado de favoritos correctamente",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this@AchievementsActivity,
+                        "No se pudo eliminar el logro de favoritos",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Toast.makeText(
+                    this@AchievementsActivity,
+                    "Error: ${t.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+    }
+
 }

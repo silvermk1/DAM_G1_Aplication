@@ -1,6 +1,7 @@
 package com.example.dam_g1_aplication.ApiConnection
 
 import com.example.dam_g1_aplication.dataClasses.Achievements
+import com.example.dam_g1_aplication.dataClasses.AchievementsFavorites
 import com.example.dam_g1_aplication.dataClasses.Categories
 import com.example.dam_g1_aplication.dataClasses.FriendRequests
 import com.example.dam_g1_aplication.dataClasses.Friendships
@@ -18,6 +19,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 //METODOS PARA LA CONEXINO API SERVICE
 interface ApiService {
@@ -84,4 +86,34 @@ interface ApiService {
 
     @PUT("users/{id}")
     fun updateUser(@Path("id") userId: Long, @Body updatedUser: Users): Call<Users>
+
+    //otros favoirtes...
+    @POST("/achievementsfavorites")
+    fun createAchievementFavorite(@Body achievementsfavorites: AchievementsFavorites): Call<AchievementsFavorites>
+
+
+    @DELETE("achievementsfavorites/{userId}/{achievementId}")
+    fun deleteFavorite(
+        @Path("userId") userId: Long,
+        @Path("achievementId") achievementId: Long
+    ): Call<Void>
+
+    @GET("achievementsfavorites/{userId}")
+    fun getAchievementsFavoritesByUserId(
+        @Path("userId") userId: Long
+    ): Call<List<AchievementsFavorites>>
+
+
+    @GET("/achievementsfavorites/{userId}/{achievementId}")
+    fun findUserFavoriteAchievementsByUserId(
+        @Path("userId") userId: Long,
+        @Path("achievementId") achievementId: Long
+    ): Call<AchievementsFavorites>
+
+    @GET("achievements/{id}")
+    fun getAchievementById(@Path("id") id: Long): Call<Achievements>
+
+    @GET("achievements/search")
+    fun searchAchievements(@Query("query") query: String): Call<List<Achievements>>
+
 }

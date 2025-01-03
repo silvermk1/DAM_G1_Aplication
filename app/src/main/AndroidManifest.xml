@@ -54,5 +54,8 @@
         <activity
             android:name=".activities.FriendsActivity"
             android:exported="false"/>
+        <activity
+            android:name=".activities.SearcherActivity"
+            android:exported="false"/>
     </application>
 </manifest>

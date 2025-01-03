@@ -65,6 +65,13 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // FOOTER
+        val homeButton: Button = findViewById(R.id.homeButton)
+
+        homeButton.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 
