@@ -244,6 +244,7 @@ class ProfileActivity : AppCompatActivity() {
 
             // Mostrar la imagen en el ImageButton
             imagenusuario.setImageURI(selectedImageUri)
+            actualizarimagenperfil()
         }
     }
 
@@ -290,18 +291,21 @@ class ProfileActivity : AppCompatActivity() {
         //provar con imagen de prueva:
         //val drawable = ResourcesCompat.getDrawable(resources, R.drawable.fotoperfil_ejemplo, null)
 
-        val bitmap = (drawable as BitmapDrawable).bitmap
+
+    val bitmap = (drawable as BitmapDrawable).bitmap
         val compressedBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true)
         val byteArrayOutputStream = ByteArrayOutputStream()
         //bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
         compressedBitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream) // Reducir calidad
         val byteArray = byteArrayOutputStream.toByteArray()
         val base64String = Base64.encodeToString(byteArray, Base64.DEFAULT)
+        //val idString = sharedPreferences.getString("user_id", "0") // Retorna un String, por defecto "0"
+        val idString = sharedPreferences.getString("user_id", "0") ?: "0"
 
         //actualizar imagen bd
         val updatedUser = Users(
-            id = "1",
-            username = "Marc",
+            id = idString,
+            username = null,
             password = null,
             birthday = null,
             biography = null,

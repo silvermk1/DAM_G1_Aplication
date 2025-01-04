@@ -91,6 +91,7 @@ class LoginActivity : AppCompatActivity() {
                             putString("username", username)
                             putString("user_id", user.id)
                             putString("mail", user.mail)
+
                             apply()
                         }
                         var iduser = user.id

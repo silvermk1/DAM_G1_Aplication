@@ -141,8 +141,13 @@ class FriendsActivity : AppCompatActivity() {
                 call: Call<List<Friendships>>,
                 response: Response<List<Friendships>>
             ) {
-                val friendships = response.body()!!
+                val friendships = response.body()
+                if (friendships == null) {
+                    Toast.makeText(this@FriendsActivity, "No se pudieron obtener las amistades.", Toast.LENGTH_SHORT).show()
+                    return
+                }
                 val idpropio = sharedPreferences.getString("user_id", null)
+
 
                 // Filtrar los IDs de los amigos que corresponden al usuario actual
                 for (friendship in friendships) {
@@ -156,7 +161,6 @@ class FriendsActivity : AppCompatActivity() {
                     }
                 }
 
-                // Usamos un contador para saber cuándo hemos terminado de obtener todos los nombres
                 val totalFriends = friendIds.size
                 val friendNames = mutableListOf<String>()
                 var counter = 0
@@ -167,7 +171,6 @@ class FriendsActivity : AppCompatActivity() {
                         friendNames.add(userName)
                         counter++
 
-                        // Si hemos obtenido los nombres de todos los amigos, actualizar el ListView
                         if (counter == totalFriends) {
                             updateListViewWithFriends(friendNames)
                         }
@@ -176,8 +179,7 @@ class FriendsActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<List<Friendships>>, t: Throwable) {
-                Toast.makeText(this@FriendsActivity, "Error: ${t.message}", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this@FriendsActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }

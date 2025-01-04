@@ -100,7 +100,7 @@ class HomeActivity : AppCompatActivity() {
                 call: Call<List<AchievementsFavorites>>,
                 response: Response<List<AchievementsFavorites>>
             ) {
-                if (response.isSuccessful) {
+                //if (response.isSuccessful) {
                     val achievementsFavorites = response.body()
                     //Si la llamada de la api devuelve una lista vacia muestra un item en el listview informandolo
                     if (achievementsFavorites.isNullOrEmpty()) {
@@ -126,15 +126,15 @@ class HomeActivity : AppCompatActivity() {
                             )
                         }
                     }
-                } else {
-                    val favoriteItems = listOf("Error al obtener logros favoritos")
-                    val adapter = ArrayAdapter(
-                        this@HomeActivity,
-                        android.R.layout.simple_list_item_1,
-                        favoriteItems
-                    )
-                    favoritesListView.adapter = adapter
-                }
+                //} else {
+                   // val favoriteItems = listOf("Error al obtener logros favoritos")
+                   // val adapter = ArrayAdapter(
+                    //    this@HomeActivity,
+                    //    android.R.layout.simple_list_item_1,
+                     //   favoriteItems
+                    //)
+                    //favoritesListView.adapter = adapter
+                //}
             }
 
             override fun onFailure(call: Call<List<AchievementsFavorites>>, t: Throwable) {
