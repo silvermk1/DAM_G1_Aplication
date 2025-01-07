@@ -48,19 +48,15 @@ class HomeActivity : AppCompatActivity() {
             favoritesListView.adapter = adapter
         }
 
-
         searcherButton.setOnClickListener {
             val intent = Intent(this, SearcherActivity::class.java)
             startActivity(intent)
         }
 
-
         categoriesButton.setOnClickListener {
             val intent = Intent(this, CategoriesActivity::class.java)
             startActivity(intent)
         }
-
-
 
         // FOOTER
         val profileButton: Button = findViewById(R.id.profileButton)
@@ -76,7 +72,6 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, SupportActivity::class.java)
             startActivity(intent)
         }
-
 
         profileButton.setOnClickListener {
             if (isLoggedIn) {
@@ -100,41 +95,31 @@ class HomeActivity : AppCompatActivity() {
                 call: Call<List<AchievementsFavorites>>,
                 response: Response<List<AchievementsFavorites>>
             ) {
-                //if (response.isSuccessful) {
-                    val achievementsFavorites = response.body()
-                    //Si la llamada de la api devuelve una lista vacia muestra un item en el listview informandolo
-                    if (achievementsFavorites.isNullOrEmpty()) {
-                        val favoriteItems = listOf("No tienes logros favoritos")
-                        val adapter = ArrayAdapter(
-                            this@HomeActivity,
-                            android.R.layout.simple_list_item_1,
-                            favoriteItems
+                val achievementsFavorites = response.body()
+                //Si la llamada de la api devuelve una lista vacia muestra un item en el listview informandolo
+                if (achievementsFavorites.isNullOrEmpty()) {
+                    val favoriteItems = listOf("No tienes logros favoritos")
+                    val adapter = ArrayAdapter(
+                        this@HomeActivity,
+                        android.R.layout.simple_list_item_1,
+                        favoriteItems
+                    )
+                    favoritesListView.adapter = adapter
+                } else {
+                    //Si la llamada devuelve una lista que si tiene objetos rellenamos el list view con un item por cada favorito
+                    val favoriteItems = mutableListOf<String>()
+                    val pendingCalls = achievementsFavorites.size
+                    //Cada favorito realiza una seunda busqueda para obtener el titulo y descripcion de cada logro
+                    achievementsFavorites.forEach { favorite ->
+                        searchForAchievementInfo(
+                            apiService,
+                            favorite,
+                            favoriteItems,
+                            pendingCalls,
+                            favoritesListView
                         )
-                        favoritesListView.adapter = adapter
-                    } else {
-                        //Si la llamada devuelve una lista que si tiene objetos rellenamos el list view con un item por cada favorito
-                        val favoriteItems = mutableListOf<String>()
-                        val pendingCalls = achievementsFavorites.size
-                        //Cada favorito realiza una seunda busqueda para obtener el titulo y descripcion de cada logro
-                        achievementsFavorites.forEach { favorite ->
-                            searchForAchievementInfo(
-                                apiService,
-                                favorite,
-                                favoriteItems,
-                                pendingCalls,
-                                favoritesListView
-                            )
-                        }
                     }
-                //} else {
-                   // val favoriteItems = listOf("Error al obtener logros favoritos")
-                   // val adapter = ArrayAdapter(
-                    //    this@HomeActivity,
-                    //    android.R.layout.simple_list_item_1,
-                     //   favoriteItems
-                    //)
-                    //favoritesListView.adapter = adapter
-                //}
+                }
             }
 
             override fun onFailure(call: Call<List<AchievementsFavorites>>, t: Throwable) {
@@ -155,40 +140,39 @@ class HomeActivity : AppCompatActivity() {
         favoriteItems: MutableList<String>,
         pendingCalls: Int,
         favoritesListView: ListView
-    ) {
-        apiService.getAchievementById(favorite.achievementId)
-            .enqueue(object : Callback<Achievements> {
-                override fun onResponse(
-                    call: Call<Achievements>,
-                    response: Response<Achievements>
-                ) {
-                    if (response.isSuccessful) {
-                        val achievement = response.body()
-                        if (achievement != null) {
-                            favoriteItems.add(" ${achievement.title} - ${achievement.description}")
-                        }
-                    } else {
-                        favoriteItems.add("Error al obtener el logro con ID: ${favorite.achievementId}")
+    ){
+        apiService.getAchievementById(favorite.achievementId).enqueue(object : Callback<Achievements> {
+            override fun onResponse(
+                call: Call<Achievements>,
+                response: Response<Achievements>
+            ) {
+                if (response.isSuccessful) {
+                    val achievement = response.body()
+                    if (achievement != null) {
+                        favoriteItems.add(" ${achievement.title} - ${achievement.description}")
                     }
-                    checkIfAllCallsCompleted(
-                        pendingCalls,
-                        favoriteItems,
-                        favoritesListView
-                    )
-                }
-
-                override fun onFailure(
-                    call: Call<Achievements>,
-                    t: Throwable
-                ) {
+                } else {
                     favoriteItems.add("Error al obtener el logro con ID: ${favorite.achievementId}")
-                    checkIfAllCallsCompleted(
-                        pendingCalls,
-                        favoriteItems,
-                        favoritesListView
-                    )
                 }
-            })
+                checkIfAllCallsCompleted(
+                    pendingCalls,
+                    favoriteItems,
+                    favoritesListView
+                )
+            }
+
+            override fun onFailure(
+                call: Call<Achievements>,
+                t: Throwable
+            ) {
+                favoriteItems.add("Error al obtener el logro con ID: ${favorite.achievementId}")
+                checkIfAllCallsCompleted(
+                    pendingCalls,
+                    favoriteItems,
+                    favoritesListView
+                )
+            }
+        })
     }
 
     private fun checkIfAllCallsCompleted(

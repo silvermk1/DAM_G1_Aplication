@@ -45,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
         val retrofit = RetrofitClient.getClient()
         apiService = retrofit.create(ApiService::class.java)
 
-        //comprovar ingreso de datos "vacios..."
+        //comprobar ingreso de datos "vacios..."
         loginButton.setOnClickListener {
             val username = usernameEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
@@ -54,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this,
                     "Rellene todos los campos", Toast.LENGTH_SHORT).show()
             } else {
-                //checkcredentials = comprovar inicio de sesion
+                //checkcredentials = comprobar inicio de sesion
                 checkCredentials(username, password)
             }
         }
@@ -75,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    //metodo para comprovar inicio de sesion
+    //metodo para comprobar inicio de sesion
     private fun checkCredentials(username: String, password: String) {
         //retornar usuarios
         val call = apiService.getUsers()
@@ -83,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
                 if (response.isSuccessful && response.body() != null) {
                     val users = response.body()!!
-                    //comprovar inicio sesion
+                    //comprobar inicio sesion
                     val user = users.find { it.username == username && it.password == password }
                     if (user != null) { //inicio correcto
                         with(sharedPreferences.edit()) {

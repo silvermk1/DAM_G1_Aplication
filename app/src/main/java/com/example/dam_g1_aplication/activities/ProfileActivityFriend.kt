@@ -405,7 +405,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-//COMPROVAR SI HAY OTRA SOLICITUD DE AMISTAD
+//COMPROBAR SI HAY OTRA SOLICITUD DE AMISTAD
     fun getAllFriendRequests2(sender: Long, reciever: Long) {
         //conectar retrofit
         val retrofit = RetrofitClient.getClient()

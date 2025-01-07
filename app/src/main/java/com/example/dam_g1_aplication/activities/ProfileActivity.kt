@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -19,13 +20,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import com.example.dam_g1_aplication.ApiConnection.ApiService
 import com.example.dam_g1_aplication.ApiConnection.RetrofitClient
 import com.example.dam_g1_aplication.R
 import com.example.dam_g1_aplication.dataClasses.Friendships
 import com.example.dam_g1_aplication.dataClasses.Users
-import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,17 +34,28 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var usernameTextView: TextView
     private lateinit var mailTextView: TextView
     private lateinit var biographyTextMultiLine: EditText
-    private lateinit var saveButton: Button
     private lateinit var username: String
     private lateinit var mail: String
+    private lateinit var userId: String
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var bottoncerrarsesion : Button
-    private lateinit var botonamigos : Button
+    private lateinit var logoutButton : Button
+    private lateinit var friendListButton : Button
     private lateinit var friendSearcher: EditText
     private lateinit var friendsSearchButton: Button
-    private lateinit var imagenusuario: ImageButton
+    private lateinit var profileImageView: ImageButton
+    private lateinit var editSocialButton: Button
+    private lateinit var youtubeButton: ImageButton
+    private lateinit var twitterxButton: ImageButton
+    private lateinit var facebookButton: ImageButton
+    private lateinit var twitchButton: ImageButton
+    private lateinit var redditButton: ImageButton
+    private lateinit var steamButton: ImageButton
+    private lateinit var epicgamesButton: ImageButton
+    private lateinit var nswitchButton: ImageButton
+    private lateinit var psnButton: ImageButton
+    private lateinit var xboxButton: ImageButton
 
-    //cojer permisos de almazenamiento
+    //solicitar permisos de almazenamiento
     companion object {
         const val REQUEST_IMAGE_PICK = 2
         const val REQUEST_PERMISSION_READ_STORAGE = 1
@@ -60,17 +70,33 @@ class ProfileActivity : AppCompatActivity() {
         println("idpreferences debug" + sharedPreferences.getString("user_id", null))
         username = sharedPreferences.getString("username", null).toString()
         mail = sharedPreferences.getString("mail", null).toString()
+        userId = sharedPreferences.getString("user_id", null).toString()
         usernameTextView = findViewById(R.id.usernameTextView)
         mailTextView = findViewById(R.id.mailTextView)
         biographyTextMultiLine = findViewById(R.id.biographyTextMultiLine)
-        bottoncerrarsesion = findViewById(R.id.cerrarsesion)
-        saveButton = findViewById(R.id.saveButton)
-        botonamigos = findViewById(R.id.friendListButton)
+        logoutButton = findViewById(R.id.logoutButton)
+        friendListButton = findViewById(R.id.friendListButton)
         friendSearcher = findViewById(R.id.FriendSearcher)
         friendsSearchButton = findViewById(R.id.friendsSearch)
-        imagenusuario = findViewById(R.id.profileImageView)
+        profileImageView = findViewById(R.id.profileImageView)
+        editSocialButton = findViewById(R.id.editSocialButton)
+        youtubeButton = findViewById(R.id.youtubeButton)
+        twitterxButton = findViewById(R.id.twitterxButton)
+        facebookButton = findViewById(R.id.facebookButton)
+        twitchButton = findViewById(R.id.twitchButton)
+        redditButton = findViewById(R.id.redditButton)
+        steamButton = findViewById(R.id.steamButton)
+        epicgamesButton = findViewById(R.id.epicgamesButton)
+        nswitchButton = findViewById(R.id.nswitchButton)
+        psnButton = findViewById(R.id.psnButton)
+        xboxButton = findViewById(R.id.xboxButton)
         usernameTextView.text = username
         mailTextView.text = mail
+
+        editSocialButton.setOnClickListener {
+            val intent = Intent(this, ProfileSocialActivity::class.java)
+            startActivity(intent)
+        }
 
         // FOOTER
         val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
@@ -98,7 +124,7 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //HAZER FOTO
+        //HACER FOTO
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             // Si no, pedir el permiso
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_PERMISSION_READ_STORAGE)
@@ -109,14 +135,13 @@ class ProfileActivity : AppCompatActivity() {
         if (userId != null) {
             descargarimagenperfilbd(userId)
         }
-//AGREGAR IMAGEN USUARIO AL PRESIONAR IMAGEN Y AGREGAR A LA BD
-        imagenusuario.setOnClickListener {
+        //AGREGAR IMAGEN USUARIO AL PRESIONAR IMAGEN Y AGREGAR A LA BD
+        profileImageView.setOnClickListener {
             actualizarimagenperfil()
-
         }
 
         //CERRAR SESION AL PRESIONAR EL BOTON
-        bottoncerrarsesion.setOnClickListener{
+        logoutButton.setOnClickListener{
             with(sharedPreferences.edit()) {
                 putBoolean("isLoggedIn", false)
                 remove("username")
@@ -141,18 +166,108 @@ class ProfileActivity : AppCompatActivity() {
 
         }
         //MANDAR AL ACTIVITY FRIENDS
-        botonamigos.setOnClickListener{
+        friendListButton.setOnClickListener{
             val intent = Intent(this, FriendsActivity::class.java)
             startActivity(intent)
-        } }
+        }
 
-//METODO PARA COMPROVAR QUE EL USUARIO EXISTE
+        // Preparar la conexión con Retrofit
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
+
+        // Hacer la llamada al servicio para obtener las redes del usuario
+        val callUsers = apiService.getUsers()
+        callUsers.enqueue(object : Callback<List<Users>> {
+            override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
+                val users = response.body()
+                val user = users?.find {it.username == username}
+                if (user != null) {
+                    //Si el usuario tiene una red, se mostrará un botón suyo con la red puesta. Al pulsar sobre la red te dirigirá a esa
+                    if (user.youtube != null) {
+                        youtubeButton.visibility = View.VISIBLE
+                        youtubeButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW,Uri.parse("https://youtube.com/@" + user.youtube))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.twitterx != null) {
+                        twitterxButton.visibility = View.VISIBLE
+                        twitterxButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW,Uri.parse("https://x.com/" + user.twitterx))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.facebook != null) {
+                        facebookButton.visibility = View.VISIBLE
+                        facebookButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW,Uri.parse("https://facebook.com/" + user.facebook))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.twitch != null) {
+                        twitchButton.visibility = View.VISIBLE
+                        twitchButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW,Uri.parse("https://twitch.tv/" + user.twitch))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.reddit != null) {
+                        redditButton.visibility = View.VISIBLE
+                        redditButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW,Uri.parse("https://reddit.com/user/" + user.reddit))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.steam != null) {
+                        steamButton.visibility = View.VISIBLE
+                        steamButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW,Uri.parse("https://steamcommunity.com/id/" + user.steam))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.epicgames != null) {
+                        epicgamesButton.visibility = View.VISIBLE
+                        epicgamesButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW,Uri.parse("https://epicgames.com/id/" + user.epicgames))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.nswitch != null) {
+                        nswitchButton.visibility = View.VISIBLE
+                        nswitchButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW,Uri.parse("https://switch.nintendo.com/" + user.nswitch))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.psn != null) {
+                        psnButton.visibility = View.VISIBLE
+                        psnButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW,Uri.parse("https://psnprofiles.com/" + user.psn))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.xbox != null) {
+                        xboxButton.visibility = View.VISIBLE
+                        xboxButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW,Uri.parse("https://xboxgamertag.com/search/" + user.xbox))
+                            startActivity(intent)
+                        }
+                    }
+                }
+            }
+            override fun onFailure(call: Call<List<Users>>, t: Throwable) {
+                println("Error al realizar la solicitud: ${t.message}")
+            }
+        })
+    }
+
+    //METODO PARA COMPROBAR QUE EL USUARIO EXISTE
     fun getUseridByUsername3(username: String) {
         // Preparar la conexión con Retrofit
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
 
-        // Hacer la llamada al servicio para obtener todos los usuarios
+        //Hacer la llamada al servicio para obtener todos los usuarios
         val callUsers = apiService.getUsers()
         callUsers.enqueue(object : Callback<List<Users>> {
             override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
@@ -171,7 +286,6 @@ class ProfileActivity : AppCompatActivity() {
                 } else {
                     println("No se encontraron usuarios.")
                 }
-
             }
 
             override fun onFailure(call: Call<List<Users>>, t: Throwable) {
@@ -180,7 +294,7 @@ class ProfileActivity : AppCompatActivity() {
         })
     }
 
-//METODO PARA COMPROVAR LA AMISTAD Y MANDAR AL ACTIVITY DEL PERFIL
+//METODO PARA COMPROBAR LA AMISTAD Y MANDAR AL ACTIVITY DEL PERFIL
     fun comprovarAmistad(idamigo : Long, username: String){
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
@@ -193,7 +307,7 @@ class ProfileActivity : AppCompatActivity() {
 
                 // Filtrar los IDs de los amigos que corresponden al usuario actual
                 for (friendship in friendships) {
-                    //comprovar que no es tu amigo
+                    //comprobar que no es tu amigo
                         if (friendship.friendA.toString() == idpropio) {
                             if (friendship.friendB.toString() == idamigo.toString()){
                                 numero = 1
@@ -243,7 +357,7 @@ class ProfileActivity : AppCompatActivity() {
             val selectedImageUri: Uri = data.data ?: return
 
             // Mostrar la imagen en el ImageButton
-            imagenusuario.setImageURI(selectedImageUri)
+            profileImageView.setImageURI(selectedImageUri)
             actualizarimagenperfil()
         }
     }
@@ -287,7 +401,7 @@ class ProfileActivity : AppCompatActivity() {
         startActivityForResult(intent, REQUEST_IMAGE_PICK)
 
         //convertir la imagen agregada a string:
-        val drawable = imagenusuario.drawable
+        val drawable = profileImageView.drawable
         //provar con imagen de prueva:
         //val drawable = ResourcesCompat.getDrawable(resources, R.drawable.fotoperfil_ejemplo, null)
 
@@ -295,11 +409,9 @@ class ProfileActivity : AppCompatActivity() {
     val bitmap = (drawable as BitmapDrawable).bitmap
         val compressedBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true)
         val byteArrayOutputStream = ByteArrayOutputStream()
-        //bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
         compressedBitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream) // Reducir calidad
         val byteArray = byteArrayOutputStream.toByteArray()
         val base64String = Base64.encodeToString(byteArray, Base64.DEFAULT)
-        //val idString = sharedPreferences.getString("user_id", "0") // Retorna un String, por defecto "0"
         val idString = sharedPreferences.getString("user_id", "0") ?: "0"
 
         //actualizar imagen bd
@@ -334,7 +446,7 @@ class ProfileActivity : AppCompatActivity() {
                         val profileBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
 
                         // Establecer la imagen en el ImageButton
-                        imagenusuario.setImageBitmap(profileBitmap)
+                        profileImageView.setImageBitmap(profileBitmap)
                     } catch (e: IllegalArgumentException) {
                         e.printStackTrace()
                         println("Error al decodificar la imagen de perfil.")
@@ -348,5 +460,5 @@ class ProfileActivity : AppCompatActivity() {
                 println("Error al obtener la imagen de perfil: ${t.message}")
             }
         })
-        }
+    }
 }

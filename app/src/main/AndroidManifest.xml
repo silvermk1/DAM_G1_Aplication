@@ -40,6 +40,9 @@
             android:name=".activities.ProfileActivity"
             android:exported="false"/>
         <activity
+            android:name=".activities.ProfileSocialActivity"
+            android:exported="false"/>
+        <activity
             android:name=".activities.RegisterActivity"
             android:exported="false"/>
         <activity

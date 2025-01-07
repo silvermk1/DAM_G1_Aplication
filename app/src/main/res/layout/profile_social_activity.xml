@@ -1,0 +1,382 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="4dp"
+        android:background="@android:color/holo_orange_light"
+        android:padding="16dp"
+        android:text="Redes Sociales"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="34sp"
+        android:textStyle="bold" />
+
+        <!-- youtube -->
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/youtube" />
+
+            <EditText
+                android:id="@+id/youtubeEditText"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:hint="Usuario de Youtube"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/youtubeSaveButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@android:color/holo_blue_light"
+                android:text="Guardar"
+                android:textColor="@android:color/white"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+
+        <!-- twitterx -->
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/twitterx" />
+
+            <EditText
+                android:id="@+id/twitterxEditText"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:hint="Usuario de X"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/twitterxSaveButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@android:color/holo_blue_light"
+                android:text="Guardar"
+                android:textColor="@android:color/white"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+
+        <!-- facebook -->
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/facebook" />
+
+            <EditText
+                android:id="@+id/facebookEditText"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:hint="Usuario de Facebook"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/facebookSaveButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@android:color/holo_blue_light"
+                android:text="Guardar"
+                android:textColor="@android:color/white"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+
+        <!-- twitch -->
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/twitch" />
+
+            <EditText
+                android:id="@+id/twitchEditText"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:hint="Usuario de Twitch"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/twitchSaveButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@android:color/holo_blue_light"
+                android:text="Guardar"
+                android:textColor="@android:color/white"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+
+        <!-- reddit -->
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/reddit" />
+
+            <EditText
+                android:id="@+id/redditEditText"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:hint="Usuario de Reddit"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/redditSaveButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@android:color/holo_blue_light"
+                android:text="Guardar"
+                android:textColor="@android:color/white"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+
+        <!-- steam -->
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/steam" />
+
+            <EditText
+                android:id="@+id/steamEditText"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:hint="Usuario de Steam"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/steamSaveButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@android:color/holo_blue_light"
+                android:text="Guardar"
+                android:textColor="@android:color/white"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+
+        <!-- epicgames -->
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/epicgames" />
+
+            <EditText
+                android:id="@+id/epicgamesEditText"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:hint="Usuario de Epic Games"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/epicgamesSaveButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@android:color/holo_blue_light"
+                android:text="Guardar"
+                android:textColor="@android:color/white"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+
+        <!-- nswitch -->
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/nswitch" />
+
+            <EditText
+                android:id="@+id/nswitchEditText"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:hint="Usuario de Epic Games"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/nswitchSaveButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@android:color/holo_blue_light"
+                android:text="Guardar"
+                android:textColor="@android:color/white"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+
+        <!-- psn -->
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/psn" />
+
+            <EditText
+                android:id="@+id/psnEditText"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:hint="Usuario de PSN"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/psnSaveButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@android:color/holo_blue_light"
+                android:text="Guardar"
+                android:textColor="@android:color/white"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+
+        <!-- xbox -->
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/xbox" />
+
+            <EditText
+                android:id="@+id/xboxEditText"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:hint="Gamertag de Xbox"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/xboxSaveButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@android:color/holo_blue_light"
+                android:text="Guardar"
+                android:textColor="@android:color/white"
+                app:cornerRadius="8dp" />
+        </LinearLayout>
+</LinearLayout>
+

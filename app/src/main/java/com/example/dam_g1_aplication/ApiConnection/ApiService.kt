@@ -54,9 +54,6 @@ interface ApiService {
         @Path("userId") userId: Long
     ): Call<Void>
 
-    @GET("users")
-    fun getAllUsers(): Call<List<Users>>
-
     @GET("/userachievement/{userId}")   //FUNCIONA?
     fun findUserAchievementsByUserId(@Path("userId") userId: Long): Call<List<UserAchievements>>
 
@@ -91,7 +88,6 @@ interface ApiService {
     @POST("/achievementsfavorites")
     fun createAchievementFavorite(@Body achievementsfavorites: AchievementsFavorites): Call<AchievementsFavorites>
 
-
     @DELETE("achievementsfavorites/{userId}/{achievementId}")
     fun deleteFavorite(
         @Path("userId") userId: Long,
@@ -102,7 +98,6 @@ interface ApiService {
     fun getAchievementsFavoritesByUserId(
         @Path("userId") userId: Long
     ): Call<List<AchievementsFavorites>>
-
 
     @GET("/achievementsfavorites/{userId}/{achievementId}")
     fun findUserFavoriteAchievementsByUserId(
@@ -115,5 +110,11 @@ interface ApiService {
 
     @GET("achievements/search")
     fun searchAchievements(@Query("query") query: String): Call<List<Achievements>>
+
+    @GET("users/{id}/social")
+    fun getSocial(): Call<List<Users>>
+
+    @PUT("users/{id}/social")
+    fun updateSocial(@Path("id") id: Long, @Query("field") field: String, @Query("value") value: String): Call<Void>
 
 }
