@@ -152,7 +152,7 @@ class FriendsActivity : AppCompatActivity() {
 
         apiService.getUserById(userId).enqueue(object : Callback<Users> {
             override fun onResponse(call: Call<Users>, response: Response<Users>) {
-                response.body()?.let { callback(it.username.toString()) }
+                response.body()?.let { it.username?.let { it1 -> callback(it1) } }
             }
 
             override fun onFailure(call: Call<Users>, t: Throwable) {
