@@ -1,13 +1,18 @@
 package com.example.dam_g1_aplication.activities
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
+import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
@@ -38,7 +43,7 @@ class ProfileActivityFriend : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var imagenusuarioamigo: ShapeableImageView
 
-//Atributos-datos--
+    //Atributos-datos--
     //nombre usuario
     private lateinit var usuario : String
 
@@ -73,7 +78,7 @@ class ProfileActivityFriend : AppCompatActivity() {
 
         if (tiposolicitud == "solicitado") {
             botonsolicitud.setText("ACEPTAR SOLICITUD")
-        //agregar amigo y borrar la solicitud al clikear el boton!
+            //agregar amigo y borrar la solicitud al clikear el boton!
             botonsolicitud.setOnClickListener{
                 getUseridByUsername4(usuario.toString())
                 getUseridByUsername5(usuario.toString())
@@ -81,7 +86,7 @@ class ProfileActivityFriend : AppCompatActivity() {
         }
         if (tiposolicitud == "agregado") {
             botonsolicitud.setText("DEJAR DE SEGIR")
-        //borrar amigo al presionar el boton
+            //borrar amigo al presionar el boton
             botonsolicitud.setOnClickListener{
                 //borrar amigo
                 getUseridByUsername6(usuario.toString())
@@ -89,7 +94,7 @@ class ProfileActivityFriend : AppCompatActivity() {
         }
         if (tiposolicitud == "noagregado"){
             botonsolicitud.setText("Agregar")
-        //agregar solicitud de amistad al presionar el boton
+            //agregar solicitud de amistad al presionar el boton
             botonsolicitud.setOnClickListener{
                 //agregar solicitud de amistad
                 getUseridByUsername7(usuario.toString())
@@ -108,7 +113,7 @@ class ProfileActivityFriend : AppCompatActivity() {
 
     }
 
-//METODOS--------------------
+    //METODOS--------------------
 //-----------------------------------
 //-----------------------------------------
 //METODOS PARA RETORNAR LOS OBJETIVOS DEL USUARIO DEL PERFIL SELECCIONADO ANTERIORMENTE------------
@@ -122,21 +127,21 @@ class ProfileActivityFriend : AppCompatActivity() {
         val callUsers = apiService.getUsers()
         callUsers.enqueue(object : Callback<List<Users>> {
             override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
-                    val users = response.body()
+                val users = response.body()
                 println("usuarios:")
                 println(users)
-                    if (users != null) {
-                        println("nulo?")
-                        println("Usuarios obtenidos: ${users.size}")
-                        for (user in users) {
-                            println("Username: ${user.username}, ID: ${user.id}")
-                            if (user.username == username){
-                                retornarobjetivosusuarioid(user.id.toLong())
-                            }
+                if (users != null) {
+                    println("nulo?")
+                    println("Usuarios obtenidos: ${users.size}")
+                    for (user in users) {
+                        println("Username: ${user.username}, ID: ${user.id}")
+                        if (user.username == username){
+                            retornarobjetivosusuarioid(user.id.toLong())
                         }
-                    } else {
-                        println("No se encontraron usuarios.")
                     }
+                } else {
+                    println("No se encontraron usuarios.")
+                }
 
             }
 
@@ -146,7 +151,7 @@ class ProfileActivityFriend : AppCompatActivity() {
         })
     }
 
-//METODO PARA BUSCAR LOS OBJETIVOS DE UN DETERMINADO USUARIOID
+    //METODO PARA BUSCAR LOS OBJETIVOS DE UN DETERMINADO USUARIOID
     fun retornarobjetivosusuarioid(userId : Long){
         //preparar conexion retrofit
         val retrofit = RetrofitClient.getClient()
@@ -155,26 +160,26 @@ class ProfileActivityFriend : AppCompatActivity() {
         //lista para guardar los id de lo objetivos del usuario
         val ids: MutableList<Long> = mutableListOf()
 
-    //retornar los logros segun el usuarioid
+        //retornar los logros segun el usuarioid
         val calluser = apiService.findUserAchievementsByUserId(userId)
         calluser.enqueue(object : Callback<List<UserAchievements>> {
             override fun onResponse(
                 call: Call<List<UserAchievements>>,
                 response: Response<List<UserAchievements>>
             ) {
-                    val userachievements = response.body()
-                    if (userachievements != null) {
-                        println("AQUI SE MEUSTRAN!!!!(_:")
-                        for (achievement in userachievements) {
+                val userachievements = response.body()
+                if (userachievements != null) {
+                    println("AQUI SE MEUSTRAN!!!!(_:")
+                    for (achievement in userachievements) {
 
-                            //guardar el id en la lista ids
-                            ids.add(achievement.achievementid)
-
-                        }
-                        //enviar la lista al metodo que transforma los ids a nombre objetivos
-                        transformobjetivosidanombre(ids)
+                        //guardar el id en la lista ids
+                        ids.add(achievement.achievementid)
 
                     }
+                    //enviar la lista al metodo que transforma los ids a nombre objetivos
+                    transformobjetivosidanombre(ids)
+
+                }
 
             }
 
@@ -186,45 +191,45 @@ class ProfileActivityFriend : AppCompatActivity() {
 
     }
 
-//METODO PARA TRANSFORMAR LISTA OBJETIVOSID A LISTA NOMBREOBJETIVOS
+    //METODO PARA TRANSFORMAR LISTA OBJETIVOSID A LISTA NOMBREOBJETIVOS
     fun transformobjetivosidanombre(objetivosid : List<Long>){
-    //conectar retrofit
-    val retrofit = RetrofitClient.getClient()
-    val apiService = retrofit.create(ApiService::class.java)
+        //conectar retrofit
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
 
-    val nombres: MutableList<String> = mutableListOf()
+        val nombres: MutableList<String> = mutableListOf()
 
-    //hazer llamada = retornar ids de los amgios
-    val callFriendships = apiService.getAchievements()
-    callFriendships.enqueue(object : Callback<List<Achievements>> {
-        override fun onResponse(call: Call<List<Achievements>>, response: Response<List<Achievements>>) {
+        //hazer llamada = retornar ids de los amgios
+        val callFriendships = apiService.getAchievements()
+        callFriendships.enqueue(object : Callback<List<Achievements>> {
+            override fun onResponse(call: Call<List<Achievements>>, response: Response<List<Achievements>>) {
 
                 val objetivos = response.body()
-            if (objetivos != null) {
-                println("todos los objetivos:")
-                println(objetivos)
-                // Obtener IDs de los amigos
-                for (objetivo in objetivos) {
-                    for (objetivoId in objetivosid) {
-                        if (objetivo.id.toLong() == objetivoId) {
-                            nombres.add(objetivo.title)
+                if (objetivos != null) {
+                    println("todos los objetivos:")
+                    println(objetivos)
+                    // Obtener IDs de los amigos
+                    for (objetivo in objetivos) {
+                        for (objetivoId in objetivosid) {
+                            if (objetivo.id.toLong() == objetivoId) {
+                                nombres.add(objetivo.title)
+                            }
+
                         }
-
                     }
+                    //AGREGAR AL LIST VIEW TODOS LOS VALORES
+                    println("mostrar los nombrs:----")
+                    println(nombres)
+                    actualizarListView(nombres)
                 }
-                //AGREGAR AL LIST VIEW TODOS LOS VALORES
-                println("mostrar los nombrs:----")
-                println(nombres)
-                actualizarListView(nombres)
             }
-        }
-        override fun onFailure(call: Call<List<Achievements>>, t: Throwable) {
-            Toast.makeText(this@ProfileActivityFriend, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
-        }
-    })
-}
+            override fun onFailure(call: Call<List<Achievements>>, t: Throwable) {
+                Toast.makeText(this@ProfileActivityFriend, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 
-//METODO PARA ACTUALIZAR LIST VIEW OBJETIVOS
+    //METODO PARA ACTUALIZAR LIST VIEW OBJETIVOS
     fun actualizarListView(nombres: List<String>) {
         // Crear un ArrayAdapter con la lista de nombres
         val objetivosAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, nombres)
@@ -233,7 +238,7 @@ class ProfileActivityFriend : AppCompatActivity() {
         listaobjetivos.adapter = objetivosAdapter
     }
 
-//METODOS PARA MOSTRAR OBJETIVOS COMPARTIDOS--------------------------------------------------------
+    //METODOS PARA MOSTRAR OBJETIVOS COMPARTIDOS--------------------------------------------------------
 //METODO PARA ABRIR UN CUADRO EMERJENTE CON TODOS TUS OBJETIVOS
     private fun compartirobjetivo(objetivos : List<String>){
 
@@ -373,7 +378,7 @@ class ProfileActivityFriend : AppCompatActivity() {
 
 
 
-//METODOS PARA AGREGAR UN AMIGO--------------------------------------------------------------------
+    //METODOS PARA AGREGAR UN AMIGO--------------------------------------------------------------------
 //METODO PARA OBTENER EL ID DEL USERNAME
     fun getUseridByUsername7(username: String) {
         // Preparar la conexión con Retrofit
@@ -405,7 +410,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-//COMPROBAR SI HAY OTRA SOLICITUD DE AMISTAD
+    //COMPROBAR SI HAY OTRA SOLICITUD DE AMISTAD
     fun getAllFriendRequests2(sender: Long, reciever: Long) {
         //conectar retrofit
         val retrofit = RetrofitClient.getClient()
@@ -451,7 +456,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-//AGREGAR SOLICITUD DE AMISTAD
+    //AGREGAR SOLICITUD DE AMISTAD
     fun addFriendRequest(sender: Long, reciever: Long) {
         // Crear el objeto friendrequest
         val friendrequest = FriendRequests(userSender = sender, userReciever = reciever)
@@ -478,7 +483,7 @@ class ProfileActivityFriend : AppCompatActivity() {
         })
     }
 
-//METODOS PARA BORRAR UN AMGIO---------------------------------------------------------------------
+    //METODOS PARA BORRAR UN AMGIO---------------------------------------------------------------------
 //METODO PARA OBTENER EL ID DEL USERNAME
     fun getUseridByUsername6(username: String) {
         // Preparar la conexión con Retrofit
@@ -510,7 +515,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-//FILTRAR EL USUARIO ID PARA SACAR EL ID DEL FRIENDREQUEST Y MANDAR AL METODO DELETEFRIENDREQUEST
+    //FILTRAR EL USUARIO ID PARA SACAR EL ID DEL FRIENDREQUEST Y MANDAR AL METODO DELETEFRIENDREQUEST
     fun getAllFriendShips(friendA: Long, friendB: String) {
         //conectar retrofit
         val retrofit = RetrofitClient.getClient()
@@ -555,7 +560,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-//ELIMINAR AMISTAD
+    //ELIMINAR AMISTAD
     fun removeFriend(id: Long){
         // Preparar la conexión con Retrofit
         val retrofit = RetrofitClient.getClient()
@@ -576,7 +581,7 @@ class ProfileActivityFriend : AppCompatActivity() {
         })
     }
 
-//METODOS PARA BORRAR UNA SOLICITUD----------------------------------------------------------------
+    //METODOS PARA BORRAR UNA SOLICITUD----------------------------------------------------------------
 //METODO PARA OBTENER EL ID DEL USERNAME
     fun getUseridByUsername5(username: String) {
         // Preparar la conexión con Retrofit
@@ -608,7 +613,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-//FILTRAR EL USUARIO ID PARA SACAR EL ID DEL FRIENDREQUEST Y MANDAR AL METODO DELETEFRIENDREQUEST
+    //FILTRAR EL USUARIO ID PARA SACAR EL ID DEL FRIENDREQUEST Y MANDAR AL METODO DELETEFRIENDREQUEST
     fun getAllFriendRequests(sender: Long, reciever: String) {
         //conectar retrofit
         val retrofit = RetrofitClient.getClient()
@@ -651,7 +656,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-//METODO PARA BORRAR SOLICITUD DE AMISTAD
+    //METODO PARA BORRAR SOLICITUD DE AMISTAD
     fun deleteFriendRequestFromApi(friendrequestId: Long) {
         // Preparar la conexión con Retrofit
         val retrofit = RetrofitClient.getClient()
@@ -673,7 +678,7 @@ class ProfileActivityFriend : AppCompatActivity() {
     }
 
 
-//METODOS PARA AGREGAR UN AMIGO--------------------------------------------------------------------
+    //METODOS PARA AGREGAR UN AMIGO--------------------------------------------------------------------
 //OBTENER EL ID DEL USERNAME
     fun getUseridByUsername4(username: String) {
         // Preparar la conexión con Retrofit
@@ -705,7 +710,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-//AGREGAR AMIGO
+    //AGREGAR AMIGO
     fun addFriendship(friendAId: Long, friendBId: Long) {
         // Crear el objeto Friendship
         val friendship = Friendships(friendA = friendAId, friendB = friendBId)
@@ -732,7 +737,7 @@ class ProfileActivityFriend : AppCompatActivity() {
         })
     }
 
-//METODOS PARA DESCARGAR IMAGEN PERFIL DEL USUARIO--------------------------------------------
+    //METODOS PARA DESCARGAR IMAGEN PERFIL DEL USUARIO--------------------------------------------
 //OBTENER EL ID DEL USERNAME
     fun getUseridByUsername8(username: String) {
         // Preparar la conexión con Retrofit
@@ -766,7 +771,7 @@ class ProfileActivityFriend : AppCompatActivity() {
             }
         })
     }
-//DESCARGAR IMAGEN DEL USUARIO
+    //DESCARGAR IMAGEN DEL USUARIO
     fun descargarimagenperfilbd(userId: Long){
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)

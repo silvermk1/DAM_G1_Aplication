@@ -2,13 +2,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/white_gradient"
+    android:elevation="8dp"
+    android:layout_gravity="center">
 
     <!-- Título -->
     <TextView
         android:id="@+id/titleTextView"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_width="341dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="4dp"
         android:background="@android:color/holo_orange_light"
         android:padding="16dp"
         android:text="Buscador"
@@ -16,9 +20,23 @@
         android:textColor="@android:color/white"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/menuButton"
+        android:layout_width="75dp"
+        android:layout_height="74dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="Menú"
+        android:src="@drawable/botonhamburguesa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/titleTextView"
+        app:layout_constraintTop_toTopOf="@id/titleTextView" />
 
     <!-- Contenido principal -->
     <LinearLayout
@@ -26,43 +44,70 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/titleTextView"
-        app:layout_constraintBottom_toTopOf="@id/footerLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/panelMenu"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent">
 
-        <EditText
-            android:id="@+id/searcherEditText"
-            android:layout_width="match_parent"
-            android:layout_height="66dp"
-            android:ems="10"
-            android:hint="Buscar..."
-            android:inputType="text" />
+    <EditText
+        android:id="@+id/searcherEditText"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:ems="10"
+        android:hint="Buscar..."
+        android:inputType="text" />
 
-        <Button
-            android:id="@+id/searchButton"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="#4322FF"
-            android:text="Buscar" />
-
-        <ListView
-            android:id="@+id/resultsListView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <!-- Footer -->
-    <LinearLayout
-        android:id="@+id/footerLayout"
-        android:layout_width="0dp"
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_gravity="center"
+        android:backgroundTint="#4322FF"
+        android:text="Buscar" />
 
-        <include layout="@layout/footer_buttons" />
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ListView
+        android:id="@+id/resultsListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</LinearLayout>
+
+    <!-- Menú de tres botones -->
+<LinearLayout
+android:id="@+id/panelMenu"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:visibility="gone"
+android:background="@android:color/transparent"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+android:layout_marginTop="5dp">
+
+<Button
+    android:id="@+id/button1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Home"
+    android:backgroundTint="#D3D3D3"
+    android:textColor="#424242"/>
+
+
+<Button
+    android:id="@+id/button3"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Perfil"
+    android:backgroundTint="#D3D3D3"
+    android:textColor="#424242"/>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sopporte"
+        android:backgroundTint="#D3D3D3"
+        android:textColor="#424242"/>
+</LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,8 +3,12 @@ package com.example.dam_g1_aplication.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +24,10 @@ import retrofit2.Response
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var videoView: VideoView
+
+    //atributos para el boton hamburguesa:
+    private lateinit var panelMenu: LinearLayout
+    private lateinit var menuButton: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,30 +66,58 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // FOOTER
-        val profileButton: Button = findViewById(R.id.profileButton)
-        val supportButton: Button = findViewById(R.id.supportButton)
-        val homeButton: Button = findViewById(R.id.homeButton)
 
-        homeButton.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
+
+//MENU INTERACTIVO HAMBURGUESA
+        menuButton = findViewById(R.id.menuButton)
+        panelMenu = findViewById(R.id.panelMenu)
+
+        // Cargar las animaciones
+        val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
+        val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
+        val slideDownButtons = AnimationUtils.loadAnimation(this, R.anim.slide_down_buttons)
+        // Al presionar el ImageView (menú)
+        menuButton.setOnClickListener {
+            if (panelMenu.visibility == View.GONE) {
+
+                // Mostrar el panel con animación
+                panelMenu.startAnimation(slideUp)
+                panelMenu.visibility = View.VISIBLE
+            } else {
+                searcherButton.startAnimation(slideDownButtons)
+                categoriesButton.startAnimation(slideDownButtons)
+
+                // Ocultar el panel con animación
+                panelMenu.startAnimation(slideDown)
+                panelMenu.visibility = View.GONE
+            }
+        }
+
+        // Configurar botones del panel (opcional)
+        val button1: Button = findViewById(R.id.button1)
+        val button2: Button = findViewById(R.id.button2)
+        val button3: Button = findViewById(R.id.button3)
+
+        //cambiar el home por el intent de mis objetivos
+        button1.setOnClickListener {
+            val intent = Intent(this, AchievementsActivity::class.java)
             startActivity(intent)
         }
 
-        supportButton.setOnClickListener {
+        button2.setOnClickListener {
             val intent = Intent(this, SupportActivity::class.java)
             startActivity(intent)
         }
 
-        profileButton.setOnClickListener {
+        button3.setOnClickListener {
             if (isLoggedIn) {
                 val intent = Intent(this, ProfileActivity::class.java)
                 startActivity(intent)
             } else {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
-            }
-        }
+            }        }
+
     }
 
     private fun fillFavoriteListView(
@@ -189,4 +225,5 @@ class HomeActivity : AppCompatActivity() {
             favoritesListView.adapter = adapter
         }
     }
+
 }

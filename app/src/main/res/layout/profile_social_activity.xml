@@ -4,21 +4,79 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@drawable/white_gradient"
+    android:elevation="8dp"
+    android:layout_gravity="center">
 
     <!-- Título -->
-    <TextView
-        android:id="@+id/titleTextView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginBottom="4dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:background="@android:color/holo_orange_light"
-        android:padding="16dp"
-        android:text="Redes Sociales"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
-        android:textSize="34sp"
-        android:textStyle="bold" />
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:text="Redes Sociales"
+            android:textAlignment="center"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white" />
+
+        <ImageView
+            android:id="@+id/menuButton"
+            android:layout_width="71dp"
+            android:layout_height="57dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Menú"
+            android:src="@drawable/botonhamburguesa"
+            android:background="@android:color/transparent" />
+    </LinearLayout>
+
+    <!-- MENU BOTONES -->
+    <LinearLayout
+        android:id="@+id/panelMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:backgroundTint="#D3D3D3"
+            android:textColor="#424242"/>
+
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Perfil"
+            android:backgroundTint="#D3D3D3"
+            android:textColor="#424242"/>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sopporte"
+            android:backgroundTint="#D3D3D3"
+            android:textColor="#424242"/>
+    </LinearLayout>
 
         <!-- youtube -->
         <LinearLayout
@@ -378,5 +436,7 @@
                 android:textColor="@android:color/white"
                 app:cornerRadius="8dp" />
         </LinearLayout>
+
+
 </LinearLayout>
 

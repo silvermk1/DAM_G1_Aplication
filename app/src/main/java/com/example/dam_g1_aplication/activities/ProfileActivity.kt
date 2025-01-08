@@ -1,6 +1,7 @@
 package com.example.dam_g1_aplication.activities
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -12,9 +13,12 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -54,6 +58,10 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var nswitchButton: ImageButton
     private lateinit var psnButton: ImageButton
     private lateinit var xboxButton: ImageButton
+
+    //atributos para el boton hamburguesa:
+    private lateinit var panelMenu: LinearLayout
+    private lateinit var menuButton: ImageView
 
     //solicitar permisos de almazenamiento
     companion object {
@@ -95,32 +103,6 @@ class ProfileActivity : AppCompatActivity() {
 
         editSocialButton.setOnClickListener {
             val intent = Intent(this, ProfileSocialActivity::class.java)
-            startActivity(intent)
-        }
-
-        // FOOTER
-        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
-        val profileButton: Button = findViewById(R.id.profileButton)
-        val supportButton: Button = findViewById(R.id.supportButton)
-        val homeButton: Button = findViewById(R.id.homeButton)
-
-        supportButton.setOnClickListener {
-            val intent = Intent(this, SupportActivity::class.java)
-            startActivity(intent)
-        }
-
-        profileButton.setOnClickListener {
-            if (isLoggedIn) {
-                val intent = Intent(this, ProfileActivity::class.java)
-                startActivity(intent)
-            } else {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-            }
-        }
-
-        homeButton.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
 
@@ -259,6 +241,53 @@ class ProfileActivity : AppCompatActivity() {
                 println("Error al realizar la solicitud: ${t.message}")
             }
         })
+
+//MENU INTERACTIVO HAMBURGUESA
+        val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+
+        menuButton = findViewById(R.id.menuButton)
+        panelMenu = findViewById(R.id.panelMenu)
+
+        // Cargar las animaciones
+        val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
+        val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
+
+        // Al presionar el ImageView (menú)
+        menuButton.setOnClickListener {
+            if (panelMenu.visibility == View.GONE) {
+                // Mostrar el panel con animación
+                panelMenu.startAnimation(slideUp)
+                panelMenu.visibility = View.VISIBLE
+            } else {
+                // Ocultar el panel con animación
+                panelMenu.startAnimation(slideDown)
+                panelMenu.visibility = View.GONE
+            }
+        }
+
+        // Configurar botones del panel (opcional)
+        val button1: Button = findViewById(R.id.button1)
+        val button2: Button = findViewById(R.id.button2)
+        val button3: Button = findViewById(R.id.button3)
+
+        button1.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+
+        button2.setOnClickListener {
+            val intent = Intent(this, SupportActivity::class.java)
+            startActivity(intent)
+        }
+
+        button3.setOnClickListener {
+            val intent = Intent(this, AchievementsActivity::class.java)
+            startActivity(intent)
+        }
+
+
+
     }
 
     //METODO PARA COMPROBAR QUE EL USUARIO EXISTE
