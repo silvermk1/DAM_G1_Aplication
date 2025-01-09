@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
+import android.view.Menu
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
@@ -20,6 +21,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.isWideGamut
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.dam_g1_aplication.ApiConnection.ApiService
 import com.example.dam_g1_aplication.ApiConnection.RetrofitClient
 import com.example.dam_g1_aplication.R
@@ -29,6 +32,7 @@ import com.example.dam_g1_aplication.dataClasses.Friendships
 import com.example.dam_g1_aplication.dataClasses.UserAchievements
 import com.example.dam_g1_aplication.dataClasses.Users
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.navigation.NavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,12 +40,19 @@ import retrofit2.Response
 
 class ProfileActivityFriend : AppCompatActivity() {
 
+    private lateinit var menuButton: ImageView
+    private lateinit var navView: NavigationView
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    private var isLoggedIn: Boolean = false
+    private lateinit var sharedPreferences: SharedPreferences
+
+
     private lateinit var textousuario: TextView
     private lateinit var compartir : Button
     private lateinit var listaobjetivos : ListView
     private lateinit var botonsolicitud : Button
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var imagenusuarioamigo: ShapeableImageView
+    private lateinit var imagenusuarioamigo: ImageView
 
     //Atributos-datos--
     //nombre usuario
@@ -51,6 +62,7 @@ class ProfileActivityFriend : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.profile_activity_friend)
+
 
         sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
 
@@ -111,45 +123,164 @@ class ProfileActivityFriend : AppCompatActivity() {
         getUseridByUsername(usuario.toString()) //metodo para listar los objetivos del perfil
 
 
+// MENU HAMBURGUESA
+
+        drawerLayout = findViewById(R.id.drawer_layout)
+        navView = findViewById(R.id.nav_view)
+        menuButton = findViewById(R.id.menu_button)
+        navigationView = findViewById(R.id.nav_view)
+
+        // Establecer el comportamiento del botón hamburguesa
+        menuButton.setOnClickListener {
+            // Abrir o cerrar el menú lateral (DrawerLayout)
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
+        escuchadebotonesmenu()
+    }
+//METODOS MENU HAMBURGUESA
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
     }
 
-    //METODOS--------------------
+    private fun escuchadebotonesmenu() {
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+
+                }
+                R.id.nav_perfil -> {
+
+                    Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show()
+
+                    if (isLoggedIn) {
+                        val intent = Intent(this, ProfileActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
+
+                }
+                R.id.nav_logros -> {
+                    Toast.makeText(this, "Logros", Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(this, AchievementDetailActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_categorias -> {
+                    Toast.makeText(this, "Categorías", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, CategoriesActivity::class.java)
+                    startActivity(intent)
+                }
+
+                R.id.nav_iniciar -> {
+
+                    if (isLoggedIn) {
+                        Toast.makeText(this, "Cierra la sesion!", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show()
+
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+
+                R.id.nav_cerrar -> {
+                    with(sharedPreferences.edit()) {
+                        putBoolean("isLoggedIn", false)
+                        remove("username")
+                        remove("user_id")
+                        remove("mail")
+                        apply()
+
+                    }
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+
+                    Toast.makeText(this, "Sesion cerrada, Adios!", Toast.LENGTH_SHORT).show()
+                }
+
+                R.id.nav_contactos -> {
+
+                    if (isLoggedIn) {
+                        Toast.makeText(this, "Contactos", Toast.LENGTH_SHORT).show()
+
+                        val intent = Intent(this, FriendsActivity::class.java)
+                        startActivity(intent)
+                    }else{
+                        Toast.makeText(this, "Inicie sesion Antes!", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, HomeActivity::class.java)
+                        startActivity(intent)
+
+                    }
+                }
+                R.id.nav_soporte -> {
+                    Toast.makeText(this, "Sopporte", Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(this, SupportActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_compartir -> {
+                    Toast.makeText(this, "Gracias por comparitr (:", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, ProfileSocialActivity::class.java)
+                    startActivity(intent)
+                }
+                else -> {
+                    Toast.makeText(this, "Opción desconocida", Toast.LENGTH_SHORT).show()
+                }
+            }
+            // Cierra el Drawer después de la selección
+            drawerLayout.closeDrawers()
+            true
+        }
+    }
+//OTROS METODOS CODIGO
+//METODOS--------------------
 //-----------------------------------
 //-----------------------------------------
 //METODOS PARA RETORNAR LOS OBJETIVOS DEL USUARIO DEL PERFIL SELECCIONADO ANTERIORMENTE------------
 //METODO PARA RETORNAR USUARIOID POR SU USERNAME
-    fun getUseridByUsername(username: String) {
-        // Preparar la conexión con Retrofit
-        val retrofit = RetrofitClient.getClient()
-        val apiService = retrofit.create(ApiService::class.java)
+fun getUseridByUsername(username: String) {
+    // Preparar la conexión con Retrofit
+    val retrofit = RetrofitClient.getClient()
+    val apiService = retrofit.create(ApiService::class.java)
 
-        // Hacer la llamada al servicio para obtener todos los usuarios
-        val callUsers = apiService.getUsers()
-        callUsers.enqueue(object : Callback<List<Users>> {
-            override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
-                val users = response.body()
-                println("usuarios:")
-                println(users)
-                if (users != null) {
-                    println("nulo?")
-                    println("Usuarios obtenidos: ${users.size}")
-                    for (user in users) {
-                        println("Username: ${user.username}, ID: ${user.id}")
-                        if (user.username == username){
-                            retornarobjetivosusuarioid(user.id.toLong())
-                        }
+    // Hacer la llamada al servicio para obtener todos los usuarios
+    val callUsers = apiService.getUsers()
+    callUsers.enqueue(object : Callback<List<Users>> {
+        override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
+            val users = response.body()
+            println("usuarios:")
+            println(users)
+            if (users != null) {
+                println("nulo?")
+                println("Usuarios obtenidos: ${users.size}")
+                for (user in users) {
+                    println("Username: ${user.username}, ID: ${user.id}")
+                    if (user.username == username){
+                        retornarobjetivosusuarioid(user.id.toLong())
                     }
-                } else {
-                    println("No se encontraron usuarios.")
                 }
-
+            } else {
+                println("No se encontraron usuarios.")
             }
 
-            override fun onFailure(call: Call<List<Users>>, t: Throwable) {
-                println("Error al realizar la solicitud: ${t.message}")
-            }
-        })
-    }
+        }
+
+        override fun onFailure(call: Call<List<Users>>, t: Throwable) {
+            println("Error al realizar la solicitud: ${t.message}")
+        }
+    })
+}
 
     //METODO PARA BUSCAR LOS OBJETIVOS DE UN DETERMINADO USUARIOID
     fun retornarobjetivosusuarioid(userId : Long){

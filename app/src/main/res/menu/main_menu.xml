@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:title="Home"
+            android:icon="@drawable/iconohome"
+            />
+        <item
+            android:id="@+id/nav_perfil"
+            android:title="Perfil"
+            android:icon="@drawable/iconoperfil"
+            />
+        <item
+            android:id="@+id/nav_logros"
+            android:title="Mis Logros"
+            android:icon="@drawable/iconoobjetivos"
+            />
+        <item
+            android:id="@+id/nav_categorias"
+            android:title="Categorias"
+            android:icon="@drawable/iconocategorias"
+            />
+
+    </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:title="Social">
+            <menu>
+                <item
+                    android:id="@+id/nav_iniciar"
+                    android:title="Login / Register"
+                    android:icon="@drawable/iconoiniciar"
+                    />
+                <item
+                    android:id="@+id/nav_cerrar"
+                    android:title="Cerrar Sesion"
+                    android:icon="@drawable/iconocerrar"
+                    />
+                <item
+                    android:id="@+id/nav_contactos"
+                    android:title="Contactos"
+                    android:icon="@drawable/iconocontactos"
+                    />
+            </menu>
+        </item>
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_soporte"
+                android:title="Sopporte"
+                android:icon="@drawable/iconosopporte"
+                />
+            <item
+                android:id="@+id/nav_compartir"
+                android:title="Share"
+                android:icon="@drawable/iconoshare"
+                />
+        </menu>
+    </item>
+</menu>

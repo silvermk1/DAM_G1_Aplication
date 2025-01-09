@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">DAM_G1_Aplication</string>
+
+    <string name="app_name">Flutter</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -44,4 +45,8 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="title_activity_category">CategoryActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="openDrawer">Abrir menú</string>
+    <string name="closeDrawer">Cerrar menú</string>
 </resources>

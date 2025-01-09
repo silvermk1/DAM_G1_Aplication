@@ -18,14 +18,20 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
+        <!-- SplashActivity como la primera actividad que se ejecuta -->
         <activity
-            android:name=".activities.HomeActivity"
+            android:name=".activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- HomeActivity ahora no tiene el filtro LAUNCHER, ya que no es la primera actividad -->
+        <activity
+            android:name=".activities.HomeActivity"
+            android:exported="true"/>
 
         <activity
             android:name=".activities.AchievementsActivity"
@@ -60,5 +66,6 @@
         <activity
             android:name=".activities.SearcherActivity"
             android:exported="false"/>
+
     </application>
 </manifest>

@@ -12,6 +12,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
+import android.view.Menu
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Button
@@ -24,19 +25,23 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.dam_g1_aplication.ApiConnection.ApiService
 import com.example.dam_g1_aplication.ApiConnection.RetrofitClient
 import com.example.dam_g1_aplication.R
 import com.example.dam_g1_aplication.dataClasses.Friendships
 import com.example.dam_g1_aplication.dataClasses.Users
+import com.google.android.material.navigation.NavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
 
 class ProfileActivity : AppCompatActivity() {
+
     private lateinit var usernameTextView: TextView
-    private lateinit var mailTextView: TextView
+    //private lateinit var mailTextView: TextView
     private lateinit var biographyTextMultiLine: EditText
     private lateinit var username: String
     private lateinit var mail: String
@@ -69,9 +74,15 @@ class ProfileActivity : AppCompatActivity() {
         const val REQUEST_PERMISSION_READ_STORAGE = 1
     }
 
+    private lateinit var navView: NavigationView
+    private lateinit var drawerLayout: DrawerLayout // Agrega esta línea
+    private lateinit var navigationView: NavigationView
+    private var isLoggedIn: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile_activity)
+
 
         sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
         sharedPreferences.getString("user_id", null)
@@ -80,14 +91,12 @@ class ProfileActivity : AppCompatActivity() {
         mail = sharedPreferences.getString("mail", null).toString()
         userId = sharedPreferences.getString("user_id", null).toString()
         usernameTextView = findViewById(R.id.usernameTextView)
-        mailTextView = findViewById(R.id.mailTextView)
         biographyTextMultiLine = findViewById(R.id.biographyTextMultiLine)
         logoutButton = findViewById(R.id.logoutButton)
-        friendListButton = findViewById(R.id.friendListButton)
+        friendListButton = findViewById(R.id.friendsListButton)
         friendSearcher = findViewById(R.id.FriendSearcher)
         friendsSearchButton = findViewById(R.id.friendsSearch)
-        profileImageView = findViewById(R.id.profileImageView)
-        editSocialButton = findViewById(R.id.editSocialButton)
+        profileImageView = findViewById(R.id.profile_picture)
         youtubeButton = findViewById(R.id.youtubeButton)
         twitterxButton = findViewById(R.id.twitterxButton)
         facebookButton = findViewById(R.id.facebookButton)
@@ -98,13 +107,8 @@ class ProfileActivity : AppCompatActivity() {
         nswitchButton = findViewById(R.id.nswitchButton)
         psnButton = findViewById(R.id.psnButton)
         xboxButton = findViewById(R.id.xboxButton)
-        usernameTextView.text = username
-        mailTextView.text = mail
-
-        editSocialButton.setOnClickListener {
-            val intent = Intent(this, ProfileSocialActivity::class.java)
-            startActivity(intent)
-        }
+        usernameTextView.text = username + "-" + mail
+        //mailTextView.text = mail
 
         //HACER FOTO
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -153,7 +157,7 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Preparar la conexión con Retrofit
+        // Preparar la conexión con Retrofit  y recivir redes sociales
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
 
@@ -241,53 +245,127 @@ class ProfileActivity : AppCompatActivity() {
                 println("Error al realizar la solicitud: ${t.message}")
             }
         })
+// MENU HAMBURGUESA
 
-//MENU INTERACTIVO HAMBURGUESA
-        val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+    drawerLayout = findViewById(R.id.drawer_layout)
+    navView = findViewById(R.id.nav_view)
+    menuButton = findViewById(R.id.menu_button)
+    navigationView = findViewById(R.id.nav_view)
 
-        menuButton = findViewById(R.id.menuButton)
-        panelMenu = findViewById(R.id.panelMenu)
+    // Establecer el comportamiento del botón hamburguesa
+    menuButton.setOnClickListener {
+        // Abrir o cerrar el menú lateral (DrawerLayout)
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+    }
+    escuchadebotonesmenu()
+    }
 
-        // Cargar las animaciones
-        val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
-        val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
 
-        // Al presionar el ImageView (menú)
-        menuButton.setOnClickListener {
-            if (panelMenu.visibility == View.GONE) {
-                // Mostrar el panel con animación
-                panelMenu.startAnimation(slideUp)
-                panelMenu.visibility = View.VISIBLE
-            } else {
-                // Ocultar el panel con animación
-                panelMenu.startAnimation(slideDown)
-                panelMenu.visibility = View.GONE
+    //METODOS MENU HAMBURGUESA
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    private fun escuchadebotonesmenu() {
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+
+                }
+                R.id.nav_perfil -> {
+
+                    Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show()
+
+                    if (isLoggedIn) {
+                        val intent = Intent(this, ProfileActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
+
+                }
+                R.id.nav_logros -> {
+                    Toast.makeText(this, "Logros", Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(this, AchievementDetailActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_categorias -> {
+                    Toast.makeText(this, "Categorías", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, CategoriesActivity::class.java)
+                    startActivity(intent)
+                }
+
+                R.id.nav_iniciar -> {
+
+                    if (isLoggedIn) {
+                        Toast.makeText(this, "Cierra la sesion!", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show()
+
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+
+                R.id.nav_cerrar -> {
+                    with(sharedPreferences.edit()) {
+                        putBoolean("isLoggedIn", false)
+                        remove("username")
+                        remove("user_id")
+                        remove("mail")
+                        apply()
+
+                    }
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+
+                    Toast.makeText(this, "Sesion cerrada, Adios!", Toast.LENGTH_SHORT).show()
+                }
+
+                R.id.nav_contactos -> {
+
+                    if (isLoggedIn) {
+                        Toast.makeText(this, "Contactos", Toast.LENGTH_SHORT).show()
+
+                        val intent = Intent(this, FriendsActivity::class.java)
+                        startActivity(intent)
+                    }else{
+                        Toast.makeText(this, "Inicie sesion Antes!", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, HomeActivity::class.java)
+                        startActivity(intent)
+
+                    }
+                }
+                R.id.nav_soporte -> {
+                    Toast.makeText(this, "Sopporte", Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(this, SupportActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_compartir -> {
+                    Toast.makeText(this, "Gracias por comparitr (:", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, ProfileSocialActivity::class.java)
+                    startActivity(intent)
+                }
+                else -> {
+                    Toast.makeText(this, "Opción desconocida", Toast.LENGTH_SHORT).show()
+                }
             }
+            // Cierra el Drawer después de la selección
+            drawerLayout.closeDrawers()
+            true
         }
-
-        // Configurar botones del panel (opcional)
-        val button1: Button = findViewById(R.id.button1)
-        val button2: Button = findViewById(R.id.button2)
-        val button3: Button = findViewById(R.id.button3)
-
-        button1.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-
-        button2.setOnClickListener {
-            val intent = Intent(this, SupportActivity::class.java)
-            startActivity(intent)
-        }
-
-        button3.setOnClickListener {
-            val intent = Intent(this, AchievementsActivity::class.java)
-            startActivity(intent)
-        }
-
-
-
     }
 
     //METODO PARA COMPROBAR QUE EL USUARIO EXISTE
@@ -323,7 +401,7 @@ class ProfileActivity : AppCompatActivity() {
         })
     }
 
-//METODO PARA COMPROBAR LA AMISTAD Y MANDAR AL ACTIVITY DEL PERFIL
+    //METODO PARA COMPROBAR LA AMISTAD Y MANDAR AL ACTIVITY DEL PERFIL
     fun comprovarAmistad(idamigo : Long, username: String){
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
@@ -337,20 +415,20 @@ class ProfileActivity : AppCompatActivity() {
                 // Filtrar los IDs de los amigos que corresponden al usuario actual
                 for (friendship in friendships) {
                     //comprobar que no es tu amigo
-                        if (friendship.friendA.toString() == idpropio) {
-                            if (friendship.friendB.toString() == idamigo.toString()){
-                                numero = 1
-                                Toast.makeText(this@ProfileActivity, "ya es tu amigo", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                        if (friendship.friendB.toString() == idpropio) {
-                            if (friendship.friendA.toString() == idamigo.toString()){
-                                numero = 1
-                                Toast.makeText(this@ProfileActivity, "ya es tu amigo", Toast.LENGTH_SHORT).show()
-
-                            }
+                    if (friendship.friendA.toString() == idpropio) {
+                        if (friendship.friendB.toString() == idamigo.toString()){
+                            numero = 1
+                            Toast.makeText(this@ProfileActivity, "ya es tu amigo", Toast.LENGTH_SHORT).show()
                         }
                     }
+                    if (friendship.friendB.toString() == idpropio) {
+                        if (friendship.friendA.toString() == idamigo.toString()){
+                            numero = 1
+                            Toast.makeText(this@ProfileActivity, "ya es tu amigo", Toast.LENGTH_SHORT).show()
+
+                        }
+                    }
+                }
                 //no esa tu amigo, mandar al activity...
                 if (numero == 0){
                     val intent = Intent(this@ProfileActivity, ProfileActivityFriend::class.java)
@@ -366,7 +444,7 @@ class ProfileActivity : AppCompatActivity() {
         })
     }
 
-//METODOS PARA OBTENER PERMISOS
+    //METODOS PARA OBTENER PERMISOS
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_PERMISSION_READ_STORAGE) {
@@ -378,7 +456,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-//METODO PARA SELECCIONAR IMAGEN GALERIA PARA FOTOPERFIL
+    //METODO PARA SELECCIONAR IMAGEN GALERIA PARA FOTOPERFIL
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
@@ -391,7 +469,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-//METODO PARA SUVIR LA IMAGEN DE PERFIL NUEVA A LA BD
+    //METODO PARA SUVIR LA IMAGEN DE PERFIL NUEVA A LA BD
     fun updateUser(userId: Long, updatedUser: Users) {
         // Crear una instancia de Retrofit y el ApiService
         val retrofit = RetrofitClient.getClient()
@@ -423,7 +501,7 @@ class ProfileActivity : AppCompatActivity() {
         })
     }
 
-//METODO PARA ACTUALIZAR LA IMAGEN DE PERFIL DES DE LA BD
+    //METODO PARA ACTUALIZAR LA IMAGEN DE PERFIL DES DE LA BD
     fun actualizarimagenperfil(){
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         intent.type = "image/*" // Filtrar solo imágenes
@@ -435,7 +513,7 @@ class ProfileActivity : AppCompatActivity() {
         //val drawable = ResourcesCompat.getDrawable(resources, R.drawable.fotoperfil_ejemplo, null)
 
 
-    val bitmap = (drawable as BitmapDrawable).bitmap
+        val bitmap = (drawable as BitmapDrawable).bitmap
         val compressedBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true)
         val byteArrayOutputStream = ByteArrayOutputStream()
         compressedBitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream) // Reducir calidad
@@ -456,7 +534,7 @@ class ProfileActivity : AppCompatActivity() {
 
         updateUser(updatedUser.id.toLong(), updatedUser)    }
 
-//METODO PARA PONER IMAGEN PERFIL DE LA BD AL PERFIL
+    //METODO PARA PONER IMAGEN PERFIL DE LA BD AL PERFIL
     fun descargarimagenperfilbd(userId: Long){
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
@@ -490,4 +568,6 @@ class ProfileActivity : AppCompatActivity() {
             }
         })
     }
+
+
 }
