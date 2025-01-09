@@ -195,6 +195,9 @@ class ProfileActivityFriend : AppCompatActivity() {
                 }
 
                 R.id.nav_cerrar -> {
+                    sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                    sharedPreferences.getString("user_id", null)
+
                     with(sharedPreferences.edit()) {
                         putBoolean("isLoggedIn", false)
                         remove("username")

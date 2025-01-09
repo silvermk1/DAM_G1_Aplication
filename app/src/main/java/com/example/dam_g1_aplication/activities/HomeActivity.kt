@@ -150,18 +150,30 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_cerrar -> {
-                    with(sharedPreferences.edit()) {
-                        putBoolean("isLoggedIn", false)
-                        remove("username")
-                        remove("user_id")
-                        remove("mail")
-                        apply()
+                    sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                    sharedPreferences.getString("user_id", null)
+                    if (isLoggedIn) {
+
+                            with(sharedPreferences.edit()) {
+                                putBoolean("isLoggedIn", false)
+                                remove("username")
+                                remove("user_id")
+                                remove("mail")
+                                apply()
+
+                            }
+                            val intent = Intent(this, LoginActivity::class.java)
+                            startActivity(intent)
+
+
+                        Toast.makeText(this, "Sesion cerrada, Adios!", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(this, "Ya estava cerrada!", Toast.LENGTH_SHORT).show()
+
+                        val intent = Intent(this, HomeActivity::class.java)
+                        startActivity(intent)
 
                     }
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-
-                    Toast.makeText(this, "Sesion cerrada, Adios!", Toast.LENGTH_SHORT).show()
                 }
 
                 R.id.nav_contactos -> {

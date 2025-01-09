@@ -265,7 +265,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
 
-    //METODOS MENU HAMBURGUESA
+//METODOS MENU HAMBURGUESA
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
@@ -319,6 +319,9 @@ class ProfileActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_cerrar -> {
+                    sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                    sharedPreferences.getString("user_id", null)
+
                     with(sharedPreferences.edit()) {
                         putBoolean("isLoggedIn", false)
                         remove("username")
