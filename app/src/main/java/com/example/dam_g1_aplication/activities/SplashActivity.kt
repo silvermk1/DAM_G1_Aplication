@@ -1,5 +1,6 @@
 package com.example.dam_g1_aplication.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.VideoView
@@ -8,7 +9,8 @@ import android.net.Uri
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dam_g1_aplication.R
-import com.example.dam_g1_aplication.activities.HomeActivity
+
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

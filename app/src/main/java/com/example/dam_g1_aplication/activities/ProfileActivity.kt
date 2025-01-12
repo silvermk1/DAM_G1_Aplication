@@ -1,7 +1,7 @@
 package com.example.dam_g1_aplication.activities
 
 import android.Manifest
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -14,12 +14,10 @@ import android.provider.MediaStore
 import android.util.Base64
 import android.view.Menu
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -41,7 +39,7 @@ import java.io.ByteArrayOutputStream
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var usernameTextView: TextView
-    //private lateinit var mailTextView: TextView
+    private lateinit var mailTextView: TextView
     private lateinit var biographyTextMultiLine: EditText
     private lateinit var username: String
     private lateinit var mail: String
@@ -52,7 +50,6 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var friendSearcher: EditText
     private lateinit var friendsSearchButton: Button
     private lateinit var profileImageView: ImageButton
-    private lateinit var editSocialButton: Button
     private lateinit var youtubeButton: ImageButton
     private lateinit var twitterxButton: ImageButton
     private lateinit var facebookButton: ImageButton
@@ -65,7 +62,6 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var xboxButton: ImageButton
 
     //atributos para el boton hamburguesa:
-    private lateinit var panelMenu: LinearLayout
     private lateinit var menuButton: ImageView
 
     //solicitar permisos de almazenamiento
@@ -74,7 +70,6 @@ class ProfileActivity : AppCompatActivity() {
         const val REQUEST_PERMISSION_READ_STORAGE = 1
     }
 
-    private lateinit var navView: NavigationView
     private lateinit var drawerLayout: DrawerLayout // Agrega esta línea
     private lateinit var navigationView: NavigationView
     private var isLoggedIn: Boolean = false
@@ -91,12 +86,13 @@ class ProfileActivity : AppCompatActivity() {
         mail = sharedPreferences.getString("mail", null).toString()
         userId = sharedPreferences.getString("user_id", null).toString()
         usernameTextView = findViewById(R.id.usernameTextView)
+        mailTextView = findViewById(R.id.mailTextView)
         biographyTextMultiLine = findViewById(R.id.biographyTextMultiLine)
         logoutButton = findViewById(R.id.logoutButton)
-        friendListButton = findViewById(R.id.friendsListButton)
+        friendListButton = findViewById(R.id.friendListButton)
         friendSearcher = findViewById(R.id.FriendSearcher)
         friendsSearchButton = findViewById(R.id.friendsSearch)
-        profileImageView = findViewById(R.id.profile_picture)
+        profileImageView = findViewById(R.id.profileImageView)
         youtubeButton = findViewById(R.id.youtubeButton)
         twitterxButton = findViewById(R.id.twitterxButton)
         facebookButton = findViewById(R.id.facebookButton)
@@ -107,8 +103,8 @@ class ProfileActivity : AppCompatActivity() {
         nswitchButton = findViewById(R.id.nswitchButton)
         psnButton = findViewById(R.id.psnButton)
         xboxButton = findViewById(R.id.xboxButton)
-        usernameTextView.text = username + "-" + mail
-        //mailTextView.text = mail
+        usernameTextView.text = username
+        mailTextView.text = mail
 
         //HACER FOTO
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -245,23 +241,23 @@ class ProfileActivity : AppCompatActivity() {
                 println("Error al realizar la solicitud: ${t.message}")
             }
         })
-// MENU HAMBURGUESA
 
-    drawerLayout = findViewById(R.id.drawer_layout)
-    navView = findViewById(R.id.nav_view)
-    menuButton = findViewById(R.id.menu_button)
-    navigationView = findViewById(R.id.nav_view)
+        // MENU HAMBURGUESA
 
-    // Establecer el comportamiento del botón hamburguesa
-    menuButton.setOnClickListener {
-        // Abrir o cerrar el menú lateral (DrawerLayout)
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            drawerLayout.openDrawer(GravityCompat.START)
+        drawerLayout = findViewById(R.id.drawer_layout)
+        menuButton = findViewById(R.id.menu_button)
+        navigationView = findViewById(R.id.nav_view)
+
+        // Establecer el comportamiento del botón hamburguesa
+        menuButton.setOnClickListener {
+            // Abrir o cerrar el menú lateral (DrawerLayout)
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
         }
-    }
-    escuchadebotonesmenu()
+        escuchadebotonesmenu()
     }
 
 
@@ -274,17 +270,15 @@ class ProfileActivity : AppCompatActivity() {
     private fun escuchadebotonesmenu() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+
                 R.id.nav_home -> {
                     Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
-
                 }
+
                 R.id.nav_perfil -> {
-
                     Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show()
-
                     if (isLoggedIn) {
                         val intent = Intent(this, ProfileActivity::class.java)
                         startActivity(intent)
@@ -292,14 +286,14 @@ class ProfileActivity : AppCompatActivity() {
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
-
                 }
+
                 R.id.nav_logros -> {
                     Toast.makeText(this, "Logros", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, AchievementDetailActivity::class.java)
                     startActivity(intent)
                 }
+
                 R.id.nav_categorias -> {
                     Toast.makeText(this, "Categorías", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, CategoriesActivity::class.java)
@@ -307,12 +301,10 @@ class ProfileActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_iniciar -> {
-
                     if (isLoggedIn) {
                         Toast.makeText(this, "Cierra la sesion!", Toast.LENGTH_SHORT).show()
                     }else{
                         Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show()
-
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
@@ -321,50 +313,46 @@ class ProfileActivity : AppCompatActivity() {
                 R.id.nav_cerrar -> {
                     sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
                     sharedPreferences.getString("user_id", null)
-
                     with(sharedPreferences.edit()) {
                         putBoolean("isLoggedIn", false)
                         remove("username")
                         remove("user_id")
                         remove("mail")
                         apply()
-
                     }
+
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
-
                     Toast.makeText(this, "Sesion cerrada, Adios!", Toast.LENGTH_SHORT).show()
                 }
 
                 R.id.nav_contactos -> {
-
                     if (isLoggedIn) {
                         Toast.makeText(this, "Contactos", Toast.LENGTH_SHORT).show()
-
                         val intent = Intent(this, FriendsActivity::class.java)
                         startActivity(intent)
                     }else{
                         Toast.makeText(this, "Inicie sesion Antes!", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this, HomeActivity::class.java)
                         startActivity(intent)
-
                     }
                 }
+
                 R.id.nav_soporte -> {
                     Toast.makeText(this, "Sopporte", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, SupportActivity::class.java)
                     startActivity(intent)
                 }
+
                 R.id.nav_compartir -> {
                     Toast.makeText(this, "Gracias por comparitr (:", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, ProfileSocialActivity::class.java)
                     startActivity(intent)
-                }
-                else -> {
+                } else -> {
                     Toast.makeText(this, "Opción desconocida", Toast.LENGTH_SHORT).show()
                 }
             }
+
             // Cierra el Drawer después de la selección
             drawerLayout.closeDrawers()
             true
@@ -372,7 +360,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     //METODO PARA COMPROBAR QUE EL USUARIO EXISTE
-    fun getUseridByUsername3(username: String) {
+    private fun getUseridByUsername3(username: String) {
         // Preparar la conexión con Retrofit
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
@@ -473,7 +461,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     //METODO PARA SUVIR LA IMAGEN DE PERFIL NUEVA A LA BD
-    fun updateUser(userId: Long, updatedUser: Users) {
+    private fun updateUser(userId: Long, updatedUser: Users) {
         // Crear una instancia de Retrofit y el ApiService
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
@@ -505,6 +493,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     //METODO PARA ACTUALIZAR LA IMAGEN DE PERFIL DES DE LA BD
+    @SuppressLint("IntentReset")
     fun actualizarimagenperfil(){
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         intent.type = "image/*" // Filtrar solo imágenes
@@ -512,9 +501,6 @@ class ProfileActivity : AppCompatActivity() {
 
         //convertir la imagen agregada a string:
         val drawable = profileImageView.drawable
-        //provar con imagen de prueva:
-        //val drawable = ResourcesCompat.getDrawable(resources, R.drawable.fotoperfil_ejemplo, null)
-
 
         val bitmap = (drawable as BitmapDrawable).bitmap
         val compressedBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true)
@@ -538,7 +524,7 @@ class ProfileActivity : AppCompatActivity() {
         updateUser(updatedUser.id.toLong(), updatedUser)    }
 
     //METODO PARA PONER IMAGEN PERFIL DE LA BD AL PERFIL
-    fun descargarimagenperfilbd(userId: Long){
+    private fun descargarimagenperfilbd(userId: Long){
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
 
@@ -548,13 +534,11 @@ class ProfileActivity : AppCompatActivity() {
                 val user = response.body()
                 if (user != null) {
                     // Aquí obtienes la URL o datos de la imagen de perfil del usuario
-
                     val profilePhotoBase64 = user.profilephoto.toString()
                     try {
                         // Decodificar la imagen Base64 a Bitmap
                         val decodedBytes = Base64.decode(profilePhotoBase64, Base64.DEFAULT)
                         val profileBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
-
                         // Establecer la imagen en el ImageButton
                         profileImageView.setImageBitmap(profileBitmap)
                     } catch (e: IllegalArgumentException) {
@@ -571,6 +555,4 @@ class ProfileActivity : AppCompatActivity() {
             }
         })
     }
-
-
 }

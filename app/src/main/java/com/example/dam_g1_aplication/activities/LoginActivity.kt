@@ -16,9 +16,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-import java.io.File
-import java.util.regex.Pattern
-
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var usernameEditText: EditText
@@ -61,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
 
         //mandar al activity de registro
         registerButton.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
+            val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
         }
 
@@ -72,7 +69,6 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
-
     }
 
     //metodo para comprobar inicio de sesion
@@ -94,7 +90,6 @@ class LoginActivity : AppCompatActivity() {
 
                             apply()
                         }
-                        var iduser = user.id
                         Toast.makeText(this@LoginActivity,
                             "Bienvenido", Toast.LENGTH_SHORT).show()
                         //iniciar intent del activity con el usuario iniciado:

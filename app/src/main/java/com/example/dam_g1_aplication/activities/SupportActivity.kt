@@ -80,9 +80,10 @@ class SupportActivity : AppCompatActivity() {
             } else {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
-            }        }
+            }
+        }
 
-//MENU INTERACTIVO HAMBURGUESA FINAL
+        //MENU INTERACTIVO HAMBURGUESA FINAL
 
         queEsButton.setOnClickListener {
             toggleQueEsStatus()
@@ -99,10 +100,10 @@ class SupportActivity : AppCompatActivity() {
                 toggleContactStatus()
             }
             supportTextView.text = "Esta aplicación contiene un sinfín de logros de todo tipo para completar en la vida real, desde logros más cotidianos y generales a otros más específicos y concretos. ¡Es entretenimiento en estado puro, sobretodo para entretenerse en tiempos muertos!\""
-            queEsButton.setBackgroundColor(getColor(android.R.color.holo_green_light))
+            queEsButton.setBackgroundColor(0x20D080)
         } else {
             supportTextView.text = ""
-            queEsButton.setBackgroundColor(getColor(android.R.color.holo_blue_light))
+            queEsButton.setBackgroundColor(0x202020)
         }
     }
     @SuppressLint("SetTextI18n")
@@ -113,10 +114,10 @@ class SupportActivity : AppCompatActivity() {
                 toggleQueEsStatus()
             }
             supportTextView.text = " Roc Rovira \n roviraroc@gmail.com \n\n Marc Ramírez \n marcramirezmoya@gmail.com \n\n Miguel Velasco \n perezvelasco.miguel@gmail.com"
-            contactButton.setBackgroundColor(getColor(android.R.color.holo_green_light))
+            contactButton.setBackgroundColor(0x20D080)
         } else {
             supportTextView.text = ""
-            contactButton.setBackgroundColor(getColor(android.R.color.holo_blue_light))
+            contactButton.setBackgroundColor(0x202020)
         }
     }
 }

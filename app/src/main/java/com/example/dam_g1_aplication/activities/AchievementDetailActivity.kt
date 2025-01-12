@@ -1,6 +1,6 @@
 package com.example.dam_g1_aplication.activities
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -35,32 +35,7 @@ class AchievementDetailActivity : AppCompatActivity() {
         descriptionTextView = findViewById(R.id.descriptionTextView)
         completeButton = findViewById(R.id.completeButton)
 
-        // FOOTER
         val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
-
-        val profileButton: Button = findViewById(R.id.profileButton)
-        val supportButton: Button = findViewById(R.id.supportButton)
-        val homeButton: Button = findViewById(R.id.homeButton)
-        supportButton.setOnClickListener {
-        }
-
-        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
-
-        profileButton.setOnClickListener {
-            if (isLoggedIn) {
-                val intent = Intent(this, ProfileActivity::class.java)
-                startActivity(intent)
-            } else {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-            }
-        }
-
-        homeButton.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-        // FOOTER
 
         userId = sharedPreferences.getString("user_id", null)
 
@@ -85,6 +60,7 @@ class AchievementDetailActivity : AppCompatActivity() {
             // Eliminar el logro
             val callDelete = apiService.deleteUserAchievement(achievementId!!.toLong(), userId!!.toLong())
             callDelete.enqueue(object : Callback<Void> {
+                @SuppressLint("SetTextI18n")
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
                         isCompleted = false
@@ -102,6 +78,7 @@ class AchievementDetailActivity : AppCompatActivity() {
             })
         } else {
             apiService.createUserAchievement(achievementId, userId).enqueue(object : Callback<Void> {
+                @SuppressLint("SetTextI18n")
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
                         Toast.makeText(this@AchievementDetailActivity, "Logro creado correctamente", Toast.LENGTH_SHORT).show()
@@ -133,6 +110,7 @@ class AchievementDetailActivity : AppCompatActivity() {
             userId!!.toLong().toString()
         )
         callUserAchievement.enqueue(object : Callback<UserAchievements> {
+            @SuppressLint("SetTextI18n")
             override fun onResponse(call: Call<UserAchievements>, response: Response<UserAchievements>) {
                 if (response.isSuccessful && response.body() != null) {
                     isCompleted = true

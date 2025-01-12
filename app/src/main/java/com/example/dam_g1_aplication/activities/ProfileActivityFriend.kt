@@ -1,26 +1,23 @@
 package com.example.dam_g1_aplication.activities
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
 import android.view.Menu
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.isWideGamut
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.dam_g1_aplication.ApiConnection.ApiService
@@ -31,102 +28,195 @@ import com.example.dam_g1_aplication.dataClasses.FriendRequests
 import com.example.dam_g1_aplication.dataClasses.Friendships
 import com.example.dam_g1_aplication.dataClasses.UserAchievements
 import com.example.dam_g1_aplication.dataClasses.Users
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.navigation.NavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class ProfileActivityFriend : AppCompatActivity() {
 
     private lateinit var menuButton: ImageView
-    private lateinit var navView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private var isLoggedIn: Boolean = false
     private lateinit var sharedPreferences: SharedPreferences
-
-
     private lateinit var textousuario: TextView
-    private lateinit var compartir : Button
     private lateinit var listaobjetivos : ListView
     private lateinit var botonsolicitud : Button
     private lateinit var imagenusuarioamigo: ImageView
+    private lateinit var youtubeButton: ImageButton
+    private lateinit var twitterxButton: ImageButton
+    private lateinit var facebookButton: ImageButton
+    private lateinit var twitchButton: ImageButton
+    private lateinit var redditButton: ImageButton
+    private lateinit var steamButton: ImageButton
+    private lateinit var epicgamesButton: ImageButton
+    private lateinit var nswitchButton: ImageButton
+    private lateinit var psnButton: ImageButton
+    private lateinit var xboxButton: ImageButton
 
-    //Atributos-datos--
-    //nombre usuario
-    private lateinit var usuario : String
-
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.profile_activity_friend)
 
+        youtubeButton = findViewById(R.id.youtubeButton)
+        twitterxButton = findViewById(R.id.twitterxButton)
+        facebookButton = findViewById(R.id.facebookButton)
+        twitchButton = findViewById(R.id.twitchButton)
+        redditButton = findViewById(R.id.redditButton)
+        steamButton = findViewById(R.id.steamButton)
+        epicgamesButton = findViewById(R.id.epicgamesButton)
+        nswitchButton = findViewById(R.id.nswitchButton)
+        psnButton = findViewById(R.id.psnButton)
+        xboxButton = findViewById(R.id.xboxButton)
+        textousuario = findViewById(R.id.usernameTextView)
+        botonsolicitud = findViewById(R.id.solicitud)
+        listaobjetivos = findViewById(R.id.listaobjetivos)
+        imagenusuarioamigo = findViewById(R.id.profileImageView)
 
         sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
 
-//Declarar atributos con sus respectivos objetos
-        textousuario = findViewById(R.id.usuario)
-        compartir = findViewById(R.id.compartirlogro2)
-        botonsolicitud = findViewById(R.id.solicitud)
-
         //agregar nombreusuario al text view
-        var usuario = intent.getStringExtra("nombreusuario")
-        textousuario.setText(usuario)
+        val username = intent.getStringExtra("nombreusuario")
+        textousuario.text = username
 
         //instanciar list view
-        listaobjetivos = findViewById(R.id.listaobjetivos)
         val objetivosadapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ArrayList())
         listaobjetivos.adapter = objetivosadapter
 
         //declarar imagen
-        imagenusuarioamigo = findViewById(R.id.imagenusuario)
-        getUseridByUsername8(usuario.toString())
+        getUseridByUsername8(username.toString())
 
-//AGREGAR TIPO DE BOTON SOLICITUD DEPENDE DE DONDE PROVENGA EL ACTIVITY:
+        //AGREGAR TIPO DE BOTON SOLICITUD DEPENDE DE DONDE PROVENGA EL ACTIVITY:
 
         val tiposolicitud = intent.getStringExtra("tipodesolicitud") ?: "default"
 
         if (tiposolicitud == "solicitado") {
-            botonsolicitud.setText("ACEPTAR SOLICITUD")
+            botonsolicitud.text = "ACEPTAR SOLICITUD"
             //agregar amigo y borrar la solicitud al clikear el boton!
             botonsolicitud.setOnClickListener{
-                getUseridByUsername4(usuario.toString())
-                getUseridByUsername5(usuario.toString())
+                getUseridByUsername4(username.toString())
+                getUseridByUsername5(username.toString())
             }
         }
+
         if (tiposolicitud == "agregado") {
-            botonsolicitud.setText("DEJAR DE SEGIR")
+            botonsolicitud.text = "DEJAR DE SEGUIR"
             //borrar amigo al presionar el boton
             botonsolicitud.setOnClickListener{
                 //borrar amigo
-                getUseridByUsername6(usuario.toString())
+                getUseridByUsername6(username.toString())
             }
         }
+
         if (tiposolicitud == "noagregado"){
-            botonsolicitud.setText("Agregar")
+            botonsolicitud.text = "Agregar"
             //agregar solicitud de amistad al presionar el boton
             botonsolicitud.setOnClickListener{
                 //agregar solicitud de amistad
-                getUseridByUsername7(usuario.toString())
+                getUseridByUsername7(username.toString())
             }
         }
-//CREAR CLICKLISTENER PARA QUE AL PRESIONAR COMPARTIR OBJETIVOS SALGA UN CUADRO EMERJENTE,
-//EN ESTE CUADRO EMERJENTE SALDRAN TODOS TUS OBJETIVOS, TENDRAS QUE SELECCIONAR UNO PARA COMPARTIR
-//ESTA FUNCION AUN NO ESTA DISPONIBLE
-        compartir.setOnClickListener(){
-            var usuarioiniciado = intent.getStringExtra("username") //sacar usuario iniciado
-            getUseridByUsername2(usuarioiniciado.toString()) //metodo para listar los objetivos del perfil en el boton objetivos
-        }
 
-        getUseridByUsername(usuario.toString()) //metodo para listar los objetivos del perfil
+        // Preparar la conexión con Retrofit  y recivir redes sociales
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
 
+        // Hacer la llamada al servicio para obtener las redes del usuario
+        val callUsers = apiService.getUsers()
+        callUsers.enqueue(object : Callback<List<Users>> {
+            override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
+                val users = response.body()
+                val user = users?.find {it.username == username}
+                if (user != null) {
+                    //Si el usuario tiene una red, se mostrará un botón suyo con la red puesta. Al pulsar sobre la red te dirigirá a esa
+                    if (user.youtube != null) {
+                        youtubeButton.visibility = View.VISIBLE
+                        youtubeButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://youtube.com/@" + user.youtube))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.twitterx != null) {
+                        twitterxButton.visibility = View.VISIBLE
+                        twitterxButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://x.com/" + user.twitterx))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.facebook != null) {
+                        facebookButton.visibility = View.VISIBLE
+                        facebookButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://facebook.com/" + user.facebook))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.twitch != null) {
+                        twitchButton.visibility = View.VISIBLE
+                        twitchButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://twitch.tv/" + user.twitch))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.reddit != null) {
+                        redditButton.visibility = View.VISIBLE
+                        redditButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://reddit.com/user/" + user.reddit))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.steam != null) {
+                        steamButton.visibility = View.VISIBLE
+                        steamButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://steamcommunity.com/id/" + user.steam))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.epicgames != null) {
+                        epicgamesButton.visibility = View.VISIBLE
+                        epicgamesButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://epicgames.com/id/" + user.epicgames))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.nswitch != null) {
+                        nswitchButton.visibility = View.VISIBLE
+                        nswitchButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://switch.nintendo.com/" + user.nswitch))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.psn != null) {
+                        psnButton.visibility = View.VISIBLE
+                        psnButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://psnprofiles.com/" + user.psn))
+                            startActivity(intent)
+                        }
+                    }
+                    if (user.xbox != null) {
+                        xboxButton.visibility = View.VISIBLE
+                        xboxButton.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://xboxgamertag.com/search/" + user.xbox))
+                            startActivity(intent)
+                        }
+                    }
+                }
+            }
+            override fun onFailure(call: Call<List<Users>>, t: Throwable) {
+                println("Error al realizar la solicitud: ${t.message}")
+            }
+        })
+        //CREAR CLICKLISTENER PARA QUE AL PRESIONAR COMPARTIR OBJETIVOS SALGA UN CUADRO EMERJENTE,
+        //EN ESTE CUADRO EMERJENTE SALDRAN TODOS TUS OBJETIVOS, TENDRAS QUE SELECCIONAR UNO PARA COMPARTIR
+        //ESTA FUNCION AUN NO ESTA DISPONIBLE
 
-// MENU HAMBURGUESA
+        getUseridByUsername(username.toString()) //metodo para listar los objetivos del perfil
+
+        // MENU HAMBURGUESA
 
         drawerLayout = findViewById(R.id.drawer_layout)
-        navView = findViewById(R.id.nav_view)
         menuButton = findViewById(R.id.menu_button)
         navigationView = findViewById(R.id.nav_view)
 
@@ -150,17 +240,15 @@ class ProfileActivityFriend : AppCompatActivity() {
     private fun escuchadebotonesmenu() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+
                 R.id.nav_home -> {
                     Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
-
                 }
+
                 R.id.nav_perfil -> {
-
                     Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show()
-
                     if (isLoggedIn) {
                         val intent = Intent(this, ProfileActivity::class.java)
                         startActivity(intent)
@@ -168,14 +256,14 @@ class ProfileActivityFriend : AppCompatActivity() {
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
-
                 }
+
                 R.id.nav_logros -> {
                     Toast.makeText(this, "Logros", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, AchievementDetailActivity::class.java)
                     startActivity(intent)
                 }
+
                 R.id.nav_categorias -> {
                     Toast.makeText(this, "Categorías", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, CategoriesActivity::class.java)
@@ -183,12 +271,10 @@ class ProfileActivityFriend : AppCompatActivity() {
                 }
 
                 R.id.nav_iniciar -> {
-
                     if (isLoggedIn) {
                         Toast.makeText(this, "Cierra la sesion!", Toast.LENGTH_SHORT).show()
-                    }else{
+                    } else {
                         Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show()
-
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
@@ -197,93 +283,76 @@ class ProfileActivityFriend : AppCompatActivity() {
                 R.id.nav_cerrar -> {
                     sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
                     sharedPreferences.getString("user_id", null)
-
                     with(sharedPreferences.edit()) {
                         putBoolean("isLoggedIn", false)
                         remove("username")
                         remove("user_id")
                         remove("mail")
                         apply()
-
                     }
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
-
                     Toast.makeText(this, "Sesion cerrada, Adios!", Toast.LENGTH_SHORT).show()
                 }
 
                 R.id.nav_contactos -> {
-
                     if (isLoggedIn) {
                         Toast.makeText(this, "Contactos", Toast.LENGTH_SHORT).show()
-
                         val intent = Intent(this, FriendsActivity::class.java)
                         startActivity(intent)
                     }else{
                         Toast.makeText(this, "Inicie sesion Antes!", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this, HomeActivity::class.java)
                         startActivity(intent)
-
                     }
                 }
+
                 R.id.nav_soporte -> {
                     Toast.makeText(this, "Sopporte", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, SupportActivity::class.java)
                     startActivity(intent)
-                }
-                R.id.nav_compartir -> {
-                    Toast.makeText(this, "Gracias por comparitr (:", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, ProfileSocialActivity::class.java)
-                    startActivity(intent)
-                }
-                else -> {
+                } else -> {
                     Toast.makeText(this, "Opción desconocida", Toast.LENGTH_SHORT).show()
                 }
             }
+
             // Cierra el Drawer después de la selección
             drawerLayout.closeDrawers()
             true
         }
     }
-//OTROS METODOS CODIGO
-//METODOS--------------------
-//-----------------------------------
-//-----------------------------------------
-//METODOS PARA RETORNAR LOS OBJETIVOS DEL USUARIO DEL PERFIL SELECCIONADO ANTERIORMENTE------------
-//METODO PARA RETORNAR USUARIOID POR SU USERNAME
-fun getUseridByUsername(username: String) {
-    // Preparar la conexión con Retrofit
-    val retrofit = RetrofitClient.getClient()
-    val apiService = retrofit.create(ApiService::class.java)
 
-    // Hacer la llamada al servicio para obtener todos los usuarios
-    val callUsers = apiService.getUsers()
-    callUsers.enqueue(object : Callback<List<Users>> {
-        override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
-            val users = response.body()
-            println("usuarios:")
-            println(users)
-            if (users != null) {
-                println("nulo?")
-                println("Usuarios obtenidos: ${users.size}")
-                for (user in users) {
-                    println("Username: ${user.username}, ID: ${user.id}")
-                    if (user.username == username){
-                        retornarobjetivosusuarioid(user.id.toLong())
+    // RETORNAR USUARIOID POR SU USERNAME
+    private fun getUseridByUsername(username: String) {
+        // Preparar la conexión con Retrofit
+        val retrofit = RetrofitClient.getClient()
+        val apiService = retrofit.create(ApiService::class.java)
+        // Hacer la llamada al servicio para obtener todos los usuarios
+
+        val callUsers = apiService.getUsers()
+        callUsers.enqueue(object : Callback<List<Users>> {
+            override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
+                val users = response.body()
+                println("usuarios:")
+                println(users)
+                if (users != null) {
+                    println("nulo?")
+                    println("Usuarios obtenidos: ${users.size}")
+                    for (user in users) {
+                        println("Username: ${user.username}, ID: ${user.id}")
+                        if (user.username == username){
+                            retornarobjetivosusuarioid(user.id.toLong())
+                        }
                     }
+                } else {
+                    println("No se encontraron usuarios.")
                 }
-            } else {
-                println("No se encontraron usuarios.")
             }
-
-        }
-
-        override fun onFailure(call: Call<List<Users>>, t: Throwable) {
-            println("Error al realizar la solicitud: ${t.message}")
-        }
-    })
-}
+            override fun onFailure(call: Call<List<Users>>, t: Throwable) {
+                println("Error al realizar la solicitud: ${t.message}")
+            }
+        })
+    }
 
     //METODO PARA BUSCAR LOS OBJETIVOS DE UN DETERMINADO USUARIOID
     fun retornarobjetivosusuarioid(userId : Long){
@@ -312,11 +381,8 @@ fun getUseridByUsername(username: String) {
                     }
                     //enviar la lista al metodo que transforma los ids a nombre objetivos
                     transformobjetivosidanombre(ids)
-
                 }
-
             }
-
             override fun onFailure(call: Call<List<UserAchievements>>, t: Throwable) {
                 Toast.makeText(this@ProfileActivityFriend, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                 println("error2")
@@ -325,7 +391,7 @@ fun getUseridByUsername(username: String) {
 
     }
 
-    //METODO PARA TRANSFORMAR LISTA OBJETIVOSID A LISTA NOMBREOBJETIVOS
+    // TRANSFORMAR LISTA OBJETIVOSID A LISTA NOMBREOBJETIVOS
     fun transformobjetivosidanombre(objetivosid : List<Long>){
         //conectar retrofit
         val retrofit = RetrofitClient.getClient()
@@ -372,149 +438,8 @@ fun getUseridByUsername(username: String) {
         listaobjetivos.adapter = objetivosAdapter
     }
 
-    //METODOS PARA MOSTRAR OBJETIVOS COMPARTIDOS--------------------------------------------------------
-//METODO PARA ABRIR UN CUADRO EMERJENTE CON TODOS TUS OBJETIVOS
-    private fun compartirobjetivo(objetivos : List<String>){
-
-        val dialogView = layoutInflater.inflate(R.layout.cuadro_emerjente_logroscompartidos, null)
-        val listView = dialogView.findViewById<ListView>(R.id.dialog_listview)
-
-        // Infla el diseño del cuadro emergente
-        val adaptador = ArrayAdapter(this, android.R.layout.simple_list_item_1, objetivos)
-        listView.adapter = adaptador
-
-        // Configura el cuadro emergente
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("Selecciona un logro:")
-            .setView(dialogView)
-            .setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
-            .create()
-
-        // Maneja la selección de un elemento
-        listView.setOnItemClickListener { parent, view, position, id ->
-            val seleccionado = objetivos[position]
-            Toast.makeText(this, "Seleccionaste: $seleccionado", Toast.LENGTH_SHORT).show()
-            dialog.dismiss()
-        }
-
-        // Muestra el cuadro
-        dialog.show()
-    }
-
-    fun getUseridByUsername2(username: String) {
-        // Preparar la conexión con Retrofit
-        val retrofit = RetrofitClient.getClient()
-        val apiService = retrofit.create(ApiService::class.java)
-
-        // Hacer la llamada al servicio para obtener todos los usuarios
-        val callUsers = apiService.getUsers()
-        callUsers.enqueue(object : Callback<List<Users>> {
-            override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
-                val users = response.body()
-                println("usuarios:")
-                println(users)
-                if (users != null) {
-                    println("nulo?")
-                    println("Usuarios obtenidos: ${users.size}")
-                    for (user in users) {
-                        println("Username: ${user.username}, ID: ${user.id}")
-                        if (user.username == username){
-                            retornarobjetivosusuarioid2(user.id.toLong())
-                        }
-                    }
-                } else {
-                    println("No se encontraron usuarios.")
-                }
-
-            }
-
-            override fun onFailure(call: Call<List<Users>>, t: Throwable) {
-                println("Error al realizar la solicitud: ${t.message}")
-            }
-        })
-    }
-
-    fun transformobjetivosidanombre2(objetivosid : List<Long>){
-        //conectar retrofit
-        val retrofit = RetrofitClient.getClient()
-        val apiService = retrofit.create(ApiService::class.java)
-
-        val nombres: MutableList<String> = mutableListOf()
-
-        //hazer llamada = retornar ids de los amgios
-        val callFriendships = apiService.getAchievements()
-        callFriendships.enqueue(object : Callback<List<Achievements>> {
-            override fun onResponse(call: Call<List<Achievements>>, response: Response<List<Achievements>>) {
-
-                val objetivos = response.body()
-                if (objetivos != null) {
-                    println("todos los objetivos:")
-                    println(objetivos)
-                    // Obtener IDs de los amigos
-                    for (objetivo in objetivos) {
-                        for (objetivoId in objetivosid) {
-                            if (objetivo.id.toLong() == objetivoId) {
-                                nombres.add(objetivo.title)
-                            }
-
-                        }
-                    }
-                    //AGREGAR AL LIST VIEW TODOS LOS VALORES
-                    println("mostrar los nombrs:----")
-                    println(nombres)
-                    compartirobjetivo(nombres)
-                }
-            }
-            override fun onFailure(call: Call<List<Achievements>>, t: Throwable) {
-                Toast.makeText(this@ProfileActivityFriend, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    private fun retornarobjetivosusuarioid2(userId : Long){
-        //preparar conexion retrofit
-        val retrofit = RetrofitClient.getClient()
-        val apiService = retrofit.create(ApiService::class.java)
-
-        //lista para guardar los id de lo objetivos del usuario
-        val ids: MutableList<Long> = mutableListOf()
-
-        //retornar los logros segun el usuarioid
-        val calluser = apiService.findUserAchievementsByUserId(userId)
-        calluser.enqueue(object : Callback<List<UserAchievements>> {
-            override fun onResponse(
-                call: Call<List<UserAchievements>>,
-                response: Response<List<UserAchievements>>
-            ) {
-                val userachievements = response.body()
-                if (userachievements != null) {
-                    println("AQUI SE MEUSTRAN!!!!(_:")
-                    for (achievement in userachievements) {
-
-                        //guardar el id en la lista ids
-                        ids.add(achievement.achievementid)
-
-                    }
-                    //enviar la lista al metodo que transforma los ids a nombre objetivos
-                    transformobjetivosidanombre2(ids)
-
-                }
-
-            }
-
-            override fun onFailure(call: Call<List<UserAchievements>>, t: Throwable) {
-                Toast.makeText(this@ProfileActivityFriend, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
-                println("error2")
-            }
-        })
-
-    }
-
-
-
-    //METODOS PARA AGREGAR UN AMIGO--------------------------------------------------------------------
-//METODO PARA OBTENER EL ID DEL USERNAME
-    fun getUseridByUsername7(username: String) {
+    // AGREGAR UN AMIGO
+    private fun getUseridByUsername7(username: String) {
         // Preparar la conexión con Retrofit
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
@@ -530,39 +455,35 @@ fun getUseridByUsername(username: String) {
                     for (user in users) {
                         if (user.username == username){
                             getAllFriendRequests2(idpropio, user.id.toLong())
-
                         }
                     }
                 } else {
                     println("No se encontraron usuarios.")
                 }
-
             }
-
             override fun onFailure(call: Call<List<Users>>, t: Throwable) {
                 println("Error al realizar la solicitud: ${t.message}")
             }
         })
     }
-    //COMPROBAR SI HAY OTRA SOLICITUD DE AMISTAD
+    // COMPROBAR SI HAY OTRA SOLICITUD DE AMISTAD
     fun getAllFriendRequests2(sender: Long, reciever: Long) {
         //conectar retrofit
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
-        val datos = mutableListOf<String>()
+        mutableListOf<String>()
 
-        //hazer llamada = retornar ids de los amgios
+        //hacer llamada = retornar ids de los amigos
         val callfriendre = apiService.getFriendRequests()
         callfriendre.enqueue(object : Callback<List<FriendRequests>> {
             override fun onResponse(
                 call: Call<List<FriendRequests>>,
                 response: Response<List<FriendRequests>>
             ) {
-                val idpropio = sharedPreferences.getString("user_id", null)
+                sharedPreferences.getString("user_id", null)
 
                 val friendrequests = response.body()
                 println(friendrequests)
-                //val idpropio = sharedPreferences.getString("user_id", null)
                 // Obtener IDs de los amigos
                 println("MOSTRAR:-------------->(:----")
                 var boleano = 0
@@ -581,15 +502,13 @@ fun getUseridByUsername(username: String) {
                     addFriendRequest(sender, reciever)
                     Toast.makeText(this@ProfileActivityFriend, "solicitado", Toast.LENGTH_SHORT).show()
                 }
-
             }
-
-
             override fun onFailure(call: Call<List<FriendRequests>>, t: Throwable) {
                 Toast.makeText(this@ProfileActivityFriend, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
+
     //AGREGAR SOLICITUD DE AMISTAD
     fun addFriendRequest(sender: Long, reciever: Long) {
         // Crear el objeto friendrequest
@@ -617,9 +536,8 @@ fun getUseridByUsername(username: String) {
         })
     }
 
-    //METODOS PARA BORRAR UN AMGIO---------------------------------------------------------------------
-//METODO PARA OBTENER EL ID DEL USERNAME
-    fun getUseridByUsername6(username: String) {
+    // BORRAR UN AMIGO
+    private fun getUseridByUsername6(username: String) {
         // Preparar la conexión con Retrofit
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
@@ -635,13 +553,11 @@ fun getUseridByUsername(username: String) {
                     for (user in users) {
                         if (user.username == username){
                             getAllFriendShips(user.id.toLong(), idpropio.toString())
-
                         }
                     }
                 } else {
                     println("No se encontraron usuarios.")
                 }
-
             }
 
             override fun onFailure(call: Call<List<Users>>, t: Throwable) {
@@ -649,12 +565,13 @@ fun getUseridByUsername(username: String) {
             }
         })
     }
-    //FILTRAR EL USUARIO ID PARA SACAR EL ID DEL FRIENDREQUEST Y MANDAR AL METODO DELETEFRIENDREQUEST
+
+    // FILTRAR EL USUARIO ID PARA SACAR EL ID DEL FRIENDREQUEST Y MANDAR AL METODO DELETEFRIENDREQUEST
     fun getAllFriendShips(friendA: Long, friendB: String) {
         //conectar retrofit
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
-        val datos = mutableListOf<String>()
+        mutableListOf<String>()
 
         //hazer llamada = retornar ids de los amgios
         val callfriendre = apiService.getFriendships()
@@ -663,29 +580,25 @@ fun getUseridByUsername(username: String) {
                 call: Call<List<Friendships>>,
                 response: Response<List<Friendships>>
             ) {
-                val idpropio = sharedPreferences.getString("user_id", null)
+                sharedPreferences.getString("user_id", null)
 
                 val friendships = response.body()
                 println(friendships)
-                //val idpropio = sharedPreferences.getString("user_id", null)
-                // Obtener IDs de los amigos
                 println("MOSTRAR:-------------->(:----")
                 if (friendships != null) {
                     for (friendship in friendships) {
                         //filtrar el id del usuario enviado y el del usuario recivido "logeado"
                         if (friendship.friendA.toString() == friendA.toString()) {
-                            if (friendship.friendB.toString() == friendB.toString()) {
+                            if (friendship.friendB.toString() == friendB) {
                                 removeFriend(friendship.friendship)
                             }
                         }
-                        if (friendship.friendA.toString() == friendB.toString()) {
+                        if (friendship.friendA.toString() == friendB) {
                             if (friendship.friendB.toString() == friendA.toString()) {
                                 removeFriend(friendship.friendship)
                             }
                         }
-
                     }
-
                 }
             }
 
@@ -694,7 +607,7 @@ fun getUseridByUsername(username: String) {
             }
         })
     }
-    //ELIMINAR AMISTAD
+    // ELIMINAR AMISTAD
     fun removeFriend(id: Long){
         // Preparar la conexión con Retrofit
         val retrofit = RetrofitClient.getClient()
@@ -705,9 +618,7 @@ fun getUseridByUsername(username: String) {
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 println("amistad borrada")
-
             }
-
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 // Error en la conexión
                 Toast.makeText(this@ProfileActivityFriend, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
@@ -715,9 +626,8 @@ fun getUseridByUsername(username: String) {
         })
     }
 
-    //METODOS PARA BORRAR UNA SOLICITUD----------------------------------------------------------------
-//METODO PARA OBTENER EL ID DEL USERNAME
-    fun getUseridByUsername5(username: String) {
+    // BORRAR UNA SOLICITUD
+    private fun getUseridByUsername5(username: String) {
         // Preparar la conexión con Retrofit
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
@@ -733,13 +643,11 @@ fun getUseridByUsername(username: String) {
                     for (user in users) {
                         if (user.username == username){
                             getAllFriendRequests(user.id.toLong(), idpropio.toString())
-
                         }
                     }
                 } else {
                     println("No se encontraron usuarios.")
                 }
-
             }
 
             override fun onFailure(call: Call<List<Users>>, t: Throwable) {
@@ -752,7 +660,7 @@ fun getUseridByUsername(username: String) {
         //conectar retrofit
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
-        val datos = mutableListOf<String>()
+        mutableListOf<String>()
 
         //hazer llamada = retornar ids de los amgios
         val callfriendre = apiService.getFriendRequests()
@@ -761,7 +669,7 @@ fun getUseridByUsername(username: String) {
                 call: Call<List<FriendRequests>>,
                 response: Response<List<FriendRequests>>
             ) {
-                val idpropio = sharedPreferences.getString("user_id", null)
+                sharedPreferences.getString("user_id", null)
 
                 val friendrequests = response.body()
                 println(friendrequests)
@@ -781,16 +689,14 @@ fun getUseridByUsername(username: String) {
                         }
                     }
                 }
-
             }
-
 
             override fun onFailure(call: Call<List<FriendRequests>>, t: Throwable) {
                 Toast.makeText(this@ProfileActivityFriend, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
-    //METODO PARA BORRAR SOLICITUD DE AMISTAD
+    // BORRAR SOLICITUD DE AMISTAD
     fun deleteFriendRequestFromApi(friendrequestId: Long) {
         // Preparar la conexión con Retrofit
         val retrofit = RetrofitClient.getClient()
@@ -811,10 +717,8 @@ fun getUseridByUsername(username: String) {
         })
     }
 
-
-    //METODOS PARA AGREGAR UN AMIGO--------------------------------------------------------------------
-//OBTENER EL ID DEL USERNAME
-    fun getUseridByUsername4(username: String) {
+    // AGREGAR UN AMIGO
+    private fun getUseridByUsername4(username: String) {
         // Preparar la conexión con Retrofit
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
@@ -829,22 +733,19 @@ fun getUseridByUsername(username: String) {
 
                     for (user in users) {
                         if (user.username == username){
-                            addFriendship(user.id.toLong(), idpropio.toLong())
+                            addFriendship(user.id.toLong(), idpropio)
                             println("usuario:" + user.id.toLong())
                         }
                     }
                 } else {
                     println("No se encontraron usuarios.")
                 }
-
             }
-
             override fun onFailure(call: Call<List<Users>>, t: Throwable) {
                 println("Error al realizar la solicitud: ${t.message}")
             }
         })
     }
-    //AGREGAR AMIGO
     fun addFriendship(friendAId: Long, friendBId: Long) {
         // Crear el objeto Friendship
         val friendship = Friendships(friendA = friendAId, friendB = friendBId)
@@ -864,16 +765,14 @@ fun getUseridByUsername(username: String) {
                     Toast.makeText(this@ProfileActivityFriend, "Error: ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
             }
-
             override fun onFailure(call: Call<Friendships>, t: Throwable) {
                 Toast.makeText(this@ProfileActivityFriend, "Error en la solicitud: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-    //METODOS PARA DESCARGAR IMAGEN PERFIL DEL USUARIO--------------------------------------------
-//OBTENER EL ID DEL USERNAME
-    fun getUseridByUsername8(username: String) {
+    // DESCARGAR IMAGEN PERFIL DEL USUARIO
+    private fun getUseridByUsername8(username: String) {
         // Preparar la conexión con Retrofit
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
@@ -897,14 +796,13 @@ fun getUseridByUsername(username: String) {
                 } else {
                     println("No se encontraron usuarios.")
                 }
-
             }
-
             override fun onFailure(call: Call<List<Users>>, t: Throwable) {
                 println("Error al realizar la solicitud: ${t.message}")
             }
         })
     }
+
     //DESCARGAR IMAGEN DEL USUARIO
     fun descargarimagenperfilbd(userId: Long){
         val retrofit = RetrofitClient.getClient()
@@ -939,6 +837,4 @@ fun getUseridByUsername(username: String) {
             }
         })
     }
-
-
 }

@@ -2,59 +2,62 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/white_gradient"
-    android:elevation="8dp"
     android:layout_gravity="center"
-    >
-<!--titulo-->
+    android:background="@color/dark_blue"
+    android:elevation="8dp"
+    android:orientation="vertical">
+
+    <!--titulo-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
+        android:background="@color/header"
         android:orientation="horizontal"
-        android:background="@android:color/holo_orange_light"
         android:padding="8dp">
-
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="8dp"
-            android:text="Soporte"
-            android:textAlignment="center"
-            android:textSize="34sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white" />
 
         <ImageView
             android:id="@+id/menuButton"
-            android:layout_width="71dp"
-            android:layout_height="57dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
             android:contentDescription="Menú"
-            android:src="@drawable/botonhamburguesa"
-            android:background="@android:color/transparent" />
-    </LinearLayout>
+            android:src="@drawable/iconohamburguesa" />
 
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/triangulo" />
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:text="Soporte"
+            android:textAlignment="viewStart"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/supportMainTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:padding="8dp"
+        android:padding="16dp"
         android:text="Si tienes algún problema con nuestra aplicación puede contactar con nuestro equipo de soporte o puede contactar con los desarrolladores directamente a nuestros correos personales."
-        android:textSize="18sp" />
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/queEsButton"
@@ -62,10 +65,11 @@
             android:layout_width="185dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
-            android:backgroundTint="@android:color/holo_blue_light"
+            android:backgroundTint="@color/dark_gray"
             android:text="¿Que es esta app?"
-            app:cornerRadius="12dp"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:cornerRadius="12dp" />
 
         <Button
             android:id="@+id/contactButton"
@@ -73,10 +77,11 @@
             android:layout_width="185dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
-            android:backgroundTint="@android:color/holo_blue_light"
+            android:backgroundTint="@color/dark_gray"
             android:text="Contáctanos"
-            app:cornerRadius="12dp"
-            android:textColor="@android:color/white" />
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            app:cornerRadius="12dp" />
     </LinearLayout>
 
     <TextView
@@ -87,7 +92,8 @@
         android:padding="8dp"
         android:text=""
         android:textAlignment="viewStart"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <!-- FOOTER
     <LinearLayout
@@ -106,36 +112,35 @@
         android:id="@+id/panelMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:background="@android:color/transparent"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/transparent"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/button1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Home"
             android:backgroundTint="#D3D3D3"
-            android:textColor="#424242"/>
+            android:text="Home"
+            android:textColor="#424242" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Perfil"
             android:backgroundTint="#D3D3D3"
-            android:textColor="#424242"/>
-
+            android:text="Perfil"
+            android:textColor="#424242" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sopporte"
             android:backgroundTint="#D3D3D3"
-            android:textColor="#424242"/>
+            android:text="Sopporte"
+            android:textColor="#424242" />
     </LinearLayout>
 </LinearLayout>

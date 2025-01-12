@@ -49,7 +49,7 @@
             android:name=".activities.ProfileSocialActivity"
             android:exported="false"/>
         <activity
-            android:name=".activities.RegisterActivity"
+            android:name=".activities.SignupActivity"
             android:exported="false"/>
         <activity
             android:name=".activities.SupportActivity"

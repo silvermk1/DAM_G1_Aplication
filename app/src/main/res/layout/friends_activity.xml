@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
-    android:background="@drawable/white_gradient"
+    android:background="@color/dark_blue"
     >
 
     <!-- Contenido principal que va detrás del menú -->
@@ -11,49 +11,47 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Header de la barra superior (Toolbar) -->
-        <androidx.appcompat.widget.Toolbar
+        <!-- HEADER -->
+        <LinearLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/light_blue"
-            android:gravity="bottom"
-            android:elevation="4dp">
+            android:layout_height="65dp"
+            android:background="@color/header"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/menu_button"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/iconohamburguesa"
-                android:layout_gravity="end" />
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:contentDescription="Menú"
+                android:src="@drawable/iconohamburguesa"/>
 
             <ImageView
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:src="@drawable/triangulo"
-                android:layout_gravity="start" />
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/triangulo"/>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="FLUTTER"
+                android:id="@+id/titleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:text="Amigos"
+                android:textAlignment="viewStart"
+                android:textColor="@android:color/white"
                 android:textSize="24sp"
-                android:textColor="@color/dark_gray"
-                android:padding="16dp"
-                android:shadowColor="#000000"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="4" />
-        </androidx.appcompat.widget.Toolbar>
+                android:textStyle="bold"/>
+
+        </LinearLayout>
 
         <!-- Contenido principal detrás del menú -->
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/appbar"
-            android:background="@drawable/white_gradient"
-            >
+            android:layout_below="@id/appbar">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,12 +64,13 @@
                     android:id="@+id/amistades"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#7651B6"
-                    android:text="Amistades"
+                    android:background="@color/dark_gray"
+                    android:padding="8dp"
+                    android:text="Amigos"
+                    android:textColor="#FFFFFF"
                     android:textAlignment="center"
-                    android:textColor="#020202"
                     android:textSize="20sp"
-                    android:padding="8dp" />
+                    android:textStyle="bold" />
 
                 <!-- Lista de amigos -->
                 <ListView
@@ -81,21 +80,20 @@
                     android:divider="@android:color/darker_gray"
                     android:padding="8dp"
                     android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/border_gradient"/>
+                    android:layout_weight="1"/>
 
                 <!-- Título de la sección "Solicitudes Pendientes" -->
                 <TextView
                     android:id="@+id/solicitudes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#3F51B5"
-                    android:text="Solicitudes Pendientes"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp"
+                    android:background="@color/dark_gray"
                     android:padding="8dp"
-                    android:layout_marginTop="16dp" />
+                    android:text="Solicitudes pendientes"
+                    android:textColor="#FFFFFF"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <!-- Lista de solicitudes pendientes -->
                 <ListView
@@ -105,8 +103,7 @@
                     android:padding="8dp"
                     android:divider="@android:color/darker_gray"
                     android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/border_gradient"                    />
+                    android:layout_weight="1" />
 
             </LinearLayout>
         </FrameLayout>

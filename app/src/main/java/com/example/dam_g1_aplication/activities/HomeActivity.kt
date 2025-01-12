@@ -4,20 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
-import android.view.MenuItem
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.Toast
-import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.content.edit
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.dam_g1_aplication.ApiConnection.ApiService
@@ -30,11 +23,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var menuButton: ImageView
-    private lateinit var navView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private var isLoggedIn: Boolean = false
@@ -54,9 +45,7 @@ class HomeActivity : AppCompatActivity() {
         val apiService = retrofit.create(ApiService::class.java)
 
         if (isLoggedIn && userId != null) {
-
             fillFavoriteListView(apiService, userId, favoritesListView)
-
         } else {
             val favoriteItems = listOf("Inicia sesión para poder ver los logros favoritos")
             val adapter = ArrayAdapter(
@@ -77,10 +66,8 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-// MENU HAMBURGUESA
-
+        // MENU HAMBURGUESA
         drawerLayout = findViewById(R.id.drawer_layout)
-        navView = findViewById(R.id.nav_view)
         menuButton = findViewById(R.id.menu_button)
         navigationView = findViewById(R.id.nav_view)
 
@@ -96,7 +83,7 @@ class HomeActivity : AppCompatActivity() {
         escuchadebotonesmenu()
     }
 
-//METODOS MENU HAMBURGUESA
+    //METODOS MENU HAMBURGUESA
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
@@ -105,17 +92,15 @@ class HomeActivity : AppCompatActivity() {
     private fun escuchadebotonesmenu() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+
                 R.id.nav_home -> {
                     Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
-
                 }
+
                 R.id.nav_perfil -> {
-
                     Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show()
-
                     if (isLoggedIn) {
                         val intent = Intent(this, ProfileActivity::class.java)
                         startActivity(intent)
@@ -123,14 +108,14 @@ class HomeActivity : AppCompatActivity() {
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
-
                 }
+
                 R.id.nav_logros -> {
                     Toast.makeText(this, "Logros", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, AchievementDetailActivity::class.java)
                     startActivity(intent)
                 }
+
                 R.id.nav_categorias -> {
                     Toast.makeText(this, "Categorías", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, CategoriesActivity::class.java)
@@ -138,12 +123,10 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_iniciar -> {
-
                     if (isLoggedIn) {
                         Toast.makeText(this, "Cierra la sesion!", Toast.LENGTH_SHORT).show()
                     }else{
                         Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show()
-
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
@@ -153,64 +136,56 @@ class HomeActivity : AppCompatActivity() {
                     sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
                     sharedPreferences.getString("user_id", null)
                     if (isLoggedIn) {
-
                             with(sharedPreferences.edit()) {
                                 putBoolean("isLoggedIn", false)
                                 remove("username")
                                 remove("user_id")
                                 remove("mail")
                                 apply()
-
                             }
                             val intent = Intent(this, LoginActivity::class.java)
                             startActivity(intent)
-
-
                         Toast.makeText(this, "Sesion cerrada, Adios!", Toast.LENGTH_SHORT).show()
-                    }else{
+                    } else {
                         Toast.makeText(this, "Ya estava cerrada!", Toast.LENGTH_SHORT).show()
-
                         val intent = Intent(this, HomeActivity::class.java)
                         startActivity(intent)
-
                     }
                 }
 
                 R.id.nav_contactos -> {
-
                     if (isLoggedIn) {
                         Toast.makeText(this, "Contactos", Toast.LENGTH_SHORT).show()
-
                         val intent = Intent(this, FriendsActivity::class.java)
                         startActivity(intent)
-                    }else{
+                    } else {
                         Toast.makeText(this, "Inicie sesion Antes!", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this, HomeActivity::class.java)
                         startActivity(intent)
-
                     }
                 }
+
                 R.id.nav_soporte -> {
                     Toast.makeText(this, "Sopporte", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, SupportActivity::class.java)
                     startActivity(intent)
                 }
+
                 R.id.nav_compartir -> {
                     Toast.makeText(this, "Gracias por comparitr (:", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, ProfileSocialActivity::class.java)
                     startActivity(intent)
-                }
-                else -> {
+                } else -> {
                     Toast.makeText(this, "Opción desconocida", Toast.LENGTH_SHORT).show()
                 }
             }
+
             // Cierra el Drawer después de la selección
             drawerLayout.closeDrawers()
             true
         }
     }
-//OTROS METODOS CODIGO
+
     private fun fillFavoriteListView(
         apiService: ApiService,
         userId: Long,
@@ -317,5 +292,4 @@ class HomeActivity : AppCompatActivity() {
             favoritesListView.adapter = adapter
         }
     }
-
 }

@@ -3,17 +3,14 @@ package com.example.dam_g1_aplication.activities
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import com.example.dam_g1_aplication.R
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dam_g1_aplication.ApiConnection.ApiService
 import com.example.dam_g1_aplication.ApiConnection.RetrofitClient
@@ -23,6 +20,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ProfileSocialActivity : AppCompatActivity() {
+
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var apiService: ApiService
     private lateinit var youtubeEditText: EditText
@@ -129,51 +127,51 @@ class ProfileSocialActivity : AppCompatActivity() {
             } else {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
-            }        }
+            }
+        }
 
         // Hacer la llamada al servicio para obtener las redes del usuario
-//        val callUsers = apiService.getUsers()
-//        callUsers.enqueue(object : Callback<List<Users>> {
-//            override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
-//                val users = response.body()
-//                val user = users?.find {it.username == username}
-//                if (user != null) {
-//                    //Si el usuario tiene una red, se mostrará un botón suyo con la red puesta. Al pulsar sobre la red te dirigirá a esa
-//                    if (user.youtube != null) {
-//                        youtubeEditText.hint = "https://youtube.com/" + user.youtube
-//                    }
-//                    if (user.twitterx != null) {
-//                        twitterxEditText.hint = "https://x.com/" + user.twitterx
-//                    }
-//                    if (user.facebook != null) {
-//                        facebookEditText.hint = "https://facebook.com/" + user.facebook
-//                    }
-//                    if (user.twitch != null) {
-//                        twitchEditText.hint = "https://twitch.tv/" + user.twitch
-//                    }
-//                    if (user.reddit != null) {
-//                        redditEditText.hint = "https://reddit.com/user/" + user.reddit
-//                    }
-//                    if (user.steam != null) {
-//                        steamEditText.hint = "https://steamcommunity.com/id/" + user.steam
-//                    }
-//                    if (user.epicgames != null) {
-//                        epicgamesEditText.hint = "https://epicgames.com/id/" + user.epicgames
-//                    }
-//                    if (user.nswitch != null) {
-//                        nswitchEditText.hint = "https://switch.nintendo.com/" + user.nswitch
-//                    }
-//                    if (user.psn != null) {
-//                        psnEditText.hint = "https://psnprofiles.com/" + user.psn
-//                    }
-//                    if (user.xbox != null) {
-//                        xboxEditText.hint = "https://xboxgamertag.com/search/" + user.xbox
-//                    }
-//                }
-//            }
-//            override fun onFailure(call: Call<List<Users>>, t: Throwable) {
-//                TODO("Not yet implemented")
-//            }
-//        })
+        val callUsers = apiService.getUsers()
+        callUsers.enqueue(object : Callback<List<Users>> {
+            override fun onResponse(call: Call<List<Users>>, response: Response<List<Users>>) {
+                val users = response.body()
+                val user = users?.find {it.username == username}
+                if (user != null) {
+                    //Si el usuario tiene una red, se mostrará un botón suyo con la red puesta. Al pulsar sobre la red te dirigirá a esa
+                    if (user.youtube != null) {
+                        youtubeEditText.hint = "https://youtube.com/" + user.youtube
+                    }
+                    if (user.twitterx != null) {
+                        twitterxEditText.hint = "https://x.com/" + user.twitterx
+                    }
+                    if (user.facebook != null) {
+                        facebookEditText.hint = "https://facebook.com/" + user.facebook
+                    }
+                    if (user.twitch != null) {
+                        twitchEditText.hint = "https://twitch.tv/" + user.twitch
+                    }
+                    if (user.reddit != null) {
+                        redditEditText.hint = "https://reddit.com/user/" + user.reddit
+                    }
+                    if (user.steam != null) {
+                        steamEditText.hint = "https://steamcommunity.com/id/" + user.steam
+                    }
+                    if (user.epicgames != null) {
+                        epicgamesEditText.hint = "https://epicgames.com/id/" + user.epicgames
+                    }
+                    if (user.nswitch != null) {
+                        nswitchEditText.hint = "https://switch.nintendo.com/" + user.nswitch
+                    }
+                    if (user.psn != null) {
+                        psnEditText.hint = "https://psnprofiles.com/" + user.psn
+                    }
+                    if (user.xbox != null) {
+                        xboxEditText.hint = "https://xboxgamertag.com/search/" + user.xbox
+                    }
+                }
+            }
+            override fun onFailure(call: Call<List<Users>>, t: Throwable) {
+            }
+        })
     }
 }

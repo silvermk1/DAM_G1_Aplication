@@ -3,115 +3,111 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
-    android:background="@drawable/white_gradient"
+    android:background="@color/dark_blue"
     android:elevation="8dp"
     android:layout_gravity="center"
     >
 
     <!-- Contenido principal que va detrás del menú -->
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!-- Header de la barra superior (Toolbar) -->
-        <androidx.appcompat.widget.Toolbar
+        <!--titulo-->
+        <LinearLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/light_blue"
-            android:gravity="bottom"
-            android:elevation="4dp">
+            android:layout_height="65dp"
+            android:background="@color/header"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/menu_button"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/iconohamburguesa"
-                android:layout_gravity="end" />
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:contentDescription="Menú"
+                android:src="@drawable/iconohamburguesa" />
 
             <ImageView
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:src="@drawable/triangulo"
-                android:layout_gravity="start" />
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/triangulo" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="FLUTTER"
+                android:id="@+id/titleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:text="Inicio"
+                android:textAlignment="viewStart"
+                android:textColor="@android:color/white"
                 android:textSize="24sp"
-                android:textColor="@color/dark_gray"
-                android:padding="16dp"
-                android:shadowColor="#000000"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="4" />
-        </androidx.appcompat.widget.Toolbar>
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <!-- Contenido principal detrás del menú -->
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/appbar"
-            android:background="@drawable/white_gradient"
-            >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="16dp"
-                >
+                android:padding="8dp">
 
                 <!-- Título -->
                 <TextView
                     android:id="@+id/favAchievTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#7651B6"
+                    android:background="@color/dark_gray"
+                    android:padding="8dp"
                     android:text="Logros Favoritos"
+                    android:textColor="#FFFFFF"
                     android:textAlignment="center"
-                    android:textColor="#020202"
                     android:textSize="20sp"
-                    android:padding="8dp" />
+                    android:textStyle="bold" />
 
                 <!-- Lista -->
                 <ListView
                     android:id="@+id/listViewFavorites"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginVertical="8dp"
+                    android:layout_weight="1"/>
 
                 <!-- Botón Buscar -->
                 <Button
                     android:id="@+id/searchButton"
-                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:backgroundTint="#03A9F4"
+                    android:layout_height="50dp"
+                    android:backgroundTint="@color/light_blue"
                     android:text="Buscar"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp" />
 
                 <!-- Botón Categorías -->
                 <Button
                     android:id="@+id/categoriesButton"
-                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#FF8000"
+                    android:layout_height="50dp"
+                    android:backgroundTint="@color/light_purple"
                     android:text="Categorías"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
+                    app:cornerRadius="12dp"
                     android:textStyle="bold" />
             </LinearLayout>
-        </FrameLayout>
-    </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
 
     <!-- Menú lateral (NavigationView) que se desliza sobre el contenido -->
     <com.google.android.material.navigation.NavigationView

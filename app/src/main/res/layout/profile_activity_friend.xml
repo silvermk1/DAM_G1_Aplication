@@ -2,102 +2,211 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawer_layout">
+    android:id="@+id/drawer_layout"
+    android:background="@color/dark_blue">
 
     <!-- Contenido principal que va detrás del menú -->
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!-- Header de la barra superior (Toolbar) -->
-        <androidx.appcompat.widget.Toolbar
+        <!-- HEADER -->
+        <LinearLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/light_blue"
-            android:gravity="bottom"
-            android:elevation="4dp">
+            android:layout_height="65dp"
+            android:background="@color/header"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/menu_button"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/iconohamburguesa"
-                android:layout_gravity="end" />
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:contentDescription="Menú"
+                android:src="@drawable/iconohamburguesa"/>
 
             <ImageView
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:src="@drawable/triangulo"
-                android:layout_gravity="start" />
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/triangulo"/>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="FLUTTER"
+                android:id="@+id/titleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:text="Perfil"
+                android:textAlignment="viewStart"
+                android:textColor="@android:color/white"
                 android:textSize="24sp"
-                android:textColor="@color/dark_gray"
-                android:padding="16dp"
-                android:shadowColor="#000000"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="4" />
-        </androidx.appcompat.widget.Toolbar>
+                android:textStyle="bold"/>
+
+        </LinearLayout>
 
         <!-- Contenido principal detrás del menú -->
-        <FrameLayout
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:orientation="horizontal"
+            android:background="@color/light_gray">
+
+            <ImageButton
+                android:id="@+id/profileImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginVertical="8dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/iconomas"
+                android:scaleType="centerCrop"
+                android:background="?android:attr/selectableItemBackground"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/usernameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="40dp"
+                    android:text="Usuario"
+                    android:textAlignment="center"
+                    android:textSize="30sp"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/youtubeButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:visibility="gone"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/youtube"/>
+
+            <ImageButton
+                android:id="@+id/twitterxButton"
+                android:src="@drawable/twitterx"
+                android:visibility="gone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@null"
+                android:scaleType="fitCenter"/>
+
+            <ImageButton
+                android:id="@+id/facebookButton"
+                android:src="@drawable/facebook"
+                android:visibility="gone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@null"
+                android:scaleType="fitCenter"/>
+
+            <ImageButton
+                android:id="@+id/twitchButton"
+                android:src="@drawable/twitch"
+                android:visibility="gone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@null"
+                android:scaleType="fitCenter"/>
+
+            <ImageButton
+                android:id="@+id/redditButton"
+                android:src="@drawable/reddit"
+                android:visibility="gone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@null"
+                android:scaleType="fitCenter"/>
+
+            <ImageButton
+                android:id="@+id/steamButton"
+                android:src="@drawable/steam"
+                android:visibility="gone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@null"
+                android:scaleType="fitCenter"/>
+
+            <ImageButton
+                android:id="@+id/epicgamesButton"
+                android:src="@drawable/epicgames"
+                android:visibility="gone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@null"
+                android:scaleType="fitCenter"/>
+
+            <ImageButton
+                android:id="@+id/nswitchButton"
+                android:src="@drawable/nswitch"
+                android:visibility="gone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@null"
+                android:scaleType="fitCenter"/>
+
+            <ImageButton
+                android:id="@+id/psnButton"
+                android:src="@drawable/psn"
+                android:visibility="gone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@null"
+                android:scaleType="fitCenter"/>
+
+            <ImageButton
+                android:id="@+id/xboxButton"
+                android:src="@drawable/xbox"
+                android:visibility="gone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@null"
+                android:scaleType="fitCenter"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/appbar"
-            android:background="@drawable/white_gradient"
-            >
+            android:orientation="vertical"
+            android:layout_below="@id/appbar" >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="16dp">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="16dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="6dp"
-                    android:backgroundTint="@android:color/white">
-
-                    <ImageButton
-                        android:id="@+id/imagenusuario"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/profile_photo_default"
-                        android:scaleType="centerCrop"
-                        android:background="@null"/>
-                </androidx.cardview.widget.CardView>
-                <!-- Nombre del usuario -->
-                <TextView
-                    android:id="@+id/usuario"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="NOMBRE USUARIO"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center"
-                    android:paddingTop="8dp" />
-
-                <!-- Botón para compartir logro -->
-                <Button
-                    android:id="@+id/compartirlogro2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="COMPARTIR LOGRO"
-                    android:backgroundTint="#03A9F4"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:layout_marginTop="16dp"
-                    android:layout_gravity="center" />
 
                 <!-- ListView de Objetivos -->
                 <ListView
@@ -123,8 +232,8 @@
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
             </LinearLayout>
-        </FrameLayout>
-    </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
 
     <!-- Menú lateral (NavigationView) que se desliza sobre el contenido -->
     <com.google.android.material.navigation.NavigationView

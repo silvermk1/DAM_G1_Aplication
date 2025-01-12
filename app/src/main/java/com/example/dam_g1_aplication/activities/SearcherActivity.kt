@@ -54,9 +54,8 @@ class SearcherActivity : AppCompatActivity() {
             }
         }
 
-//MENU INTERACTIVO HAMBURGUESA
-
-        menuButton = findViewById(R.id.menuButton)
+        //MENU INTERACTIVO HAMBURGUESA
+        menuButton = findViewById(R.id.menu_button)
         panelMenu = findViewById(R.id.panelMenu)
 
         // Cargar las animaciones
@@ -98,12 +97,9 @@ class SearcherActivity : AppCompatActivity() {
             } else {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
-            }        }
-
+            }
+        }
     }
-
-
-
 
     private fun searchAchievements(
         apiService: ApiService,

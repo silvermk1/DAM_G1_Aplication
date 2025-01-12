@@ -1,6 +1,5 @@
 package com.example.dam_g1_aplication.activities
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -9,13 +8,9 @@ import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.GridLayout
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -32,9 +27,7 @@ import retrofit2.Response
 
 class CategoriesActivity : AppCompatActivity() {
 
-
     private lateinit var menuButton: ImageView
-    private lateinit var navView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private var isLoggedIn: Boolean = false
@@ -45,11 +38,10 @@ class CategoriesActivity : AppCompatActivity() {
         setContentView(R.layout.category_activity)
 
         val categoryContainer = findViewById<GridLayout>(R.id.categoryContainer)
-
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
-
         val callCategories = apiService.getCategories()
+
         callCategories.enqueue(object : Callback<List<Categories>> {
             override fun onResponse(
                 call: Call<List<Categories>>,
@@ -64,8 +56,10 @@ class CategoriesActivity : AppCompatActivity() {
                             layoutParams = GridLayout.LayoutParams().apply {
                                 width = resources.displayMetrics.widthPixels / 2 // Ancho para que ocupe la mitad de la pantalla
                                 height = width // Alto igual al ancho para que sea cuadrado
-                                marginEnd = 8.dpToPx()
+                                topMargin = 8.dpToPx()
                                 bottomMargin = 8.dpToPx()
+                                leftMargin = 8.dpToPx()
+                                rightMargin = 8.dpToPx()
                             }
 
                             //estilos
@@ -108,9 +102,8 @@ class CategoriesActivity : AppCompatActivity() {
             }
         })
 
-// MENU HAMBURGUESA
+        // MENU HAMBURGUESA
         drawerLayout = findViewById(R.id.drawer_layout)
-        navView = findViewById(R.id.nav_view)
         menuButton = findViewById(R.id.menu_button)
         navigationView = findViewById(R.id.nav_view)
 
@@ -127,7 +120,7 @@ class CategoriesActivity : AppCompatActivity() {
 
     }
 
-//METODOS MENU HAMBURGUESA
+    //METODOS MENU HAMBURGUESA
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
@@ -136,17 +129,15 @@ class CategoriesActivity : AppCompatActivity() {
     private fun escuchadebotonesmenu() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+
                 R.id.nav_home -> {
                     Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
-
                 }
+
                 R.id.nav_perfil -> {
-
                     Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show()
-
                     if (isLoggedIn) {
                         val intent = Intent(this, ProfileActivity::class.java)
                         startActivity(intent)
@@ -154,14 +145,14 @@ class CategoriesActivity : AppCompatActivity() {
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
-
                 }
+
                 R.id.nav_logros -> {
                     Toast.makeText(this, "Logros", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, AchievementDetailActivity::class.java)
                     startActivity(intent)
                 }
+
                 R.id.nav_categorias -> {
                     Toast.makeText(this, "Categorías", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, CategoriesActivity::class.java)
@@ -169,12 +160,10 @@ class CategoriesActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_iniciar -> {
-
                     if (isLoggedIn) {
                         Toast.makeText(this, "Cierra la sesion!", Toast.LENGTH_SHORT).show()
                     }else{
                         Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show()
-
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
@@ -183,7 +172,6 @@ class CategoriesActivity : AppCompatActivity() {
                 R.id.nav_cerrar -> {
                     sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
                     sharedPreferences.getString("user_id", null)
-
                     with(sharedPreferences.edit()) {
                         putBoolean("isLoggedIn", false)
                         remove("username")
@@ -194,43 +182,41 @@ class CategoriesActivity : AppCompatActivity() {
                     }
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
-
                     Toast.makeText(this, "Sesion cerrada, Adios!", Toast.LENGTH_SHORT).show()
                 }
 
                 R.id.nav_contactos -> {
-
                     if (isLoggedIn) {
                         Toast.makeText(this, "Contactos", Toast.LENGTH_SHORT).show()
-
                         val intent = Intent(this, FriendsActivity::class.java)
                         startActivity(intent)
-                    }else{
+                    } else {
                         Toast.makeText(this, "Inicie sesion Antes!", Toast.LENGTH_SHORT).show()
                     }
                 }
-                R.id.nav_soporte -> {
-                    Toast.makeText(this, "Sopporte", Toast.LENGTH_SHORT).show()
 
+                R.id.nav_soporte -> {
+                    Toast.makeText(this, "Soporte", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, SupportActivity::class.java)
                     startActivity(intent)
                 }
+
                 R.id.nav_compartir -> {
                     Toast.makeText(this, "Gracias por comparitr (:", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, ProfileSocialActivity::class.java)
                     startActivity(intent)
-                }
-                else -> {
+                } else -> {
                     Toast.makeText(this, "Opción desconocida", Toast.LENGTH_SHORT).show()
                 }
             }
+
             // Cierra el Drawer después de la selección
             drawerLayout.closeDrawers()
             true
         }
     }
 
-//otros metodos
+    //otros metodos
     private fun navigateToAchievements(category: Categories) {
         val intent = Intent(this, AchievementsActivity::class.java).apply {
             putExtra("CATEGORY_ID", category.id)

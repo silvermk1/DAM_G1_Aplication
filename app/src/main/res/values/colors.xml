@@ -2,8 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="light_purple">#D1A0D5</color>
+    <color name="light_purple">#A020C0</color>
+    <color name="header">#202020</color>
     <color name="material_dynamic_neutral10">#FF5733</color>
-    <color name="light_blue">#AEC6CF</color>
-    <color name="dark_gray">#333333</color>
+    <color name="dark_blue">#4040C0</color>
+    <color name="light_blue">#60A0FF</color>
+    <color name="dark_gray">#202020</color>
+    <color name="light_gray">#404040</color>
+    <color name="light_green">#20D080</color>
 </resources>

@@ -22,11 +22,11 @@
             android:src="@drawable/triangulo" />
 
         <TextView
-            android:id="@+id/titleTextView"
+            android:id="@+id/textSignup"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
-            android:text="Inicio Sesión"
+            android:text="Registro"
             android:textAlignment="viewStart"
             android:textColor="@android:color/white"
             android:textSize="24sp"
@@ -42,22 +42,42 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/UsernameText"
+            android:id="@+id/MailText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Nombre de usuario"
+            android:text="Correo Electrónico"
+            android:textAlignment="viewStart"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/usernameEditText"
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:hint="Correo Electrónico"
+            android:layout_margin="8dp"
+            android:inputType="text" />
+
+        <TextView
+            android:id="@+id/UsernameText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="6dp"
+            android:text="Nombre de usuario"
+            android:textAlignment="viewStart"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Nombre de Usuario"
-            android:inputType="text" />
+            android:inputType="text"
+            android:layout_margin="8dp" />
 
         <TextView
             android:id="@+id/PasswordText"
@@ -65,46 +85,46 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="Contraseña"
+            android:textAlignment="viewStart"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/passwordEditText"
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:hint="Contraseña"
-            android:inputType="textPassword" />
-
-        <Button
-            android:id="@+id/loginButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:backgroundTint="@color/light_green"
-            app:cornerRadius="8dp"
-            android:text="Iniciar Sesión" />
+            android:inputType="textPassword"
+            android:layout_margin="8dp" />
 
         <TextView
-            android:id="@+id/noAccount"
+            android:id="@+id/YearText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="¿Sin Cuenta?"
+            android:layout_margin="6dp"
+            android:text="Año de nacimiento"
+            android:textAlignment="viewStart"
             android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:textAlignment="center"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/registerButton"
+        <EditText
+            android:id="@+id/year"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/light_purple"
-            android:layout_margin="8dp"
+            android:hint="Año de nacimiento"
+            android:inputType="text"
+            android:layout_margin="8dp" />
+
+        <Button
+            android:id="@+id/BotonRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/light_green"
+            android:text="Registrarse"
             app:cornerRadius="8dp"
-            android:text="Registrarse" />
+            android:layout_margin="8dp" />
 
         <Button
             android:id="@+id/homeButton"

@@ -1,23 +1,14 @@
 package com.example.dam_g1_aplication.activities
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.Menu
-import android.view.MotionEvent
-import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.Guideline
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.dam_g1_aplication.ApiConnection.ApiService
@@ -31,20 +22,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class FriendsActivity : AppCompatActivity() {
 
     private lateinit var menuButton: ImageView
-    private lateinit var navView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private var isLoggedIn: Boolean = false
     private lateinit var sharedPreferences: SharedPreferences
-
     private lateinit var friendsList: ListView
     private lateinit var friendRequestsList: ListView
-    private lateinit var dragButton: Button
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,14 +51,13 @@ class FriendsActivity : AppCompatActivity() {
 
         sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
 
-
-// Obtener datos para los ListViews
+        // Obtener datos para los ListViews
         getAllFriendships()
         getAllFriendRequests()
         println("ahora:")
         //getUserById2(2)
 
-//CLICKLISTENER
+        //CLICKLISTENER
         //mandar al perfil del amigo clickeado
         friendsList.setOnItemClickListener { parent, view, position, id ->
             // Obtener el nombre del amigo que se ha clicado
@@ -95,9 +80,8 @@ class FriendsActivity : AppCompatActivity() {
             startActivity(intent)
 
         }
-// MENU HAMBURGUESA
+        // MENU HAMBURGUESA
         drawerLayout = findViewById(R.id.drawer_layout)
-        navView = findViewById(R.id.nav_view)
         menuButton = findViewById(R.id.menu_button)
         navigationView = findViewById(R.id.nav_view)
 
@@ -114,7 +98,7 @@ class FriendsActivity : AppCompatActivity() {
     }
 
 
-//METODOS MENU HAMBURGUESA
+    //METODOS MENU HAMBURGUESA
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
@@ -123,17 +107,15 @@ class FriendsActivity : AppCompatActivity() {
     private fun escuchadebotonesmenu() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+
                 R.id.nav_home -> {
                     Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
-
                 }
+
                 R.id.nav_perfil -> {
-
                     Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show()
-
                     if (isLoggedIn) {
                         val intent = Intent(this, ProfileActivity::class.java)
                         startActivity(intent)
@@ -141,14 +123,14 @@ class FriendsActivity : AppCompatActivity() {
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
-
                 }
+
                 R.id.nav_logros -> {
                     Toast.makeText(this, "Logros", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, AchievementDetailActivity::class.java)
                     startActivity(intent)
                 }
+
                 R.id.nav_categorias -> {
                     Toast.makeText(this, "Categorías", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, CategoriesActivity::class.java)
@@ -156,12 +138,10 @@ class FriendsActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_iniciar -> {
-
                     if (isLoggedIn) {
                         Toast.makeText(this, "Cierra la sesion!", Toast.LENGTH_SHORT).show()
                     }else{
                         Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show()
-
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
@@ -170,58 +150,51 @@ class FriendsActivity : AppCompatActivity() {
                 R.id.nav_cerrar -> {
                     sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
                     sharedPreferences.getString("user_id", null)
-
                     with(sharedPreferences.edit()) {
                         putBoolean("isLoggedIn", false)
                         remove("username")
                         remove("user_id")
                         remove("mail")
                         apply()
-
                     }
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
-
                     Toast.makeText(this, "Sesion cerrada, Adios!", Toast.LENGTH_SHORT).show()
                 }
 
                 R.id.nav_contactos -> {
-
                     if (isLoggedIn) {
                         Toast.makeText(this, "Contactos", Toast.LENGTH_SHORT).show()
-
                         val intent = Intent(this, FriendsActivity::class.java)
                         startActivity(intent)
                     }else{
                         Toast.makeText(this, "Inicie sesion Antes!", Toast.LENGTH_SHORT).show()
                     }
                 }
+
                 R.id.nav_soporte -> {
                     Toast.makeText(this, "Sopporte", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, SupportActivity::class.java)
                     startActivity(intent)
                 }
+
                 R.id.nav_compartir -> {
                     Toast.makeText(this, "Gracias por comparitr (:", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, ProfileSocialActivity::class.java)
                     startActivity(intent)
-                }
-                else -> {
+                } else -> {
                     Toast.makeText(this, "Opción desconocida", Toast.LENGTH_SHORT).show()
                 }
             }
+
             // Cierra el Drawer después de la selección
             drawerLayout.closeDrawers()
             true
         }
     }
 
-//OTROS METODOS
-//metodo para mover la linea del medio y agrandar o menguar las listas-------
-//METODOS PARA AGREGAR AMIGOS AL LISTVIEW------------------------------------
-//METODO PARA OBTENER TODOS LOS IDS DE LOS AMIGOS
-    fun getAllFriendships() {
+    // AGREGAR AMIGOS AL LISTVIEW
+    private fun getAllFriendships() {
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
         val friendIds = mutableListOf<String>()
@@ -238,7 +211,6 @@ class FriendsActivity : AppCompatActivity() {
                     return
                 }
                 val idpropio = sharedPreferences.getString("user_id", null)
-
 
                 // Filtrar los IDs de los amigos que corresponden al usuario actual
                 for (friendship in friendships) {
@@ -275,7 +247,7 @@ class FriendsActivity : AppCompatActivity() {
         })
     }
 
-    //METODO PARA TRADUCIR IDS AMIGOS A NOMBRES AMIGOS
+    // TRADUCIR IDS AMIGOS A NOMBRES AMIGOS
     fun getUserById2(userId: Long, callback: (String) -> Unit) {
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
@@ -289,7 +261,6 @@ class FriendsActivity : AppCompatActivity() {
                     callback(user.username.toString())
                 }
             }
-
             override fun onFailure(call: Call<Users>, t: Throwable) {
                 println("Error al obtener el usuario: ${t.message}")
             }
@@ -298,7 +269,7 @@ class FriendsActivity : AppCompatActivity() {
 
     //METODO PARA INSERTAR LOS NOMBRES DE LOS AMIGOS EN EL LISTVIEW
     fun updateListViewWithFriends(friendNames: List<String>) {
-        // Este método actualizará el ListView con los nombres de todos los amigos
+        // Este metodo actualizará el ListView con los nombres de todos los amigos
         runOnUiThread {
             val adapter = friendsList.adapter as ArrayAdapter<String>
             adapter.clear()
@@ -307,9 +278,8 @@ class FriendsActivity : AppCompatActivity() {
         }
     }
 
-    //METODOS PARA AGREGAR SOLICITUDES AL LISTVIEW------------------------------------
-//METODO PARA OBTENER TODOS LOS IDS DE LAS SOLICITUDES
-    fun getAllFriendRequests() {
+    // AGREGAR SOLICITUDES AL LISTVIEW
+    private fun getAllFriendRequests() {
         //conectar retrofit
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
@@ -354,7 +324,6 @@ class FriendsActivity : AppCompatActivity() {
                 }
             }
 
-
             override fun onFailure(call: Call<List<FriendRequests>>, t: Throwable) {
                 Toast.makeText(this@FriendsActivity, "Error: ${t.message}", Toast.LENGTH_SHORT)
                     .show()
@@ -364,7 +333,7 @@ class FriendsActivity : AppCompatActivity() {
 
     //METODO PARA INSERTAR LOS NOMBRES DE LOS AMIGOS EN EL LISTVIEW
     fun updateListViewWithFriendsRequests(friendNames: List<String>) {
-        // Este método actualizará el ListView con los nombres de todos los amigos
+        // Este metodo actualizará el ListView con los nombres de todos los amigos
         runOnUiThread {
             val adapter = friendRequestsList.adapter as ArrayAdapter<String>
             adapter.clear()

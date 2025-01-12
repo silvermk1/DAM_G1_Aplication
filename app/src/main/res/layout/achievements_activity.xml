@@ -3,56 +3,53 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
-    >
+    android:background="@color/dark_blue" >
 
     <!-- Contenido principal que va detrás del menú -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Header de la barra superior (Toolbar) -->
-        <androidx.appcompat.widget.Toolbar
+        <!-- HEADER -->
+        <LinearLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/light_blue"
-            android:gravity="bottom"
-            android:elevation="4dp">
+            android:layout_height="65dp"
+            android:background="@color/header"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/menu_button"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/iconohamburguesa"
-                android:layout_gravity="end" />
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:contentDescription="Menú"
+                android:src="@drawable/iconohamburguesa" />
 
             <ImageView
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:src="@drawable/triangulo"
-                android:layout_gravity="start" />
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/triangulo" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="FLUTTER"
+                android:id="@+id/titleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:text="Logros"
+                android:textAlignment="viewStart"
+                android:textColor="@android:color/white"
                 android:textSize="24sp"
-                android:textColor="@color/dark_gray"
-                android:padding="16dp"
-                android:shadowColor="#000000"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="4" />
-        </androidx.appcompat.widget.Toolbar>
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <!-- Contenido principal detrás del menú -->
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/appbar"
-            android:background="@drawable/white_gradient"
-            >
+            android:layout_below="@id/appbar" >
 
             <LinearLayout
                 android:layout_width="match_parent"

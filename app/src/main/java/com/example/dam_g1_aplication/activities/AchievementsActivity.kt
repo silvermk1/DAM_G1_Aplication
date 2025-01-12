@@ -5,16 +5,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
-import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -28,11 +23,10 @@ import com.google.android.material.navigation.NavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 class AchievementsActivity : AppCompatActivity() {
 
-
     private lateinit var menuButton: ImageView
-    private lateinit var navView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private var isLoggedIn: Boolean = false
@@ -51,8 +45,6 @@ class AchievementsActivity : AppCompatActivity() {
 
         //Obtiene el category id que se ha pulsado para llegar aquí
         val categoryId = intent.getStringExtra("CATEGORY_ID")?.toInt() ?: return
-        val title = intent.getStringExtra("TITLE")
-
 
         //retornar los logros segun el achievement
         val callAchievementsByCategoryId = apiService.getAchievementsByCategoryId(categoryId)
@@ -162,7 +154,6 @@ class AchievementsActivity : AppCompatActivity() {
 
 // MENU HAMBURGUESA
         drawerLayout = findViewById(R.id.drawer_layout)
-        navView = findViewById(R.id.nav_view)
         menuButton = findViewById(R.id.menu_button)
         navigationView = findViewById(R.id.nav_view)
 
@@ -176,7 +167,6 @@ class AchievementsActivity : AppCompatActivity() {
             }
         }
         escuchadebotonesmenu()
-
     }
 
     //METODOS MENU HAMBURGUESA
@@ -188,17 +178,15 @@ class AchievementsActivity : AppCompatActivity() {
     private fun escuchadebotonesmenu() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+
                 R.id.nav_home -> {
                     Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
-
                 }
+
                 R.id.nav_perfil -> {
-
                     Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show()
-
                     if (isLoggedIn) {
                         val intent = Intent(this, ProfileActivity::class.java)
                         startActivity(intent)
@@ -206,14 +194,14 @@ class AchievementsActivity : AppCompatActivity() {
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
-
                 }
+
                 R.id.nav_logros -> {
                     Toast.makeText(this, "Logros", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, AchievementDetailActivity::class.java)
                     startActivity(intent)
                 }
+
                 R.id.nav_categorias -> {
                     Toast.makeText(this, "Categorías", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, CategoriesActivity::class.java)
@@ -221,12 +209,10 @@ class AchievementsActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_iniciar -> {
-
                     if (isLoggedIn) {
                         Toast.makeText(this, "Cierra la sesion!", Toast.LENGTH_SHORT).show()
-                    }else{
+                    } else {
                         Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show()
-
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
@@ -235,47 +221,43 @@ class AchievementsActivity : AppCompatActivity() {
                 R.id.nav_cerrar -> {
                     sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
                     sharedPreferences.getString("user_id", null)
-
                     with(sharedPreferences.edit()) {
                         putBoolean("isLoggedIn", false)
                         remove("username")
                         remove("user_id")
                         remove("mail")
                         apply()
-
                     }
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
-
                     Toast.makeText(this, "Sesion cerrada, Adios!", Toast.LENGTH_SHORT).show()
                 }
 
                 R.id.nav_contactos -> {
-
                     if (isLoggedIn) {
                         Toast.makeText(this, "Contactos", Toast.LENGTH_SHORT).show()
-
                         val intent = Intent(this, FriendsActivity::class.java)
                         startActivity(intent)
-                    }else{
+                    } else {
                         Toast.makeText(this, "Inicie sesion Antes!", Toast.LENGTH_SHORT).show()
                     }
                 }
+
                 R.id.nav_soporte -> {
                     Toast.makeText(this, "Sopporte", Toast.LENGTH_SHORT).show()
-
                     val intent = Intent(this, SupportActivity::class.java)
                     startActivity(intent)
                 }
+
                 R.id.nav_compartir -> {
                     Toast.makeText(this, "Gracias por comparitr (:", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, ProfileSocialActivity::class.java)
                     startActivity(intent)
-                }
-                else -> {
+                } else -> {
                     Toast.makeText(this, "Opción desconocida", Toast.LENGTH_SHORT).show()
                 }
             }
+
             // Cierra el Drawer después de la selección
             drawerLayout.closeDrawers()
             true
@@ -354,7 +336,6 @@ class AchievementsActivity : AppCompatActivity() {
     // ELIMINAR FAVORITO
     fun deleteFavorite(userId: Long, achievementId: Long) {
         // Realizar la llamada a la API
-
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
         val call = apiService.deleteFavorite(userId, achievementId)
