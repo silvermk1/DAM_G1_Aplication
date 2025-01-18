@@ -2,7 +2,9 @@ package com.example.dam_g1_aplication.activities
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
@@ -13,10 +15,13 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.dam_g1_aplication.ApiConnection.ApiService
 import com.example.dam_g1_aplication.ApiConnection.RetrofitClient
 import com.example.dam_g1_aplication.R
 import com.example.dam_g1_aplication.dataClasses.Achievements
+import com.google.android.material.navigation.NavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,8 +29,11 @@ import retrofit2.Response
 class SearcherActivity : AppCompatActivity() {
 
     //atributos para el boton hamburguesa:
-    private lateinit var panelMenu: LinearLayout
     private lateinit var menuButton: ImageView
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    private var isLoggedIn: Boolean = false
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +45,7 @@ class SearcherActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+        val userId = sharedPreferences.getString("user_id", null)?.toLongOrNull()
 
         // Preparar Retrofit
         val retrofit = RetrofitClient.getClient()
@@ -54,52 +63,128 @@ class SearcherActivity : AppCompatActivity() {
             }
         }
 
-        //MENU INTERACTIVO HAMBURGUESA
+        // MENU HAMBURGUESA
+        drawerLayout = findViewById(R.id.drawer_layout)
         menuButton = findViewById(R.id.menu_button)
-        panelMenu = findViewById(R.id.panelMenu)
+        navigationView = findViewById(R.id.nav_view)
 
-        // Cargar las animaciones
-        val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
-        val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
-
-        // Al presionar el ImageView (menú)
+        // Establecer el comportamiento del botón hamburguesa
         menuButton.setOnClickListener {
-            if (panelMenu.visibility == View.GONE) {
-                // Mostrar el panel con animación
-                panelMenu.startAnimation(slideUp)
-                panelMenu.visibility = View.VISIBLE
+            // Abrir o cerrar el menú lateral (DrawerLayout)
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
             } else {
-                // Ocultar el panel con animación
-                panelMenu.startAnimation(slideDown)
-                panelMenu.visibility = View.GONE
+                drawerLayout.openDrawer(GravityCompat.START)
             }
         }
+        escuchadebotonesmenu()
+    }
 
-        // Configurar botones del panel (opcional)
-        val button1: Button = findViewById(R.id.button1)
-        val button2: Button = findViewById(R.id.button2)
-        val button3: Button = findViewById(R.id.button3)
+    //METODOS MENU HAMBURGUESA
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
 
-        button1.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-        }
+    private fun escuchadebotonesmenu() {
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
 
-        button2.setOnClickListener {
-            val intent = Intent(this, SupportActivity::class.java)
-            startActivity(intent)
-        }
+                R.id.nav_home -> {
+                    Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                }
 
-        button3.setOnClickListener {
-            if (isLoggedIn) {
-                val intent = Intent(this, ProfileActivity::class.java)
-                startActivity(intent)
-            } else {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
+                R.id.nav_perfil -> {
+                    Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show()
+                    if (isLoggedIn) {
+                        val intent = Intent(this, ProfileActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+
+                R.id.nav_logros -> {
+                    Toast.makeText(this, "Logros", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, UserAchievementsActivity::class.java)
+                    startActivity(intent)
+                }
+
+                R.id.nav_categorias -> {
+                    Toast.makeText(this, "Categorías", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, CategoriesActivity::class.java)
+                    startActivity(intent)
+                }
+
+                R.id.nav_iniciar -> {
+                    if (isLoggedIn) {
+                        Toast.makeText(this, "Cierra la sesion!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+
+                R.id.nav_cerrar -> {
+                    sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                    sharedPreferences.getString("user_id", null)
+                    if (isLoggedIn) {
+                        with(sharedPreferences.edit()) {
+                            putBoolean("isLoggedIn", false)
+                            remove("username")
+                            remove("user_id")
+                            remove("mail")
+                            apply()
+                        }
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                        Toast.makeText(this, "Sesion cerrada, Adios!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Ya estava cerrada!", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, HomeActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+
+                R.id.nav_contactos -> {
+                    if (isLoggedIn) {
+                        Toast.makeText(this, "Contactos", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, FriendsActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this, "Inicie sesion Antes!", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, HomeActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+
+                R.id.nav_soporte -> {
+                    Toast.makeText(this, "Sopporte", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, SupportActivity::class.java)
+                    startActivity(intent)
+                }
+
+                R.id.nav_compartir -> {
+                    Toast.makeText(this, "Gracias por comparitr (:", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, ProfileSocialActivity::class.java)
+                    startActivity(intent)
+                }
+
+                else -> {
+                    Toast.makeText(this, "Opción desconocida", Toast.LENGTH_SHORT).show()
+                }
             }
+
+            // Cierra el Drawer después de la selección
+            drawerLayout.closeDrawers()
+            true
         }
     }
+
 
     private fun searchAchievements(
         apiService: ApiService,
@@ -146,6 +231,7 @@ class SearcherActivity : AppCompatActivity() {
                     resultsListView.adapter = adapter
                 }
             }
+
 
             override fun onFailure(call: Call<List<Achievements>>, t: Throwable) {
                 val errorItems = listOf("Error de conexión: ${t.message}")

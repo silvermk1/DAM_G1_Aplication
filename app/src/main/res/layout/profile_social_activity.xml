@@ -1,82 +1,50 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:background="@drawable/white_gradient"
-    android:elevation="8dp"
-    android:layout_gravity="center">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:background="@color/dark_blue">
 
-    <!-- Título -->
+    <!-- Contenido principal que va detrás del menú -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@android:color/holo_orange_light"
-        android:padding="8dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="8dp"
-            android:text="Redes Sociales"
-            android:textAlignment="center"
-            android:textSize="34sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white" />
-
-        <ImageView
-            android:id="@+id/menuButton"
-            android:layout_width="71dp"
-            android:layout_height="57dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="Menú"
-            android:src="@drawable/botonhamburguesa"
-            android:background="@android:color/transparent" />
-    </LinearLayout>
-
-    <!-- MENU BOTONES -->
-    <LinearLayout
-        android:id="@+id/panelMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:background="@android:color/transparent"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp">
-
-        <Button
-            android:id="@+id/button1"
+        <!-- HEADER -->
+        <LinearLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Home"
-            android:backgroundTint="#D3D3D3"
-            android:textColor="#424242"/>
+            android:layout_height="65dp"
+            android:background="@color/header"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
+            <ImageView
+                android:id="@+id/menu_button"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:contentDescription="Menú"
+                android:src="@drawable/iconohamburguesa"/>
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Perfil"
-            android:backgroundTint="#D3D3D3"
-            android:textColor="#424242"/>
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/triangulo"/>
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sopporte"
-            android:backgroundTint="#D3D3D3"
-            android:textColor="#424242"/>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:text="Perfil"
+                android:textAlignment="viewStart"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
 
         <!-- youtube -->
         <LinearLayout
@@ -440,3 +408,13 @@
 
 </LinearLayout>
 
+    <!-- Menú lateral (NavigationView) que se desliza sobre el contenido -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        app:headerLayout="@layout/header"
+        app:menu="@menu/main_menu"
+        android:layout_gravity="start"
+        android:elevation="10dp" />
+</androidx.drawerlayout.widget.DrawerLayout>

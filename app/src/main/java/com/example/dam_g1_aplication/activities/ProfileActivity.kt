@@ -290,7 +290,7 @@ class ProfileActivity : AppCompatActivity() {
 
                 R.id.nav_logros -> {
                     Toast.makeText(this, "Logros", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, AchievementDetailActivity::class.java)
+                    val intent = Intent(this, UserAchievementsActivity::class.java)
                     startActivity(intent)
                 }
 
@@ -345,11 +345,16 @@ class ProfileActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_compartir -> {
-                    Toast.makeText(this, "Gracias por comparitr (:", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, ProfileSocialActivity::class.java)
-                    startActivity(intent)
-                } else -> {
-                    Toast.makeText(this, "Opción desconocida", Toast.LENGTH_SHORT).show()
+                    if (isLoggedIn) {
+                        val intent = Intent(this, ProfileSocialActivity::class.java)
+                        startActivity(intent)
+                    } else  {
+                        Toast.makeText(
+                            this,
+                            "Inicia Sesión para acceder a este menú",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
 
@@ -378,7 +383,7 @@ class ProfileActivity : AppCompatActivity() {
                     for (user in users) {
                         println("Username: ${user.username}, ID: ${user.id}")
                         if (user.username == username){//el usuario existe
-                            comprovarAmistad(user.id.toLong(), username)
+                            comprobarAmistad(user.id.toLong(), username)
                         }
                     }
                 } else {
@@ -393,7 +398,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     //METODO PARA COMPROBAR LA AMISTAD Y MANDAR AL ACTIVITY DEL PERFIL
-    fun comprovarAmistad(idamigo : Long, username: String){
+    fun comprobarAmistad(idamigo : Long, username: String){
         val retrofit = RetrofitClient.getClient()
         val apiService = retrofit.create(ApiService::class.java)
         var numero = 0
@@ -460,7 +465,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    //METODO PARA SUVIR LA IMAGEN DE PERFIL NUEVA A LA BD
+    //METODO PARA SUBIR LA IMAGEN DE PERFIL NUEVA A LA BD
     private fun updateUser(userId: Long, updatedUser: Users) {
         // Crear una instancia de Retrofit y el ApiService
         val retrofit = RetrofitClient.getClient()

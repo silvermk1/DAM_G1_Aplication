@@ -149,7 +149,7 @@ class CategoriesActivity : AppCompatActivity() {
 
                 R.id.nav_logros -> {
                     Toast.makeText(this, "Logros", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, AchievementDetailActivity::class.java)
+                    val intent = Intent(this, UserAchievementsActivity::class.java)
                     startActivity(intent)
                 }
 
@@ -202,11 +202,16 @@ class CategoriesActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_compartir -> {
-                    Toast.makeText(this, "Gracias por comparitr (:", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, ProfileSocialActivity::class.java)
-                    startActivity(intent)
-                } else -> {
-                    Toast.makeText(this, "Opción desconocida", Toast.LENGTH_SHORT).show()
+                    if (isLoggedIn) {
+                        val intent = Intent(this, ProfileSocialActivity::class.java)
+                        startActivity(intent)
+                    } else  {
+                        Toast.makeText(
+                            this,
+                            "Inicia Sesión para acceder a este menú",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
 

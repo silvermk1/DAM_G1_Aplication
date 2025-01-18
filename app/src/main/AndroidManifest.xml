@@ -66,6 +66,11 @@
         <activity
             android:name=".activities.SearcherActivity"
             android:exported="false"/>
+        <activity
+            android:name=".activities.UserAchievementsActivity"
+            android:exported="false"/>
+
+
 
     </application>
 </manifest>

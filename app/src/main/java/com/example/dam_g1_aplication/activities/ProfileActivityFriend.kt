@@ -260,7 +260,7 @@ class ProfileActivityFriend : AppCompatActivity() {
 
                 R.id.nav_logros -> {
                     Toast.makeText(this, "Logros", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, AchievementDetailActivity::class.java)
+                    val intent = Intent(this, UserAchievementsActivity::class.java)
                     startActivity(intent)
                 }
 
@@ -307,12 +307,17 @@ class ProfileActivityFriend : AppCompatActivity() {
                     }
                 }
 
-                R.id.nav_soporte -> {
-                    Toast.makeText(this, "Sopporte", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, SupportActivity::class.java)
-                    startActivity(intent)
-                } else -> {
-                    Toast.makeText(this, "Opción desconocida", Toast.LENGTH_SHORT).show()
+                R.id.nav_compartir -> {
+                    if (isLoggedIn) {
+                        val intent = Intent(this, ProfileSocialActivity::class.java)
+                        startActivity(intent)
+                    } else  {
+                        Toast.makeText(
+                            this,
+                            "Inicia Sesión para acceder a este menú",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
 
@@ -372,7 +377,6 @@ class ProfileActivityFriend : AppCompatActivity() {
             ) {
                 val userachievements = response.body()
                 if (userachievements != null) {
-                    println("AQUI SE MEUSTRAN!!!!(_:")
                     for (achievement in userachievements) {
 
                         //guardar el id en la lista ids
@@ -418,7 +422,7 @@ class ProfileActivityFriend : AppCompatActivity() {
                         }
                     }
                     //AGREGAR AL LIST VIEW TODOS LOS VALORES
-                    println("mostrar los nombrs:----")
+                    println("mostrar los nombres:----")
                     println(nombres)
                     actualizarListView(nombres)
                 }

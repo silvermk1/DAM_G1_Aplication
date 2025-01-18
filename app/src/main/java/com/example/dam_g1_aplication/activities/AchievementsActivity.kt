@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.dam_g1_aplication.ApiConnection.ApiService
@@ -77,9 +78,12 @@ class AchievementsActivity : AppCompatActivity() {
                                 75.dpToPx(),
                                 ViewGroup.LayoutParams.WRAP_CONTENT
                             )
+
+
                             // Texto y color predeterminado
                             text = "+"
                             setBackgroundColor(resources.getColor(android.R.color.holo_red_light))
+
 
                             if (isLoggedIn && userId != null) {
                                 //Si estas logeado revisa tus favoritos y actualzia su estado
@@ -89,7 +93,7 @@ class AchievementsActivity : AppCompatActivity() {
                             // Alternar favoritos al hacer clic
                             setOnClickListener {
                                 if (!isLoggedIn) {
-                                    //Si no estas logado te muestra un mensaje informandoq ue te tienes que logear para utilziar la función
+                                    //Si no estas logado te muestra un mensaje informando que te tienes que logear para utilziar la función
                                     Toast.makeText(
                                         this@AchievementsActivity,
                                         "Inicia sesión para usar favoritos",
@@ -106,6 +110,7 @@ class AchievementsActivity : AppCompatActivity() {
                                 } else {
                                     text = "+"
                                     setBackgroundColor(resources.getColor(android.R.color.holo_red_light))
+
                                     //Función que hace llamada a la api para eliminar el favorito
                                     deleteFavorite(userId!!, achievement.id.toLong())
                                 }
@@ -127,7 +132,7 @@ class AchievementsActivity : AppCompatActivity() {
                             // Fondo con esquinas redondeadas
                             background = GradientDrawable().apply {
                                 cornerRadius = 8 * resources.displayMetrics.density
-                                setColor(resources.getColor(android.R.color.holo_orange_dark))
+                                setColor(ContextCompat.getColor(context, R.color.light_purple))
                             }
 
                             setTextColor(resources.getColor(android.R.color.white))
@@ -198,7 +203,7 @@ class AchievementsActivity : AppCompatActivity() {
 
                 R.id.nav_logros -> {
                     Toast.makeText(this, "Logros", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, AchievementDetailActivity::class.java)
+                    val intent = Intent(this, UserAchievementsActivity::class.java)
                     startActivity(intent)
                 }
 
@@ -250,11 +255,16 @@ class AchievementsActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_compartir -> {
-                    Toast.makeText(this, "Gracias por comparitr (:", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, ProfileSocialActivity::class.java)
-                    startActivity(intent)
-                } else -> {
-                    Toast.makeText(this, "Opción desconocida", Toast.LENGTH_SHORT).show()
+                    if (isLoggedIn) {
+                        val intent = Intent(this, ProfileSocialActivity::class.java)
+                        startActivity(intent)
+                    } else  {
+                        Toast.makeText(
+                            this,
+                            "Inicia Sesión para acceder a este menú",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
 
